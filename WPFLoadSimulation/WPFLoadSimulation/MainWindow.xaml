@@ -7,8 +7,8 @@
             <TabItem Header="Loads" Padding="20,5" >
                 <Grid Background="#FFE5E5E5">
                     <TabControl HorizontalAlignment="Stretch"   VerticalAlignment="Stretch"  >
-                        <TabItem Header="Offers" Padding="15,2">
-                            <Grid Background="#FFE5E5E5" IsManipulationEnabled="True">
+                        <TabItem Header="Available loads" Padding="15,2">
+                            <Grid Background="#FFE5E5E5" IsManipulationEnabled="True" Margin="10">
                                 <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="2*"/>
@@ -18,7 +18,7 @@
                                         <RowDefinition/>
                                         <RowDefinition/>
                                     </Grid.RowDefinitions>
-                                    <DataGrid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="0" Grid.RowSpan="2">
+                                    <DataGrid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="0" Grid.RowSpan="2" Margin="0,0,0,35">
                                         <DataGrid.Columns>
                                             <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Selected" Width="*"/>
                                             <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Start city" Width="*"/>
@@ -26,6 +26,7 @@
                                             <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Due" Width="*"/>
                                         </DataGrid.Columns>
                                     </DataGrid>
+                                    <Button Name="LoadsAddNewLoad" Click="LoadsAddNewLoad_Click" Content="Add load" Grid.Row="2" VerticalAlignment="Bottom" Height="30"/>
                                     <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1" Grid.Row="0">
                                         <TabItem Header="Selected Load">
                                             <Grid Background="#FFE5E5E5" >
@@ -68,15 +69,15 @@
                                                     <RowDefinition Height="1.5*"/>
                                                     <RowDefinition Height="5*"/>
                                                     <RowDefinition Height="2*"/>
-                                                    <RowDefinition Height="2*"/>
+                                                    <RowDefinition Height="auto"/>
                                                 </Grid.RowDefinitions>
                                                 <Label Content="Route information" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" FontWeight="SemiBold" Padding="0,3,0,0"/>
                                                 <Label Content="Current loads for this route:" HorizontalAlignment="Left"  Grid.Row="1" Grid.Column="0" VerticalAlignment="Bottom" Padding="0,0,0,0"/>
                                                 <ListBox HorizontalAlignment="Stretch"  Grid.Row="2" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" VerticalAlignment="Stretch" Margin="0,0,10,0" />
                                                 <Label Content="Assign a truck for the route:" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="3" Grid.RowSpan="1" VerticalAlignment="Bottom" Padding="0,0,0,0" />
                                                 <ComboBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="1" Margin="160,10,10,0" HorizontalAlignment="Stretch" MaxHeight="30" VerticalAlignment="Bottom"/>
-                                                <Button Content="Calculate estimation" HorizontalAlignment="Stretch" Grid.Row="4" VerticalAlignment="Stretch" Margin="0, 10, 10, 0" MaxHeight="30"/>
-                                                <Button Content="Submit Route" Grid.Column="1" HorizontalAlignment="Stretch" Margin="0, 10,0,0" Grid.Row="4" VerticalAlignment="Stretch" MaxHeight="30" FontWeight="Medium" />
+                                                <Button Content="Calculate estimation" HorizontalAlignment="Stretch" Grid.Row="4" VerticalAlignment="Stretch" Margin="0, 10, 10, 0" Height="30"/>
+                                                <Button Content="Submit Route" Grid.Column="1" HorizontalAlignment="Stretch" Margin="0, 10,0,0" Grid.Row="4" VerticalAlignment="Stretch" Height="30" FontWeight="Medium" />
                                                 <Label Content="Route estimation" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Bottom" Padding="0,0,0,0"/>
                                                 <ListBox Grid.Column="1"  HorizontalAlignment="Stretch"  Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Stretch" />
                                             </Grid>
@@ -86,53 +87,49 @@
                             </Grid>
                         </TabItem>
                         <TabItem Header="Active or Delivered" Padding="15,2">
-                            <Grid Background="#FFE5E5E5">
+                            <Grid Background="#FFE5E5E5" Margin="10">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="5.5*"/>
-                                    <ColumnDefinition Width="5*"/>
+                                    <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="6*"/>
+                                    <RowDefinition Height="3*"/>
                                     <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="2*"/>
                                     <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="5*"/>
+                                    <RowDefinition Height="3*"/>
                                     <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="1.5*"/>
+                                    <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
                                 <RadioButton Content="All routes" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,10,0,0" />
                                 <RadioButton Content="Currently Active" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="90,10,0,0"/>
-                                <RadioButton Content="Already Delivered" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="220,10,0,0"/>
+                                <RadioButton Content="Finished" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="220,10,0,0"/>
                                 <Label Content="Route information with estimation" Grid.ColumnSpan="2" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Bottom" FontWeight="SemiBold" Padding="0" Margin="0,10,0,0"/>
-                                <DataGrid HorizontalAlignment="Stretch"  Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Stretch" AutoGenerateColumns="False" >
+                                <DataGrid HorizontalAlignment="Stretch"  Grid.Row="2"  VerticalAlignment="Stretch" AutoGenerateColumns="False" >
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Started from" Width="*" />
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="End location" Width="*"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Loads" Width="auto"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Truck" Width="*"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Driver" Width="*"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Start time" Width="*"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Estimated &#x0a;km" Width="*"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Estimated &#x0a;time driving" Width="*"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Estimated &#x0a;fuel consump" Width="*"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Estimated &#x0a;cost" Width="*"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Estimated &#x0a;salary" Width="*"/>
+                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Started from" Width="2.5*" />
+                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="End location" Width="2.5*"/>
+                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Loads" Width="1*"/>
+                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Truck" Width="2*"/>
+                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Driver" Width="2*"/>
+                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Start time" Width="1*"/>
+                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Estimated &#x0a;km" Width="1*"/>
+                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Estimated &#x0a;time driving" Width="1*"/>
+                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Estimated &#x0a;fuel consump" Width="1*"/>
+                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Estimated &#x0a;cost" Width="1*"/>
+                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Estimated &#x0a;salary" Width="1*"/>
+                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="End time" Width="1*" FontWeight="Bold"/>
+                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Actual &#x0a;km" Width="1*" FontWeight="Bold"/>
+                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Actual&#x0a;time driving" Width="1*" FontWeight="Bold"/>
+                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Actual&#x0a;fuel used" Width="1*" FontWeight="Bold"/>
+                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Actual &#x0a;cost" Width="1*" Foreground="Black" FontWeight="Bold"/>
+                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Actual &#x0a;salary" Width="1*" Foreground="#FF040000" FontWeight="Bold" />
+                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Revenue" Width="1*"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
-                                <Label Content="Route actual indicators after final delivery" HorizontalAlignment="Right" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="1" VerticalAlignment="Bottom" FontWeight="SemiBold" Padding="0" Margin="0,10,20,0"/>
-                                <DataGrid HorizontalAlignment="Stretch"  Grid.Row="3" Grid.Column="1" VerticalAlignment="Stretch"  Grid.RowSpan="2" >
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Actual &#x0a;km" Width="*"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Actual &#x0a;time Driving" Width="*"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Actual &#x0a;fuel consump" Width="*"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Actual &#x0a;Cost" Width="*"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Actual &#x0a;Salary" Width="*"/>
-                                    </DataGrid.Columns>
-                                </DataGrid>
-                                <Label Content="Loads within selected route" HorizontalAlignment="Left" Grid.Row="5" Grid.ColumnSpan="2" VerticalAlignment="Bottom" FontWeight="SemiBold" Padding="0" Margin="0,10,0,0"/>
-                                <DataGrid HorizontalAlignment="Stretch"  Grid.Row="6" Grid.ColumnSpan="2" VerticalAlignment="Stretch" Margin="0,0,0,20">
+
+                                <Label Content="Loads within selected route" HorizontalAlignment="Left" Grid.Row="4" Grid.ColumnSpan="2" VerticalAlignment="Bottom" FontWeight="SemiBold" Padding="0" Margin="0,10,0,0"/>
+                                <DataGrid HorizontalAlignment="Stretch"  Grid.Row="5" Grid.ColumnSpan="2" VerticalAlignment="Stretch" Margin="0,0,0,20">
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Start &#x0a;Location" Width="*"/>
                                         <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="End &#x0a;Location" Width="*"/>
@@ -147,63 +144,8 @@
                                         <DataGridTextColumn Header="Comment"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
-                                <TextBlock Text="To mark a route as delivered, fill in the table indicating actual results of the route. For each load, fill in the arrival time (must) and comment (optional)." HorizontalAlignment="Left"  Grid.Row="8" Grid.Column="1" TextWrapping="Wrap"  VerticalAlignment="Center" FontSize="10" />
-                                <Button Content="Mark route as delivered" HorizontalAlignment="Stretch"  Grid.Row="8" VerticalAlignment="Stretch" Margin="10,4,20,0" />
-                               
+                                <Button Content="Mark route as delivered" HorizontalAlignment="Left"  Grid.Row="6" VerticalAlignment="Stretch" Height="30" Width="200" Margin="10,4,20,0" />
 
-                            </Grid>
-                        </TabItem>
-                        <TabItem Header="Add Load" Padding="15,2">
-                            <Grid Background="#FFE5E5E5">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="0.1*"/>
-                                    <ColumnDefinition Width="2*" MaxWidth="140"/>
-                                    <ColumnDefinition Width="8*" MaxWidth="500"/>
-                                    <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition Width="3*"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-                                <Label Content="Add new load to the system" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Top" FontWeight="SemiBold"/>
-                                <Label Content="Client:" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"/>
-                                <Label Content="Content:" HorizontalAlignment="Left" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center"/>
-                                <Label Content="Weight in kg:" HorizontalAlignment="Left" Grid.Row="3" Grid.Column="1"  VerticalAlignment="Center"/>
-                                <Label Content="Deadline:" HorizontalAlignment="Left" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center"/>
-                                <Label Content="Salary:" HorizontalAlignment="Left" Grid.Row="5" Grid.Column="1" VerticalAlignment="Center"/>
-                                <Label Content="Delay fee % per hour:" HorizontalAlignment="Left" Grid.Row="6" Grid.Column="1" VerticalAlignment="Center"/>
-                                <Label Content="Start Address:" HorizontalAlignment="Left" Grid.Row="7" Grid.Column="1" VerticalAlignment="Center"/>
-                                <Label Content="End Address:" HorizontalAlignment="Left" Grid.Row="8" Grid.Column="1" VerticalAlignment="Center"/>
-                                <ComboBox Grid.Column="2" HorizontalAlignment="Stretch"  Grid.Row="1" VerticalAlignment="Stretch" MaxHeight="30"/>
-                                <ComboBox Grid.Column="2" HorizontalAlignment="Stretch"  Grid.Row="7" VerticalAlignment="Stretch" MaxHeight="30" />
-                                <ComboBox Grid.Column="2" HorizontalAlignment="Stretch"  Grid.Row="8" VerticalAlignment="Stretch" MaxHeight="30" />
-                                <TextBox Grid.Column="2" HorizontalAlignment="Stretch"  Grid.Row="2" TextWrapping="Wrap" Padding="5,10,0,0" TextAlignment="Left" Text="your content" VerticalAlignment="Stretch" MaxHeight="30" />
-                                <DatePicker HorizontalAlignment="Left"  Grid.Row="4" Grid.Column="2" VerticalAlignment="Stretch" MaxHeight="30"  Width="150"/>
-                                <TextBox Grid.Column="2" HorizontalAlignment="Stretch"  Grid.Row="3" TextWrapping="Wrap" Padding="5,10,0,0" TextAlignment="Left" Text="00000.000" VerticalAlignment="Stretch" MaxHeight="30" />
-                                <TextBox Grid.Column="2" HorizontalAlignment="Stretch"  Grid.Row="5" TextWrapping="Wrap" Padding="5,10,0,0" TextAlignment="Left" Text="0000.00" VerticalAlignment="Stretch" MaxHeight="30" />
-                                <TextBox Grid.Column="2" HorizontalAlignment="Stretch"  Grid.Row="6" TextWrapping="Wrap" Padding="5,10,0,0" TextAlignment="Left" Text="000" VerticalAlignment="Stretch" MaxHeight="30" />
-                                <Button Name="LoadsAddClient" Content="Add new client" Grid.Column="4" HorizontalAlignment="Stretch"  Grid.Row="1" Grid.RowSpan="1" VerticalAlignment="Stretch" MaxHeight="30" Click="LoadsAddClient_Click"/>
-                                <Button Name="LoadsAddStartAdd" Content="Add new start address" Grid.Column="4" HorizontalAlignment="Stretch"  Grid.Row="7" Grid.RowSpan="1" VerticalAlignment="Stretch" MaxHeight="30" Click="LoadsAddStartAdd_Click"/>
-                                <Button Name="LoadsAddEndAdd" Content="Add new end address" Grid.Column="4" HorizontalAlignment="Stretch"  Grid.Row="8" Grid.RowSpan="1" VerticalAlignment="Stretch" MaxHeight="30" Click="LoadsAddEndAdd_Click"/>
-                                <Label Content="OR" HorizontalAlignment="Center" Grid.Row="7" Grid.Column="3" VerticalAlignment="Center"/>
-                                <Label Content="OR" HorizontalAlignment="Center" Grid.Row="8" Grid.Column="3" VerticalAlignment="Center"/>
-                                <Label Content="OR" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="3" VerticalAlignment="Center"/>
-                                <Button Content="Add new load to the sytem" Grid.Column="2"  HorizontalAlignment="Stretch"  Grid.Row="11"  VerticalAlignment="Stretch" />
 
                             </Grid>
                         </TabItem>
@@ -211,17 +153,18 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Trucks" Padding="20,5">
-                <Grid Background="#FFE5E5E5">
+
+                <Grid Background="#FFE5E5E5" Margin="10">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="184*"/>
-                        <ColumnDefinition Width="330*"/>
-                        <ColumnDefinition Width="428*"/>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="2*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="5*"/>
-                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="auto"/>
                         <RowDefinition Height="1*"/>
                         <RowDefinition Height="4.5*" MaxHeight="240"/>
                     </Grid.RowDefinitions>
@@ -246,11 +189,11 @@
                             <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Length M" Width="*"/>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <StackPanel HorizontalAlignment="Stretch" Grid.Row="4" Grid.RowSpan="1" VerticalAlignment="Stretch" Orientation="Horizontal" Grid.ColumnSpan="3" Margin="0,0,427.8,0.4">
+                    <StackPanel HorizontalAlignment="Stretch" Grid.Row="4" Grid.RowSpan="1" VerticalAlignment="Stretch" Orientation="Horizontal" Grid.ColumnSpan="1" Grid.Column="0" >
                         <Label Content="Maintenance schedule of truck: " HorizontalAlignment="Left" VerticalAlignment="Bottom" Padding="0" FontWeight="SemiBold"/>
                         <Label Content="#licenceplate" HorizontalAlignment="Left" VerticalAlignment="Bottom"  Padding="10,0"/>
                     </StackPanel>
-                    <DataGrid HorizontalAlignment="Stretch"  Grid.Row="5" VerticalAlignment="Stretch"  Grid.ColumnSpan="2" Margin="0,0,20,0">
+                    <DataGrid HorizontalAlignment="Stretch"  Grid.Row="5" VerticalAlignment="Stretch"  Grid.Column="0" Margin="0,0,20,0">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Action Performed" Width="*"/>
                             <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Driver" Width="*"/>
@@ -258,17 +201,16 @@
                             <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Cost" Width="*"/>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <Label Content="Add service for selected truck:" Grid.Column="2" HorizontalAlignment="Left" Grid.Row="4" VerticalAlignment="Bottom" Margin="10,0" Padding="5,0" FontWeight="SemiBold" />
-                    <Grid Grid.Column="2" HorizontalAlignment="Stretch"  Grid.Row="5" VerticalAlignment="Stretch" Grid.RowSpan="2" >
+                    <Label Content="Add service for selected truck:" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="4" VerticalAlignment="Bottom" Margin="10,0" Padding="5,0" FontWeight="SemiBold" />
+                    <Grid Grid.Column="1" HorizontalAlignment="Stretch"  Grid.Row="5" VerticalAlignment="Stretch" Grid.RowSpan="2" Margin="10">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition/>
                             <RowDefinition/>
-                            <RowDefinition/>
+                            <RowDefinition />
                             <RowDefinition/>
                             <RowDefinition/>
                             <RowDefinition/>
@@ -283,15 +225,16 @@
                         <TextBox Grid.Column="1" HorizontalAlignment="Stretch"  Grid.Row="3" VerticalAlignment="Stretch" MaxHeight="30" />
                         <Button Content="Add service maintenance" Grid.Column="1" HorizontalAlignment="Stretch"  Grid.Row="5" VerticalAlignment="Stretch" MaxHeight="30"/>
                     </Grid>
-                    <Button Content="Delete selected trucks" Grid.Column="2" HorizontalAlignment="Right" Grid.Row="3" VerticalAlignment="Top" Width="200" Height="30"/>
-
-
+                    <Label Content="Assign new driver:" Grid.Column="2" Grid.Row="4" FontWeight="SemiBold" VerticalAlignment="Bottom" Padding="0"/>
+                    <ComboBox Grid.Column="2" Grid.Row="5" HorizontalAlignment="Stretch" Height="30" Margin="10" VerticalAlignment="Top"/>
+                    <Button Content="Delete selected trucks" Grid.Column="2" HorizontalAlignment="Right" Grid.Row="3" VerticalAlignment="Top" Margin="10" Width="200" Height="30"/>
+                    <Button Name="TrucksAddNew" Click="TrucksAddNew_Click" Content="Add new truck" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Grid.Row="3" VerticalAlignment="Top" Margin="10" Width="200" Height="30"/>
                 </Grid>
             </TabItem>
-            
 
-            <TabItem Header="Drivers" Padding="20,5">
-                <Grid Background="#FFE5E5E5">
+
+            <TabItem Header="Drivers" Padding="20,5" >
+                <Grid Background="#FFE5E5E5" Margin="10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
@@ -300,7 +243,6 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition />
                         <RowDefinition Height="auto"/>
-                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0" HorizontalAlignment="Stretch" Orientation="Horizontal">
                         <RadioButton Content="All drivers" Margin="10,10"/>
@@ -309,7 +251,7 @@
 
                     </StackPanel>
 
-                    <DataGrid HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Stretch" Grid.ColumnSpan="2" Grid.RowSpan="1">
+                    <DataGrid HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Stretch" Grid.ColumnSpan="2" Grid.RowSpan="1" Margin="5,5,5,25">
                         <DataGrid.Columns>
                             <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Selected" Width="auto"/>
                             <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="First Name" Width="*"/>
@@ -320,39 +262,13 @@
                             <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Available" />
                         </DataGrid.Columns>
                     </DataGrid>
-                    <Label Content="Add new driver" HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Bottom" Padding="2,20,0,5"  FontWeight="SemiBold"/>
                     <Button Content="Delete selected drivers"  HorizontalAlignment="Right" Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Width="200" Height="30"/>
-                    <Grid HorizontalAlignment="Stretch"  Grid.Row="3" VerticalAlignment="Stretch" MaxHeight="250">
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="0.1*"/>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="5*"/>
-                        </Grid.ColumnDefinitions>
-                        <Label Content="First Name:" Grid.Row="0" VerticalAlignment="Center" Grid.Column="1" />
-                        <Label Content="Last Name:" Grid.Row="1" VerticalAlignment="Center" Grid.Column="1" />
-                        <Label Content="Date of birth:" Grid.Row="2" VerticalAlignment="Center" Grid.Column="1" />
-                        <Label Content="Phone:" Grid.Row="3" VerticalAlignment="Center" Grid.Column="1" />
-                        <Label Content="Email:" Grid.Row="4" VerticalAlignment="Center" Grid.Column="1" />
-                        <TextBox Grid.Row="0" Grid.Column="2" VerticalAlignment="Stretch" MaxHeight="30"/>
-                        <TextBox Grid.Row="1" Grid.Column="2" VerticalAlignment="Stretch" MaxHeight="30" />
-                        <DatePicker Grid.Row="2" Grid.Column="2" VerticalAlignment="Stretch" MaxHeight="30" />
-                        <TextBox Grid.Row="3" Grid.Column="2" VerticalAlignment="Stretch" MaxHeight="30" />
-                        <TextBox Grid.Row="4" Grid.Column="2" VerticalAlignment="Stretch" MaxHeight="30" />
-                        <Button Content="Add new driver" Grid.Column="2" Grid.Row="6" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MaxHeight="30" />
-                    </Grid>
+                    <Button Name="DriversAddNew" Click="DriversAddNew_Click" Content="Add new driver"  HorizontalAlignment="Left" Grid.Row="2" Grid.Column="0" VerticalAlignment="Top" Width="250" Height="30"/>
+
                 </Grid>
             </TabItem>
-            <TabItem Header="Clients" Padding="20,5">
-                <Grid Background="#FFE5E5E5">
+            <TabItem Header="Clients" Padding="20,5" >
+                <Grid Background="#FFE5E5E5" Margin="10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
@@ -361,7 +277,6 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition />
                         <RowDefinition Height="auto"/>
-                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0" HorizontalAlignment="Stretch" Orientation="Horizontal">
                         <RadioButton Content="All clients" Margin="10,10"/>
@@ -369,7 +284,7 @@
                         <RadioButton Content="Past clients" Margin="10,10"/>
                     </StackPanel>
 
-                    <DataGrid HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Stretch" Grid.ColumnSpan="2" Grid.RowSpan="1">
+                    <DataGrid HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Stretch" Grid.ColumnSpan="2" Grid.RowSpan="1" Margin="5,5,5,25">
                         <DataGrid.Columns>
                             <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Selected" Width="auto"/>
                             <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="First Name" Width="*"/>
@@ -380,86 +295,37 @@
                             <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Company" />
                         </DataGrid.Columns>
                     </DataGrid>
-                    <Label Content="Add new client" HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Bottom" Padding="2,20,0,5"  FontWeight="SemiBold"/>
+                    <Button Name ="ClientsAddNew" Click="ClientsAddNew_Click" Content="Add new client" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Stretch" MaxHeight="30" Width="250" />
+
                     <Button Content="Delete selected clients"  HorizontalAlignment="Right" Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Width="200" Height="30"/>
-                    <Grid HorizontalAlignment="Stretch"  Grid.Row="3" VerticalAlignment="Stretch" MaxHeight="250">
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="0.1*"/>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="5*"/>
-                        </Grid.ColumnDefinitions>
-                        <Label Content="First Name:" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Stretch" Grid.Column="1"/>
-                        <Label Content="Last Name:" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" Grid.Column="1"/>
-                        <Label Content="Date of birth:" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Stretch" Grid.Column="1"/>
-                        <Label Content="Phone:" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Stretch" Grid.Column="1"/>
-                        <Label Content="Email:" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Stretch" Grid.Column="1"/>
-                        <TextBox Grid.Row="0" Grid.Column="2" VerticalAlignment="Stretch" MaxHeight="30" HorizontalAlignment="Stretch" />
-                        <TextBox Grid.Row="1" Grid.Column="2" VerticalAlignment="Stretch" MaxHeight="30" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" />
-                        <DatePicker Grid.Row="2" Grid.Column="2" VerticalAlignment="Stretch" MaxHeight="30" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" />
-                        <TextBox Grid.Row="3" Grid.Column="2" VerticalAlignment="Stretch" MaxHeight="30" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" />
-                        <TextBox Grid.Row="4" Grid.Column="2" VerticalAlignment="Stretch" MaxHeight="30" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" />
-                        
-                    </Grid>
-                    <Grid HorizontalAlignment="Stretch"  Grid.Row="3" Grid.Column="1" VerticalAlignment="Stretch" MaxHeight="250">
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="0.2*"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="5*"/>
-                        </Grid.ColumnDefinitions>
-                        <Label Content="Country:" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" />
-                        <Label Content="City:" Grid.Row="1" Grid.Column="1"  VerticalAlignment="Center" />
-                        <Label Content="Street:" Grid.Row="2" Grid.Column="1"  VerticalAlignment="Center" />
-                        <Label Content="House nr:" Grid.Row="3" Grid.Column="1"  VerticalAlignment="Center" />
-                        <Label Content="ZIP code:" Grid.Row="4" Grid.Column="1"  VerticalAlignment="Center" />
-                        <TextBox Grid.Row="0" Grid.Column="3" VerticalAlignment="Stretch" MaxHeight="30" />
-                        <TextBox Grid.Row="1" Grid.Column="3" VerticalAlignment="Stretch" MaxHeight="30" />
-                        <TextBox Grid.Row="2" Grid.Column="3" VerticalAlignment="Stretch" MaxHeight="30" />
-                        <TextBox Grid.Row="3" Grid.Column="3" VerticalAlignment="Stretch" MaxHeight="30" />
-                        <TextBox Grid.Row="4" Grid.Column="3" VerticalAlignment="Stretch" MaxHeight="30" />
-                        <Button Content="Add new client" Grid.Column="2" Grid.Row="6" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MaxHeight="30" />
-                    </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="Report" Padding="20,5">
+            <TabItem Header="Report" Padding="20,5" Margin="-6,0,1.2,-2.4">
                 <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25*"/>
+                        <ColumnDefinition Width="832*"/>
+                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    
-                    <StackPanel HorizontalAlignment="Stretch" Grid.Row="0"  VerticalAlignment="Stretch" Orientation="Horizontal">
-                        <Label Content="Time period for report:" HorizontalAlignment="Left"  Padding="0" VerticalAlignment="Bottom" Margin="20,4,10,0"/>
-                        <Label Content="From:" HorizontalAlignment="Left"  Padding="0" VerticalAlignment="Bottom" Margin="20,4,0,0"/>
+
+                    <StackPanel HorizontalAlignment="Stretch" Grid.Row="0"  VerticalAlignment="Stretch" Orientation="Horizontal" Margin="10,10,9.8,10" Grid.ColumnSpan="2">
+                        <Label Content="Time period for report:" HorizontalAlignment="Left"  Padding="0" VerticalAlignment="Center" Margin="20,4,10,0"/>
+                        <Label Content="From:" HorizontalAlignment="Left"  Padding="0" VerticalAlignment="Center" Margin="20,4,0,0"/>
                         <DatePicker Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" FirstDayOfWeek="Monday"  Width="auto" Margin="10,4,10,0"/>
-                        <Label Content="To:" HorizontalAlignment="Left"  Padding="0" VerticalAlignment="Bottom" Margin="20,4,0,0"/>
+                        <Label Content="To:" HorizontalAlignment="Left"  Padding="0" VerticalAlignment="Center" Margin="20,4,0,0"/>
                         <DatePicker Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" FirstDayOfWeek="Monday"  Width="auto" Margin="10,4,10,0" />
                         <Button Content="Generate financial report" HorizontalAlignment="Stretch"  VerticalAlignment="Bottom" Margin="30,4,10,0" Padding="10,3"/>
                         <Button Content="Download" HorizontalAlignment="Stretch"  VerticalAlignment="Bottom" Margin="30,4,10,0" Padding="10,3"/>
                     </StackPanel>
-                    <TextBox Grid.Row="1" Text="TextBox" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="20"/>
+                    <TextBox Grid.Row="1" Text="Your report displayed" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="20,20,19.8,20" Grid.ColumnSpan="2"/>
 
                 </Grid>
             </TabItem>
             <TabItem Header="Profile" Padding="20,5">
-                <Grid Background="#FFE5E5E5">
+                <Grid Background="#FFE5E5E5" Margin="10">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="1*" MaxHeight="30"/>

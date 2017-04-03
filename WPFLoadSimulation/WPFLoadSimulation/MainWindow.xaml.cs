@@ -45,22 +45,34 @@ namespace WPFLoadSimulation
             ProfileChangeInfo.Visibility = Visibility.Visible;
         }
 
-        private void LoadsAddClient_Click(object sender, RoutedEventArgs e)
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void DriversAddNew_Click(object sender, RoutedEventArgs e)
+        {
+            NewDriverWindow addnewdriver = new NewDriverWindow();
+            addnewdriver.Show();
+        }
+
+        private void ClientsAddNew_Click(object sender, RoutedEventArgs e)
         {
             NewClientWindow newclient = new NewClientWindow();
             newclient.Show();
         }
 
-        private void LoadsAddStartAdd_Click(object sender, RoutedEventArgs e)
+        private void LoadsAddNewLoad_Click(object sender, RoutedEventArgs e)
         {
-            AddressWindow newstartaddress = new AddressWindow();
-            newstartaddress.Show();
+            NewLoadWindow newload = new NewLoadWindow();
+            newload.Show();
         }
 
-        private void LoadsAddEndAdd_Click(object sender, RoutedEventArgs e)
+        private void TrucksAddNew_Click(object sender, RoutedEventArgs e)
         {
-            AddressWindow newendaddress = new AddressWindow();
-            newendaddress.Show();
+            NewTruckWindow newtruck = new NewTruckWindow();
+            newtruck.Show();
         }
     }
 }
