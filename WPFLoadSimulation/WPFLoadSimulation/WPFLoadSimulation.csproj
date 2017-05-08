@@ -68,6 +68,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Driver.cs" />
+    <Compile Include="DriverController.cs" />
+    <Compile Include="MaintenanceAction.cs" />
+    <Compile Include="Truck.cs" />
+    <Compile Include="TruckController.cs" />
+    <Compile Include="TruckMaintenance.cs" />
+    <Compile Include="User.cs" />
     <Page Include="AddressWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -84,9 +91,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="Address.cs" />
     <Compile Include="AddressWindow.xaml.cs">
       <DependentUpon>AddressWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Company.cs" />
     <Compile Include="LogInWindow.xaml.cs">
       <DependentUpon>LogInWindow.xaml</DependentUpon>
     </Compile>
