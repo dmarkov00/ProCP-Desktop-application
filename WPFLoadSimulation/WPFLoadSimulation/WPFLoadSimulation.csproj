@@ -68,9 +68,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Client.cs" />
+    <Compile Include="ClientController.cs" />
     <Compile Include="Driver.cs" />
     <Compile Include="DriverController.cs" />
+    <Compile Include="Load.cs" />
+    <Compile Include="LoadController.cs" />
+    <Compile Include="LoadState.cs" />
     <Compile Include="MaintenanceAction.cs" />
+    <Compile Include="Route.cs" />
+    <Compile Include="RouteController.cs" />
     <Compile Include="Truck.cs" />
     <Compile Include="TruckController.cs" />
     <Compile Include="TruckMaintenance.cs" />

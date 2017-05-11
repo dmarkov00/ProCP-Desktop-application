@@ -6,13 +6,25 @@ using System.Threading.Tasks;
 
 namespace WPFLoadSimulation
 {
-    class User
+    class Client
     {
+        //private string companyName;
         private string firstName;
         private string lastName;
-        private string email;
         private string phone;
-        private Company company;
+        private string email;
+        private Address address;
+        private List<Load> loads;
+
+        public Client(string fname, string lname, string phone, string email, Address address) 
+        {
+            this.firstName = fname;
+            this.lastName = lname;
+            this.phone = phone;
+            this.email = email;
+            this.address = address;
+            loads = new List<Load>();
+        }
 
         public string FirstName
         {
@@ -20,7 +32,6 @@ namespace WPFLoadSimulation
             {
                 return firstName;
             }
-
             set
             {
                 firstName = value;
@@ -33,23 +44,9 @@ namespace WPFLoadSimulation
             {
                 return lastName;
             }
-
             set
             {
                 lastName = value;
-            }
-        }
-
-        public string Email
-        {
-            get
-            {
-                return email;
-            }
-
-            set
-            {
-                email = value;
             }
         }
 
@@ -59,34 +56,35 @@ namespace WPFLoadSimulation
             {
                 return phone;
             }
-
             set
             {
                 phone = value;
             }
         }
 
-        
-        internal Company Company
+        public string Email
         {
             get
             {
-                return company;
+                return email;
             }
-
             set
             {
-                company = value;
+                email = value;
             }
         }
 
-        public User(string firstName, string lastName, string email, string phone, Company company)
+        public Address Address
         {
-            this.firstName = firstName;
-            this.lastName = lastName;
-            this.email = email;
-            this.phone = phone;
-            this.company = company;
+            get
+            {
+                return address;
+            }
+            set
+            {
+                address = value;
+            }
         }
+
     }
 }
