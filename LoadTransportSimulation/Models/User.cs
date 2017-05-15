@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using Common;
 namespace Models
 {
-    class User
+    public class User
     {
         private string firstName;
         private string lastName;
         private string email;
         private string phone;
+        private string password;
         private Company company;
 
         public string FirstName
@@ -79,6 +75,8 @@ namespace Models
                 company = value;
             }
         }
+
+        public string Password { get => password; set => password = value; }
 
         public User(string firstName, string lastName, string email, string phone, Company company)
         {

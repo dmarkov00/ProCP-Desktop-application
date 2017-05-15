@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ApiHttpClient
 {
-    public class Class1
+    interface IApiCRUD
     {
     }
 }

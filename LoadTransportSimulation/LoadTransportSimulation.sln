@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientGUI", "ClientGUI\Clie
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiHttpClient", "ApiHttpClient\ApiHttpClient.csproj", "{1DFD4A9A-D2C1-40D6-BFAF-B9C1D88DC755}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2D81138B-5308-443B-B123-FB53C2E375D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiHttpClient.Tests", "ApiHttpClient.Tests\ApiHttpClient.Tests.csproj", "{7DC217A1-FCA2-4753-AE2A-AD30E027E86E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,8 +43,15 @@ Global
 		{1DFD4A9A-D2C1-40D6-BFAF-B9C1D88DC755}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1DFD4A9A-D2C1-40D6-BFAF-B9C1D88DC755}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1DFD4A9A-D2C1-40D6-BFAF-B9C1D88DC755}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DC217A1-FCA2-4753-AE2A-AD30E027E86E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DC217A1-FCA2-4753-AE2A-AD30E027E86E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DC217A1-FCA2-4753-AE2A-AD30E027E86E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DC217A1-FCA2-4753-AE2A-AD30E027E86E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7DC217A1-FCA2-4753-AE2A-AD30E027E86E} = {2D81138B-5308-443B-B123-FB53C2E375D8}
 	EndGlobalSection
 EndGlobal

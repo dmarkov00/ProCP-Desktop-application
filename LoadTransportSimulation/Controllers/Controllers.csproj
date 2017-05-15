@@ -42,11 +42,16 @@
   <ItemGroup>
     <Compile Include="ClientController.cs" />
     <Compile Include="DriverController.cs" />
+    <Compile Include="LoadController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RouteController.cs" />
     <Compile Include="TruckController.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{cd31907c-9b91-4af5-a576-1e75d2ec7a0f}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Models\Models.csproj">
       <Project>{9cc65c70-5773-4836-b90c-70f9a7eac5e0}</Project>
       <Name>Models</Name>
