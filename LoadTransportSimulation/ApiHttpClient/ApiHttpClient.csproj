@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Dispatcher.cs" />
     <Compile Include="Authentication.cs" />
+    <Compile Include="IApiCRUD.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

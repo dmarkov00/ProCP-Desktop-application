@@ -1,40 +1,25 @@
 ﻿using Common;
+using Newtonsoft.Json;
+
 namespace Models
 {
     public class User
     {
-        private string firstName;
-        private string lastName;
+
+        public User(string name, string email, string phone, string token)
+        {
+            this.name = name;
+            this.email = email;
+            this.phone = phone;
+            this.token = token;
+        }
+        private string name;
         private string email;
         private string phone;
         private string password;
         private Company company;
+        private string token;
 
-        public string FirstName
-        {
-            get
-            {
-                return firstName;
-            }
-
-            set
-            {
-                firstName = value;
-            }
-        }
-
-        public string LastName
-        {
-            get
-            {
-                return lastName;
-            }
-
-            set
-            {
-                lastName = value;
-            }
-        }
 
         public string Email
         {
@@ -77,14 +62,10 @@ namespace Models
         }
 
         public string Password { get => password; set => password = value; }
+        public string Name { get => name; set => name = value; }
+        [JsonProperty("api_token")]
+        public string Token { get => token; set => token = value; }
 
-        public User(string firstName, string lastName, string email, string phone, Company company)
-        {
-            this.firstName = firstName;
-            this.lastName = lastName;
-            this.email = email;
-            this.phone = phone;
-            this.company = company;
-        }
+
     }
 }
