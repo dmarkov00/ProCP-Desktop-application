@@ -22,6 +22,7 @@ namespace ApiHttpClient
             // Converting the form data from c# object to json and setting it in the content to be sent
             HttpContent postContent = new StringContent(JsonConvert.SerializeObject(loginData));
 
+            // Attaching headers
             postContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
             // Making post request to /login with the converted to json data and attached headers
