@@ -61,6 +61,10 @@
       <Project>{1dfd4a9a-d2c1-40d6-bfaf-b9c1d88dc755}</Project>
       <Name>ApiHttpClient</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{cd31907c-9b91-4af5-a576-1e75d2ec7a0f}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Models\Models.csproj">
       <Project>{9cc65c70-5773-4836-b90c-70f9a7eac5e0}</Project>
       <Name>Models</Name>

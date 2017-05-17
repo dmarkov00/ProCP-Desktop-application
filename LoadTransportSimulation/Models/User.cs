@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Models
 {
-    public class User
+    public class User: IApiCallResult
     {
 
         public User(string name, string email, string phone, string token)
