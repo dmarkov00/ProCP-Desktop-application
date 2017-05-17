@@ -17,8 +17,5 @@ namespace ApiHttpClient
         {
             return await Authentication.LoginUserAsync(httpClient, loginData);            
         }
-        public static T GetQueryString<T>() {
-            return (T)Convert.ChangeType("re", typeof(T));
-        }
     }
 }

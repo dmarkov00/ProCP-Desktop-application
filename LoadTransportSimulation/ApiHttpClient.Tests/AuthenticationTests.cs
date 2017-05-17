@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Models;
 using Common.Models;
+using System.Collections.Generic;
 
 namespace ApiHttpClient.Tests
 {
@@ -9,7 +10,7 @@ namespace ApiHttpClient.Tests
     public class AuthenticationTests
     {
         private Dispatcher dispatcher = new Dispatcher();
-
+        private List<string> errorMessages;
         [Test]
         public async Task Login_With_User_Sucessfully()
         {
@@ -31,11 +32,16 @@ namespace ApiHttpClient.Tests
             // Data we usually send from the login form
             var emptyloginData = new { };
 
-            ApiErrorResult errorResult = new ApiErrorResult("422","Unrea");
+            errorMessages = new List<string>();
+            errorMessages.Add("The email field is required.");
+            errorMessages.Add("The password field is required.");
 
-            ApiErrorResult user = (ApiErrorResult)await dispatcher.LoginUser(emptyloginData);
+            ApiErrorResult expectedErrorResult = new ApiErrorResult("422", "Unprocessable Entity");
+            expectedErrorResult.PopulateErrorMessages(errorMessages);
 
-            //errorResult.ErrorMessages.Add();
+            ApiErrorResult actualErrorResult = (ApiErrorResult)await dispatcher.LoginUser(emptyloginData);
+
+            Assert.AreEqual(expectedErrorResult, actualErrorResult);
         }
     }
 }
