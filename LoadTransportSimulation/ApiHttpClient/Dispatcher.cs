@@ -2,6 +2,7 @@
 using System.Net.Http;
 using Models;
 using System.Threading.Tasks;
+using Common;
 
 namespace ApiHttpClient
 {
@@ -13,9 +14,10 @@ namespace ApiHttpClient
             httpClient = new HttpClient();
             httpClient.BaseAddress = new Uri("http://127.0.0.1:8000/api/");
         }
-        public async Task<Object> LoginUser(Object loginData)
+        public async Task<IApiCallResult> LoginUser(Object loginData)
         {
             return await Authentication.LoginUserAsync(httpClient, loginData);            
         }
+
     }
 }
