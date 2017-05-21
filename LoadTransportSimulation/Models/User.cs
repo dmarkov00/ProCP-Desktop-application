@@ -8,7 +8,7 @@ namespace Models
 
         public User(string name, string email, string phone, string token)
         {
-            this.name = name;
+            this.Name = name;
             this.email = email;
             this.phone = phone;
             this.token = token;
@@ -19,7 +19,6 @@ namespace Models
         private string password;
         private Company company;
         private string token;
-
 
         public string Email
         {
@@ -60,11 +59,48 @@ namespace Models
                 company = value;
             }
         }
-
-        public string Password { get => password; set => password = value; }
-        public string Name { get => name; set => name = value; }
         [JsonProperty("api_token")]
-        public string Token { get => token; set => token = value; }
+        public string Token
+        {
+            get
+            {
+                return token;
+            }
+
+            set
+            {
+                token = value;
+            }
+        }
+
+        public string Password
+        {
+            get
+            {
+                return password;
+            }
+
+            set
+            {
+                password = value;
+            }
+        }
+
+        public string Name
+        {
+            get
+            {
+                return name;
+            }
+
+            set
+            {
+                name = value;
+            }
+        }
+
+
+
 
 
     }
