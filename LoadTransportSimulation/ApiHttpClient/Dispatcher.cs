@@ -6,7 +6,7 @@ using Common;
 
 namespace ApiHttpClient
 {
-    public  class Dispatcher
+    public class Dispatcher
     {
         private static HttpClient httpClient;
         public Dispatcher()
