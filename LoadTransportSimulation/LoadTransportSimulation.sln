@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26430.6
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{9CC65C70-5773-4836-B90C-70F9A7EAC5E0}"
 EndProject
@@ -16,6 +16,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2D81138B-5308-443B-B123-FB53C2E375D8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiHttpClient.Tests", "ApiHttpClient.Tests\ApiHttpClient.Tests.csproj", "{7DC217A1-FCA2-4753-AE2A-AD30E027E86E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Singleton.Tests", "Singleton.Tests\Singleton.Tests.csproj", "{8EDF4429-251A-416D-BB68-93F227191BCF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,11 +49,16 @@ Global
 		{7DC217A1-FCA2-4753-AE2A-AD30E027E86E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DC217A1-FCA2-4753-AE2A-AD30E027E86E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7DC217A1-FCA2-4753-AE2A-AD30E027E86E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EDF4429-251A-416D-BB68-93F227191BCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EDF4429-251A-416D-BB68-93F227191BCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EDF4429-251A-416D-BB68-93F227191BCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EDF4429-251A-416D-BB68-93F227191BCF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7DC217A1-FCA2-4753-AE2A-AD30E027E86E} = {2D81138B-5308-443B-B123-FB53C2E375D8}
+		{8EDF4429-251A-416D-BB68-93F227191BCF} = {2D81138B-5308-443B-B123-FB53C2E375D8}
 	EndGlobalSection
 EndGlobal
