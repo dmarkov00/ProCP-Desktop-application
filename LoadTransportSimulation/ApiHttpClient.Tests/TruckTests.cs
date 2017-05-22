@@ -18,12 +18,21 @@ namespace ApiHttpClient.Tests
         }
 
         [Test]
-        public async Task TestSeeTrucks()
+        public async Task Test_See_Trucks()
         {
             var client = new ApiHttpClient.Dispatcher();
             IEnumerable<IApiCallResult> trucks = await client.GetMany<Truck>("trucks");
             List<Truck> targetList = new List<Truck>(trucks.Cast<Truck>());
             Assert.AreEqual(trucks.Count(),11);
+        }
+
+        [Test]
+        public async Task Test_See_Truck_By_ID()
+        {
+            var client = new ApiHttpClient.Dispatcher();
+            IApiCallResult truck = await client.Get<Truck>("trucks", "1");
+            Truck kamion = (Truck)truck;
+            Assert.AreEqual(kamion.Id, "1");
         }
     }
 }
