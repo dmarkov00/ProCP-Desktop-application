@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Common;
+using Newtonsoft.Json;
 
 namespace Models
 {
-   public class Driver
+    public class Driver : IApiCallResult
     {
         private string id;
         private string firstName;
@@ -20,6 +18,7 @@ namespace Models
         private bool isBusy;
         private bool isInCompany;
 
+        [JsonProperty("fName")]
         public string FirstName
         {
             get
@@ -33,6 +32,7 @@ namespace Models
             }
         }
 
+        [JsonProperty("lName")]
         public string LastName
         {
             get
@@ -58,7 +58,7 @@ namespace Models
                 birthDate = value;
             }
         }
-
+        [JsonProperty("phoneNbr")]
         public string Phone
         {
             get

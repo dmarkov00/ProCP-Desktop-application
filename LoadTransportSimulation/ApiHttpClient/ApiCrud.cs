@@ -14,6 +14,7 @@ namespace ApiHttpClient
         public ApiCRUD(HttpClient httpClient)
         {
             this.httpClient = httpClient;
+            httpClient.DefaultRequestHeaders.Add("api_token", GlobalConstants.testToken);
         }
 
         private HttpClient httpClient;
@@ -23,18 +24,18 @@ namespace ApiHttpClient
             throw new NotImplementedException();
         }
 
-        public async Task<IApiCallResult> GetAsync(string requestUri)
+        public async Task<IApiCallResult> GetAsync<T>(string requestUri, string id)
         {
-            HttpResponseMessage response = await httpClient.GetAsync(requestUri);
+            HttpResponseMessage response = await httpClient.GetAsync(requestUri  + "/" + id);            
 
             if (response.IsSuccessStatusCode)
             {
                 // Extracting the json string response
                 result = await response.Content.ReadAsStringAsync();
                 // Convert from json to IApiCallResult object
-                IApiCallResult modelDeserializedFromJson = JsonConvert.DeserializeObject<IApiCallResult>(result);
+                T modelDeserializedFromJson = JsonConvert.DeserializeObject<T>(result);
 
-                return modelDeserializedFromJson;
+                return (IApiCallResult)modelDeserializedFromJson;
             }
             else
             {
@@ -44,10 +45,26 @@ namespace ApiHttpClient
             }           
         }
 
-        public Task<List<IApiCallResult>> GetManyAsync(string requestUri)
-        {
-            throw new NotImplementedException();
-        }
+        //public async Task<List<IApiCallResult>> GetManyAsync(string requestUri)
+        //{
+        //    HttpResponseMessage response = await httpClient.GetAsync(requestUri);
+
+        //    if (response.IsSuccessStatusCode)
+        //    {
+        //        // Extracting the json string response
+        //        result = await response.Content.ReadAsStringAsync();
+        //        // Convert from json to IApiCallResult object
+        //        List<IApiCallResult> modelDeserializedFromJson = JsonConvert.DeserializeObject<List<IApiCallResult>>(result);
+
+        //        return modelDeserializedFromJson;
+        //    }
+        //    else
+        //    {
+        //        //ApiErrorResult apiErrorResult = await response.ConvertToApiErrorResult();
+
+        //        //return apiErrorResult;
+        //    }
+        //}
 
         public Task<IApiCallResult> PostAsync<T>(string requestUri, T modelData)
         {
