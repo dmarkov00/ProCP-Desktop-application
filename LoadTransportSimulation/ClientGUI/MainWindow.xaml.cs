@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Common;
+using Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +22,11 @@ namespace WPFLoadSimulation
     /// </summary>
     public partial class MainWindow : Window
     {
+        ApiHttpClient.Dispatcher client;
         public MainWindow()
         {
             InitializeComponent();
+            client = new ApiHttpClient.Dispatcher();
         }
 
         private void ProfileChangeInfo_Click(object sender, RoutedEventArgs e)
@@ -73,6 +77,20 @@ namespace WPFLoadSimulation
         {
             NewTruckWindow newtruck = new NewTruckWindow();
             newtruck.Show();
+        }
+
+        private async void RadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            IEnumerable<IApiCallResult> trucks = await client.GetMany<Truck>("trucks");
+            List<Truck> targetList = new List<Truck>(trucks.Cast<Truck>());
+            return;
+        }
+
+        private async void RadioButton_Checked_1(object sender, RoutedEventArgs e)
+        {
+            IEnumerable<IApiCallResult> drivers = await client.GetMany<Driver>("drivers");
+            List<Driver> targetList = new List<Driver>(drivers.Cast<Driver>());
+            return;
         }
     }
 }

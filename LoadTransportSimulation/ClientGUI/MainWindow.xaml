@@ -169,7 +169,7 @@
                         <RowDefinition Height="4.5*" MaxHeight="240"/>
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0" HorizontalAlignment="Stretch" Orientation="Horizontal" Grid.ColumnSpan="3">
-                        <RadioButton Content="All trucks" Margin="10,10"/>
+                        <RadioButton Content="All trucks" Margin="10,10" Checked="RadioButton_Checked"/>
                         <RadioButton Content="Current trucks" Margin="10,10" />
                         <RadioButton Content="Past trucks" Margin="10,10"/>
                     </StackPanel>
@@ -245,7 +245,7 @@
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0" HorizontalAlignment="Stretch" Orientation="Horizontal">
-                        <RadioButton Content="All drivers" Margin="10,10"/>
+                        <RadioButton Content="All drivers" Margin="10,10" Checked="RadioButton_Checked_1"/>
                         <RadioButton Content="Current drivers" Margin="10,10" />
                         <RadioButton Content="Past drivers" Margin="10,10"/>
 
