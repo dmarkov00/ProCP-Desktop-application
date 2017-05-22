@@ -6,6 +6,7 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using Common.Models;
 using Common.Extensions;
+using System.Linq;
 
 namespace ApiHttpClient
 {
@@ -26,7 +27,7 @@ namespace ApiHttpClient
 
         public async Task<IApiCallResult> GetAsync<T>(string requestUri, string id)
         {
-            HttpResponseMessage response = await httpClient.GetAsync(requestUri  + "/" + id);            
+            HttpResponseMessage response = await httpClient.GetAsync(requestUri + "/" + id);
 
             if (response.IsSuccessStatusCode)
             {
@@ -42,29 +43,31 @@ namespace ApiHttpClient
                 ApiErrorResult apiErrorResult = await response.ConvertToApiErrorResult();
 
                 return apiErrorResult;
-            }           
+            }
         }
 
-        //public async Task<List<IApiCallResult>> GetManyAsync(string requestUri)
-        //{
-        //    HttpResponseMessage response = await httpClient.GetAsync(requestUri);
+        public async Task<IEnumerable<IApiCallResult>> GetManyAsync<T>(string requestUri)
+        {
+            HttpResponseMessage response = await httpClient.GetAsync(requestUri);
 
-        //    if (response.IsSuccessStatusCode)
-        //    {
-        //        // Extracting the json string response
-        //        result = await response.Content.ReadAsStringAsync();
-        //        // Convert from json to IApiCallResult object
-        //        List<IApiCallResult> modelDeserializedFromJson = JsonConvert.DeserializeObject<List<IApiCallResult>>(result);
+            // The method doesn't have error handling
+            //if (response.IsSuccessStatusCode)
+            //{
+                // Extracting the json string response
+                result = await response.Content.ReadAsStringAsync();
+                // Convert from json to IApiCallResult object
+                List<T> modelDeserializedFromJson = JsonConvert.DeserializeObject<List<T>>(result);
 
-        //        return modelDeserializedFromJson;
-        //    }
-        //    else
-        //    {
-        //        //ApiErrorResult apiErrorResult = await response.ConvertToApiErrorResult();
+                IEnumerable<IApiCallResult> modelCastedToCallResult = modelDeserializedFromJson.Cast<IApiCallResult>();
+                return modelCastedToCallResult;
+            //}
+            //else
+            //{
+            //    ApiErrorResult apiErrorResult = await response.ConvertToApiErrorResult();
 
-        //        //return apiErrorResult;
-        //    }
-        //}
+            //    return apiErrorResult;
+            //}
+        }
 
         public Task<IApiCallResult> PostAsync<T>(string requestUri, T modelData)
         {

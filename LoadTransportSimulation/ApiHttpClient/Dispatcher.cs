@@ -4,6 +4,7 @@ using Models;
 using System.Threading.Tasks;
 using Common;
 using System.Net.Http.Headers;
+using System.Collections.Generic;
 
 namespace ApiHttpClient
 {
@@ -29,6 +30,10 @@ namespace ApiHttpClient
         public async Task<IApiCallResult> Get<T>(string requestUri, string id)
         {
             return await apiCRUD.GetAsync<T>(requestUri, id);
+        }
+        public async Task<IEnumerable<IApiCallResult>> GetMany<T>(string requestUri)
+        {
+            return await apiCRUD.GetManyAsync<T>(requestUri);
         }
 
 
