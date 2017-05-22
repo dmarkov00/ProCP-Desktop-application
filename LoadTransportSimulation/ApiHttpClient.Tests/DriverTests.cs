@@ -28,7 +28,7 @@ namespace ApiHttpClient.Tests
 
         
         [Test]
-        public async Task Getting_Driver_Assigned_Successfully()
+        public async Task Getting_Driver_Assigned_To_Truck_Successfully()
         {
             //Driver expectedResult = new Driver("John", "Truck",)
             string token = "6UhcQUtcEuE2HXdUM1crQtV9RQQDI6t5IvWVkWcTTFxbc7rtjXz5Od77cqba";
