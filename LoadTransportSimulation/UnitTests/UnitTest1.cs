@@ -1,6 +1,10 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ClientGUI;
+using System.Collections.Generic;
+using Models;
+using Common;
+using System.Linq;
 
 namespace UnitTests
 {
@@ -17,6 +21,7 @@ namespace UnitTests
             double res = Convert.ToDouble(kmFromBerlinToMoscow);
             Assert.IsTrue(res.Equals(1.818));
         }
+
         [TestMethod]
         public void TestCalculateFuelConsumptionWithGoogleAPI()
         {
