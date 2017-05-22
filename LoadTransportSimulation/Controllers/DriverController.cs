@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Controllers
 {
-    class DriverController
+    public class DriverController
     {
         private List<Driver> drivers;
 

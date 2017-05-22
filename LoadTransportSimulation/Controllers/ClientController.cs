@@ -8,19 +8,19 @@ namespace Controllers
     {
         private List<Client> clients;
 
-        //Singleton implemented
+        /*Singleton implemented
+         * -when you want to use the controller the first time, use ClientController.Create(list);
+         * -afterwards, anywhere in the program, to get the instance, use ClientController.GetInstance();
+         */
         private static volatile ClientController instance;
         private static object syncRoot = new Object();
-
-        public static ClientController getInstance()
+        public static ClientController GetInstance()
         {
             if (instance != null)
                 return instance;
             else
                 throw new Exception("Object not created");
         }
-
-
         public static ClientController Create(List<Client> clients)
         {
             lock (syncRoot)
@@ -31,7 +31,7 @@ namespace Controllers
             return instance;
         }
 
-        public ClientController(List<Client> clients)
+        private ClientController(List<Client> clients)
         {
             this.clients = clients;
         }
