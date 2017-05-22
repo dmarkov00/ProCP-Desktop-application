@@ -58,5 +58,25 @@ namespace ClientGUI
 
             return html;
         }
+
+        public double calculateFuelConsumption(string distance, double consumptionPerHundredKM)
+        {
+            double fuelCons = consumptionPerHundredKM;
+            double dist = 0;
+            var count = distance.Count(x => x == ',');
+            if (Double.TryParse(distance, out dist))
+            {
+                if (count != 0)
+                {
+                    dist = dist * (10 ^ count);
+                }
+                else
+                {
+                    dist = dist / 100;
+                }
+                fuelCons = dist * fuelCons;
+            }
+            return fuelCons;
+        }
     }
 }
