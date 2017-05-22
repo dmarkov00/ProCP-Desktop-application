@@ -69,9 +69,34 @@ namespace ApiHttpClient
             //}
         }
 
-        public Task<IApiCallResult> PostAsync<T>(string requestUri, T modelData)
+        public async Task<IApiCallResult> PostAsync<T>(string requestUri, T modelData)
         {
-            throw new NotImplementedException();
+            // Converting the form data from c# object to json and setting it in the content to be sent
+            HttpContent postContent = new StringContent(JsonConvert.SerializeObject(modelData));
+
+            // Attaching headers
+            postContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+
+            // Making post request to /login with the converted to json data and attached headers
+            HttpResponseMessage response = await httpClient.PostAsync(requestUri, postContent);
+
+            if (response.IsSuccessStatusCode)
+            {
+                // Extracting the json string response
+                result = await response.Content.ReadAsStringAsync();
+
+                // Convert from json to T object
+                T userDeserializedFromJSON = JsonConvert.DeserializeObject<T>(result);
+
+                return (IApiCallResult)userDeserializedFromJSON;
+            }
+            else
+            {
+                // Calling custom extension method that converts HttpResponseMessage to ApiErrorResult
+                ApiErrorResult apiErrorResult = await response.ConvertToApiErrorResult();
+
+                return apiErrorResult;
+            }
         }
 
         public Task<IApiCallResult> PutAsync<T>(string requestUri, T modelData)
