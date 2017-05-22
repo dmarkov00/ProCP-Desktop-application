@@ -142,6 +142,14 @@
       <Project>{1dfd4a9a-d2c1-40d6-bfaf-b9c1d88dc755}</Project>
       <Name>ApiHttpClient</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{CD31907C-9B91-4AF5-A576-1E75D2EC7A0F}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Models\Models.csproj">
+      <Project>{9cc65c70-5773-4836-b90c-70f9a7eac5e0}</Project>
+      <Name>Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

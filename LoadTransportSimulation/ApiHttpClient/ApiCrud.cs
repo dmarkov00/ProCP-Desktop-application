@@ -15,7 +15,7 @@ namespace ApiHttpClient
         public ApiCRUD(HttpClient httpClient)
         {
             this.httpClient = httpClient;
-            httpClient.DefaultRequestHeaders.Add("api_token", GlobalConstants.testToken);
+            httpClient.DefaultRequestHeaders.Add("api_token", GlobalConstants.testToken2);
         }
 
         private HttpClient httpClient;
