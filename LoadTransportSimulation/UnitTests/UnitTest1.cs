@@ -18,7 +18,7 @@ namespace UnitTests
             Assert.IsTrue(res.Equals(1.818));
         }
         [TestMethod]
-        public void TestMethod1()
+        public void TestCalculateFuelConsumptionWithGoogleAPI()
         {
             ClientGUI.GoogleAPI api = new GoogleAPI();
             string kmFromBerlinToMoscow = api.calculatedistance(0, 3);
