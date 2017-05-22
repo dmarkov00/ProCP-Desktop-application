@@ -18,7 +18,7 @@ namespace ApiHttpClient.Tests
         }
 
         [Test]
-        public async Task TestSeeLoads()
+        public async Task TestSeeTrucks()
         {
             var client = new ApiHttpClient.Dispatcher();
             IEnumerable<IApiCallResult> trucks = await client.GetMany<Truck>("trucks");
