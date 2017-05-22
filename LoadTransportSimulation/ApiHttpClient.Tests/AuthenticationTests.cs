@@ -14,17 +14,18 @@ namespace ApiHttpClient.Tests
         [Test]
         public async Task Login_With_User_Sucessfully()
         {
-            User expectedResult = new User("gege", "gege@abv.bg", "+359 123355", "ADzbFafdPnvzbAj7jgYgA1RR5zUsiEiHUGJVl6fXnOx7DhoovLStOnkqzyrp");
+            User expectedResult = new User("sth", "johngreen@gmail.com", "+359 123355", "6UhcQUtcEuE2HXdUM1crQtV9RQQDI6t5IvWVkWcTTFxbc7rtjXz5Od77cqba");
 
             // Data we usually send from the login form
-            var loginData = new { email = "gege@abv.bg", password = "123456" };
+            var loginData = new { email = "johngreen@gmail.com", password = "secret" };
 
             // Returning the retrieved data of the user, which is logged in
             User user = (User)await dispatcher.LoginUser(loginData);
 
             // TODO: research how to compare to objects
             // in this case returns false but the values of the object properties are equal
-            Assert.AreEqual(expectedResult, user);
+            Assert.AreEqual(expectedResult.Email, user.Email);
+            Assert.AreEqual(expectedResult.Token, user.Token);
         }
         [Test]
         public async Task Login_With_Incomplete_Data()
@@ -41,7 +42,9 @@ namespace ApiHttpClient.Tests
 
             ApiErrorResult actualErrorResult = (ApiErrorResult)await dispatcher.LoginUser(emptyloginData);
 
-            Assert.AreEqual(expectedErrorResult, actualErrorResult);
+            Assert.AreEqual(expectedErrorResult.ErrorMessages[0], actualErrorResult.ErrorMessages[0]);
+            Assert.AreEqual(expectedErrorResult.ErrorMessages[0], actualErrorResult.ErrorMessages[0]);
+            Assert.AreEqual(expectedErrorResult.StatusCode, actualErrorResult.StatusCode);
         }
     }
 }
