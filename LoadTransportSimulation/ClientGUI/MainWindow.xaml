@@ -245,7 +245,7 @@
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0" HorizontalAlignment="Stretch" Orientation="Horizontal">
-                        <RadioButton Content="All drivers" Margin="10,10"/>
+                        <RadioButton Content="All drivers" Margin="10,10" Checked="RadioButton_Checked_1"/>
                         <RadioButton Content="Current drivers" Margin="10,10" />
                         <RadioButton Content="Past drivers" Margin="10,10"/>
 

@@ -81,6 +81,13 @@ namespace WPFLoadSimulation
 
         private async void RadioButton_Checked(object sender, RoutedEventArgs e)
         {
+            IEnumerable<IApiCallResult> trucks = await client.GetMany<Truck>("trucks");
+            List<Truck> targetList = new List<Truck>(trucks.Cast<Truck>());
+            return;
+        }
+
+        private async void RadioButton_Checked_1(object sender, RoutedEventArgs e)
+        {
             IEnumerable<IApiCallResult> drivers = await client.GetMany<Driver>("drivers");
             List<Driver> targetList = new List<Driver>(drivers.Cast<Driver>());
             return;
