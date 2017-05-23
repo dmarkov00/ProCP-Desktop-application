@@ -16,9 +16,10 @@ namespace ApiHttpClient.Tests
 
         public async Task Create_Truck()
         {
-            Truck expectedResult = new Truck("XR-BZ-123", "1", 234, 23, 5000, 200, 14);
+            Truck expectedResult = new Truck("12aisdasd3", "1", 234, 23, 5000, 200, 14);
             IApiCallResult truck = await dispatcher.Post("trucks", expectedResult);
-            // Assert required
+            Truck t = (Truck)truck;
+            Assert.AreEqual(expectedResult.LicencePlate, t.LicencePlate);
         }
         public async Task Test_See_Trucks()
         {
