@@ -75,7 +75,7 @@ namespace Models
                 avgFuelConsumpt = value;
             }
         }
-
+        [JsonProperty("payLoadCapacity")]
         public int PayloadCapacityKg
         {
             get

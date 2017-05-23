@@ -53,13 +53,13 @@ namespace ApiHttpClient
             // The method doesn't have error handling
             //if (response.IsSuccessStatusCode)
             //{
-                // Extracting the json string response
-                result = await response.Content.ReadAsStringAsync();
-                // Convert from json to IApiCallResult object
-                List<T> modelDeserializedFromJson = JsonConvert.DeserializeObject<List<T>>(result);
+            // Extracting the json string response
+            result = await response.Content.ReadAsStringAsync();
+            // Convert from json to IApiCallResult object
+            List<T> modelDeserializedFromJson = JsonConvert.DeserializeObject<List<T>>(result);
 
-                IEnumerable<IApiCallResult> modelCastedToCallResult = modelDeserializedFromJson.Cast<IApiCallResult>();
-                return modelCastedToCallResult;
+            IEnumerable<IApiCallResult> modelCastedToCallResult = modelDeserializedFromJson.Cast<IApiCallResult>();
+            return modelCastedToCallResult;
             //}
             //else
             //{
@@ -77,6 +77,7 @@ namespace ApiHttpClient
             // Attaching headers
             postContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
+            var t = await postContent.ReadAsStringAsync();
             // Making post request to /login with the converted to json data and attached headers
             HttpResponseMessage response = await httpClient.PostAsync(requestUri, postContent);
 
