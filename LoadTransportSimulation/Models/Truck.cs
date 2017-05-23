@@ -7,6 +7,16 @@ namespace Models
 {
     public class Truck:IApiCallResult
     {
+        public Truck(string licencePlate, string location_id, int payloadCapacityKg, int weightKg, double widthInMeters, double heightInMeters, double lengthInMeters)
+        {
+            this.LicencePlate = licencePlate;
+            this.Location_id = location_id;
+            this.PayloadCapacityKg = payloadCapacityKg;
+            this.WeightKg = weightKg;
+            this.WidthInMeters = widthInMeters;
+            this.HeightInMeters = heightInMeters;
+            this.LengthInMeters = lengthInMeters;
+        }
         private string id;
         private string licencePlate;
         private string company_id;
@@ -14,7 +24,6 @@ namespace Models
         private string location_id;
         private bool broken;
         private Driver currentDriver;
-        private Address location;
         private double avgFuelConsumpt;
         private int payloadCapacityKg;
         private int weightKg;
@@ -52,18 +61,7 @@ namespace Models
             }
         }
 
-        public Address Location
-        {
-            get
-            {
-                return location;
-            }
-
-            set
-            {
-                location = value;
-            }
-        }
+        
         [JsonProperty("avgFuelComsumption")]
         public double AvgFuelConsumpt
         {
@@ -234,17 +232,7 @@ namespace Models
             }
         }
 
-        public Truck(string licencePlate, Address location, double avgFuelConsumpt, int payloadCapacityKg, int weightKg, double widthInMeters, double heightInMeters, double lengthInMeters)
-        {
-            this.LicencePlate = licencePlate;
-            this.Location = location;
-            this.AvgFuelConsumpt = avgFuelConsumpt;
-            this.PayloadCapacityKg = payloadCapacityKg;
-            this.WeightKg = weightKg;
-            this.WidthInMeters = widthInMeters;
-            this.HeightInMeters = heightInMeters;
-            this.LengthInMeters = lengthInMeters;
-        }
+     
         public string AddMaintenance(MaintenanceAction maintenance)
         {
 

@@ -59,6 +59,9 @@ namespace ApiHttpClient
 
         }
 
-
+        public async Task<IApiCallResult> Post<T>(string requestUri, T model)
+        {
+            return await apiCRUD.PostAsync(requestUri, model);
+        }
     }
 }
