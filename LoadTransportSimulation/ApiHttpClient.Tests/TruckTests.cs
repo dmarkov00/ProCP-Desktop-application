@@ -13,19 +13,18 @@ namespace ApiHttpClient.Tests
         private Dispatcher dispatcher = new Dispatcher();
 
         [Test]
-
         public async Task Create_Truck()
         {
-            Truck expectedResult = new Truck("12aisdasd3", "1", 234, 23, 5000, 200, 14);
+            Truck expectedResult = new Truck("1aasdasd3", "1", 234, 23, 5000, 200, 14);
             IApiCallResult truck = await dispatcher.Post("trucks", expectedResult);
             Truck t = (Truck)truck;
             Assert.AreEqual(expectedResult.LicencePlate, t.LicencePlate);
         }
+        [Test]
         public async Task Test_See_Trucks()
-        {
-            var client = new ApiHttpClient.Dispatcher();
+        {      
             //We ask the API to provide a list with all the trucks
-            IEnumerable<IApiCallResult> trucks = await client.GetMany<Truck>("trucks");
+            IEnumerable<IApiCallResult> trucks = await dispatcher.GetMany<Truck>("trucks");
             List<Truck> targetList = new List<Truck>(trucks.Cast<Truck>());
             //We assert it has provided a non-empty list of trucks
             Assert.IsTrue(trucks.Count()>0);
@@ -34,9 +33,8 @@ namespace ApiHttpClient.Tests
         [Test]
         public async Task Test_See_Truck_By_ID()
         {
-            var client = new ApiHttpClient.Dispatcher();
             //We ask the API to provide a truck by ID
-            IApiCallResult truck = await client.Get<Truck>("trucks", "1");
+            IApiCallResult truck = await dispatcher.Get<Truck>("trucks", "1");
             Truck kamion = (Truck)truck;
             //We assert that the truck provided is the right one
             Assert.AreEqual(kamion.Id, "1");        
