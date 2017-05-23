@@ -24,7 +24,7 @@ namespace ApiHttpClient.Tests
         public async Task Test_See_Trucks()
         {      
             //We ask the API to provide a list with all the trucks
-            IEnumerable<IApiCallResult> trucks = await dispatcher.GetMany<Truck>("trucks");
+            List<IApiCallResult> trucks = await dispatcher.GetMany<Truck>("trucks");
             List<Truck> targetList = new List<Truck>(trucks.Cast<Truck>());
             //We assert it has provided a non-empty list of trucks
             Assert.IsTrue(trucks.Count()>0);

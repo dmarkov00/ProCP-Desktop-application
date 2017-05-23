@@ -25,7 +25,7 @@ namespace ApiHttpClient.Tests
         public async Task Getting_All_Drivers()
         {
             //We ask the API to provide all the trucks
-            IEnumerable<IApiCallResult> drivers = await dispatcher.GetMany<Driver>("drivers");
+            List<IApiCallResult> drivers = await dispatcher.GetMany<Driver>("drivers");
             List<Driver> targetList = new List<Driver>(drivers.Cast<Driver>());
             //We make sure it has provided a non-empty list of trucks
             Assert.IsTrue(targetList.Count > 0);

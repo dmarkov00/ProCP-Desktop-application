@@ -46,7 +46,7 @@ namespace ApiHttpClient
             }
         }
 
-        public async Task<IEnumerable<IApiCallResult>> GetManyAsync<T>(string requestUri)
+        public async Task<List<IApiCallResult>> GetManyAsync<T>(string requestUri)
         {
             HttpResponseMessage response = await httpClient.GetAsync(requestUri);
 
@@ -55,10 +55,12 @@ namespace ApiHttpClient
             //{
             // Extracting the json string response
             result = await response.Content.ReadAsStringAsync();
-            // Convert from json to IApiCallResult object
+    
             List<T> modelDeserializedFromJson = JsonConvert.DeserializeObject<List<T>>(result);
 
-            IEnumerable<IApiCallResult> modelCastedToCallResult = modelDeserializedFromJson.Cast<IApiCallResult>();
+            // If it is not casted to IApiResult gives error, because of the return type of the method
+            List<IApiCallResult> modelCastedToCallResult = modelDeserializedFromJson.Cast<IApiCallResult>().ToList();
+
             return modelCastedToCallResult;
             //}
             //else
