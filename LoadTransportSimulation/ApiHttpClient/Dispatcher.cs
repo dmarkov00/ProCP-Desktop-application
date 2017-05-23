@@ -13,13 +13,10 @@ namespace ApiHttpClient
         public Dispatcher()
         {
             httpClient = new HttpClient();
+            // Base address, every request builds upon it acess different resource
             httpClient.BaseAddress = new Uri("http://127.0.0.1:8000/api/");
-            httpClient.DefaultRequestHeaders
-                      .Accept
-                      .Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
+       
             apiCRUD = new ApiCRUD(httpClient);
-
 
         }
         private static HttpClient httpClient;
