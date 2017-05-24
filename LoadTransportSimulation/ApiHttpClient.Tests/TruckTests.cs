@@ -15,7 +15,7 @@ namespace ApiHttpClient.Tests
         [Test]
         public async Task Create_Truck()
         {
-            Truck expectedResult = new Truck("1tttdaasdasd3", "1", 234, 23, 5000, 200, 14);
+            Truck expectedResult = new Truck("tdaasdfas3", "1", 234, 23, 5000, 200, 14);
             IApiCallResult truck = await dispatcher.Post("trucks", expectedResult);
             Truck t = (Truck)truck;
             Assert.AreEqual(expectedResult.LicencePlate, t.LicencePlate);

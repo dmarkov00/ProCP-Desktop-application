@@ -10,13 +10,13 @@ namespace Models
         private string firstName;
         private string lastName;
 
-        //Needs further attention as we need only date not datetime
-        private DateTime birthDate;
+        ////Needs further attention as we need only date not datetime
+        //private DateTime birthDate;
         private string phone;
         private string email;
         private Truck currentTruck;
         private bool isBusy;
-        private bool isInCompany;
+        //private bool isInCompany;
 
         [JsonProperty("fName")]
         public string FirstName
@@ -46,18 +46,7 @@ namespace Models
             }
         }
 
-        public DateTime BirthDate
-        {
-            get
-            {
-                return birthDate;
-            }
-
-            set
-            {
-                birthDate = value;
-            }
-        }
+     
         [JsonProperty("phoneNbr")]
         public string Phone
         {
@@ -98,6 +87,7 @@ namespace Models
             }
         }
 
+        [JsonProperty("taken")]
         public bool IsBusy
         {
             get
@@ -111,19 +101,19 @@ namespace Models
             }
         }
 
-        public bool IsInCompany
-        {
-            get
-            {
-                return isInCompany;
-            }
+        //public bool IsInCompany
+        //{
+        //    get
+        //    {
+        //        return isInCompany;
+        //    }
 
-            set
-            {
-                isInCompany = value;
-            }
-        }
-
+        //    set
+        //    {
+        //        isInCompany = value;
+        //    }
+        //}
+        [JsonIgnore]
         public string Id
         {
             get

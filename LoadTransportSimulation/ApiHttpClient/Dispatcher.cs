@@ -15,7 +15,6 @@ namespace ApiHttpClient
             httpClient = new HttpClient();
             // Base address, every request builds upon it acess different resource
             httpClient.BaseAddress = new Uri("http://127.0.0.1:8000/api/");
-
             apiCRUD = new ApiCRUD(httpClient);
 
         }
@@ -40,7 +39,6 @@ namespace ApiHttpClient
         {
             return await apiCRUD.PutAsync<T>(requestUri, id, modelData);
         }
-
 
         public async Task<string> AssignTruckToDriver(int truckId, string token)
         {

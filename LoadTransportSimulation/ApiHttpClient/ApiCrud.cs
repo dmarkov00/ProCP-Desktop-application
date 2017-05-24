@@ -96,9 +96,11 @@ namespace ApiHttpClient
 
             // Attaching headers
             postContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+            var t = await postContent.ReadAsStringAsync();
 
             // Making post request with the converted to json data and attached headers
             HttpResponseMessage response = await httpClient.PostAsync(requestUri, postContent);
+            var a = await response.Content.ReadAsStringAsync();
 
             if (response.IsSuccessStatusCode)
             {
@@ -118,7 +120,14 @@ namespace ApiHttpClient
                 return apiErrorResult;
             }
         }
-
+        /// <summary>
+        /// Method used to update certain entity by sending put requst
+        /// </summary>
+        /// <typeparam name="T">The type of the expected result</typeparam>
+        /// <param name="requestUri">Api entry point </param>
+        /// <param name="id">Pointer to certain resource</param>
+        /// <param name="modelData">The model that is being sent</param>
+        /// <returns></returns>
         public async Task<IApiCallResult> PutAsync<T>(string requestUri, string id, T modelData)
         {
             // Converting the form data from c# object to json and setting it in the content to be sent
@@ -127,10 +136,11 @@ namespace ApiHttpClient
             // Attaching headers
             postContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
-            var t = await postContent.ReadAsStringAsync();
-            // Making post request to /login with the converted to json data and attached headers
-            HttpResponseMessage response = await httpClient.PutAsync(requestUri + "/" + id, postContent);
+            //var t = await postContent.ReadAsStringAsync(); // to be deleted later on
 
+            // Sending post request with converted to json data and attached headers
+            HttpResponseMessage response = await httpClient.PutAsync(requestUri + "/" + id, postContent);
+ 
             if (response.IsSuccessStatusCode)
             {
                 // Extracting the json string response
