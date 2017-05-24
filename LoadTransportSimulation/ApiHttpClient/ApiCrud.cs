@@ -67,7 +67,7 @@ namespace ApiHttpClient
             //{
             // Extracting the json string response
             result = await response.Content.ReadAsStringAsync();
-    
+
             List<T> modelDeserializedFromJson = JsonConvert.DeserializeObject<List<T>>(result);
 
             // If it is not casted to IApiResult gives error, because of the return type of the method
@@ -119,7 +119,7 @@ namespace ApiHttpClient
             }
         }
 
-        public async Task<IApiCallResult> PutAsync<T>(string requestUri, T modelData)
+        public async Task<IApiCallResult> PutAsync<T>(string requestUri, string id, T modelData)
         {
             // Converting the form data from c# object to json and setting it in the content to be sent
             HttpContent postContent = new StringContent(JsonConvert.SerializeObject(modelData));
@@ -129,7 +129,7 @@ namespace ApiHttpClient
 
             var t = await postContent.ReadAsStringAsync();
             // Making post request to /login with the converted to json data and attached headers
-            HttpResponseMessage response = await httpClient.PostAsync(requestUri, postContent);
+            HttpResponseMessage response = await httpClient.PutAsync(requestUri + "/" + id, postContent);
 
             if (response.IsSuccessStatusCode)
             {

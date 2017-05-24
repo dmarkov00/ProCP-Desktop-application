@@ -71,7 +71,7 @@ namespace Models
                 phone = value;
             }
         }
-
+        [JsonProperty("email")]
         public string Email
         {
             get
@@ -137,11 +137,10 @@ namespace Models
             }
         }
 
-        public Driver(string firstName, string lastName, DateTime birthDate, string phone, string email)
+        public Driver(string firstName, string lastName, string phone, string email)
         {
             this.firstName = firstName;
             this.lastName = lastName;
-            this.birthDate = birthDate;
             this.phone = phone;
             this.email = email;
         }

@@ -30,8 +30,19 @@ namespace ApiHttpClient.Tests
             //We make sure it has provided a non-empty list of trucks
             Assert.IsTrue(targetList.Count > 0);
         }
+        [Test]
+        public async Task Update_Driver()
+        {
+            // Also is used as test model
+            Driver expectedResult = new Driver("Daf", "Diesel", "39933", "diese@gmail.com");
 
-        
+            // After update the api should return the updated entity
+            Driver actualResult = (Driver)await dispatcher.Put("drivers", "2", expectedResult);
+
+            Assert.AreEqual(expectedResult.FirstName, actualResult.FirstName);
+        }
+
+
         [Test]
         public async Task Getting_Driver_Assigned_To_Truck_Successfully()
         {
