@@ -13,20 +13,22 @@ namespace GoogleApiIntegration
     {
         public List<string> publicNames;
         private List<string> privateNames;
+
         public GoogleAPI()
         {
-            publicNames = new List<string>();
-            publicNames.Add("Moscow");
-            publicNames.Add("Seres");
-            publicNames.Add("Sofia");
-            publicNames.Add("Berlin");
-            publicNames.Add("Munich");
-            privateNames = new List<string>();
-            privateNames.Add("Moscow");
-            privateNames.Add("Seres");
-            privateNames.Add("Sofia");
-            privateNames.Add("Berlin");
-            privateNames.Add("Munich");
+            //Sorry for the change but it looks better this way
+            publicNames = new List<string> { "Moscow" , "Seres", "Sofia", "Berlin" ,"Munich" };
+            //publicNames.Add("Moscow");
+            //publicNames.Add("Seres");
+            //publicNames.Add("Sofia");
+            //publicNames.Add("Berlin");
+            //publicNames.Add("Munich");
+            privateNames = new List<string> { "Moscow", "Seres", "Sofia", "Berlin", "Munich" };
+            //privateNames.Add("Moscow");
+            //privateNames.Add("Seres");
+            //privateNames.Add("Sofia");
+            //privateNames.Add("Berlin");
+            //privateNames.Add("Munich");
         }
         //private string apiKEY;
         //string request = @"https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=Washington,DC&destinations=New+York+City,NY&key=YOUR_API_KEY";

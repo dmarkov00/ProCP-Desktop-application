@@ -1,13 +1,41 @@
 ﻿using System.Collections.Generic;
 using Models;
 using Common.Enumerations;
+using System;
+
 namespace Controllers
 {
     class LoadController
     {
         private List<Load> loads;
 
-        public LoadController(List<Load> loads)
+        /*Singleton implemented
+        * -when you want to use the controller the first time, use DriverController.Create(list);
+        * -afterwards, anywhere in the program, to get the instance, use DriverController.GetInstance();
+        */
+
+        private static volatile LoadController instance;
+        private static object syncRoot = new Object();
+
+        public static LoadController GetInstance()
+        {
+            if (instance != null)
+                return instance;
+            else
+                throw new Exception("Object not created");
+        }
+
+        public static LoadController Create(List<Load> loads)
+        {
+            lock (syncRoot)
+            {
+                if (instance == null)
+                    instance = new LoadController(loads);
+            }
+            return instance;
+        }
+
+        private LoadController(List<Load> loads)
         {
             this.loads = loads;
         }
