@@ -20,11 +20,31 @@ namespace ApiHttpClient
 
         private HttpClient httpClient;
         private string result;
-        public Task<IApiCallResult> DeleteAsync(string requestUri, int id)
-        {
-            throw new NotImplementedException();
-        }
+        /// <summary>
+        /// Method used for deleting a resource by id
+        /// </summary>
+        /// <param name="requestUri">Access point of the resourse</param>
+        /// <param name="id">Pointer to specific resource</param>
+        /// <returns></returns>
+        public async Task<string> DeleteAsync(string requestUri, string id)
+        { // Error handling is not implemented 
+            // Executing delete request to the passed resource url
+            HttpResponseMessage response = await httpClient.DeleteAsync(requestUri + "/" + id);
+            
+            if (response.IsSuccessStatusCode)
+            {
+                // Extracting the json string response
+                result = await response.Content.ReadAsStringAsync();
+               return response.StatusCode.ToString();
+            }
+            else
+            {
+                ApiErrorResult apiErrorResult = await response.ConvertToApiErrorResult();
 
+                //return apiErrorResult;
+                return "";
+            }
+        }
         /// <summary>
         /// Method used for retrieving a single entity by id
         /// </summary>

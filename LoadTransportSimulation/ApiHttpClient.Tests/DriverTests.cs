@@ -41,6 +41,15 @@ namespace ApiHttpClient.Tests
 
             Assert.AreEqual(expectedResult.FirstName, actualResult.FirstName);
         }
+        [Test]
+        public async Task Delete_Driver()
+        {
+            string expectedResult = "200";
+
+            string actualResult = await dispatcher.Delete("drivers", "9");
+        }
+
+
 
 
         [Test]

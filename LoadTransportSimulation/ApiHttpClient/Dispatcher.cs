@@ -39,6 +39,10 @@ namespace ApiHttpClient
         {
             return await apiCRUD.PutAsync<T>(requestUri, id, modelData);
         }
+        public async Task<string> Delete(string requestUri, string id)
+        {
+          return await  apiCRUD.DeleteAsync(requestUri, id);
+        }
 
         public async Task<string> AssignTruckToDriver(int truckId, string token)
         {
