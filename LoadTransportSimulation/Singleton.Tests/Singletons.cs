@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Models;
 using Controllers;
+using ApiHttpClient;
 using System.Threading;
 
 namespace Singleton.Tests
@@ -90,6 +91,23 @@ namespace Singleton.Tests
             Assert.AreEqual(truckCtrl1,truckCtrl2);
             Assert.AreNotEqual(null, truckCtrl2);
             Assert.AreEqual(2, Controllers.TruckController.GetInstance().GetAllTrucks().Count);
+        }
+
+        [Test]
+        public void Dispatcher()
+        {
+            Dispatcher disp1 = ApiHttpClient.Dispatcher.GetInstance();
+            Dispatcher disp2 = ApiHttpClient.Dispatcher.GetInstance();
+
+            Thread thread1 = new Thread(() => disp1 = ApiHttpClient.Dispatcher.GetInstance());
+            Thread thread2 = new Thread(() => disp2 = ApiHttpClient.Dispatcher.GetInstance());
+            thread1.Start();
+            thread1.Join();
+
+            thread2.Start();
+            thread2.Join();
+
+            Assert.AreEqual(disp1, disp2);
         }
     }
 }

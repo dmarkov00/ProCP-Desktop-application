@@ -26,7 +26,7 @@ namespace WPFLoadSimulation
         public MainWindow()
         {
             InitializeComponent();
-            client = new ApiHttpClient.Dispatcher();
+            client = ApiHttpClient.Dispatcher.GetInstance();
         }
 
         private void ProfileChangeInfo_Click(object sender, RoutedEventArgs e)

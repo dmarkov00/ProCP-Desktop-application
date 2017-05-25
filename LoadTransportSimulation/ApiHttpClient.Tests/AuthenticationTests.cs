@@ -9,7 +9,7 @@ namespace ApiHttpClient.Tests
     [TestFixture]
     public class AuthenticationTests
     {
-        private Dispatcher dispatcher = new Dispatcher();
+        private Dispatcher dispatcher = Dispatcher.GetInstance();
         private List<string> errorMessages;
         [Test]
         public async Task Login_With_User_Sucessfully()
