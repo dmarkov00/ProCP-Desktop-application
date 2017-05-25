@@ -5,7 +5,7 @@ using System;
 
 namespace Controllers
 {
-    class LoadController
+    public class LoadController
     {
         private List<Load> loads;
 

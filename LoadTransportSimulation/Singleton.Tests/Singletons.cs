@@ -1,11 +1,9 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Models;
 using Controllers;
+using System.Threading;
 
 namespace Singleton.Tests
 {
@@ -48,6 +46,50 @@ namespace Singleton.Tests
             Assert.AreEqual(driverCtrl2, driverCtrl3);
 
             Assert.AreEqual(1, driverCtrl2.GetAllDrivers().Count);
+        }
+
+        [Test]
+        public void LoadController()
+        {
+            List<Load> loads1 = new List<Load>();
+            List<Load> loads2 = new List<Load>();
+
+            loads1.Add(new Load(new Address(1,"asd","asd","asdfw","asew"), new Address(1, "asd", "asd", "asdfw", "asew"), "1234455", 123,345,345, new DateTime(), new Client("Bob", "Dylan", "1234455", "email", new Address(1, "as", "as", "as", "as"))));
+            loads2.Add(new Load(new Address(1, "asd", "asd", "asdfw", "asew"), new Address(1, "asd", "asd", "asdfw", "asew"), "1234455", 123, 345, 345, new DateTime(), new Client("Bob", "Dylan", "1234455", "email", new Address(1, "as", "as", "as", "as"))));
+            loads2.Add(new Load(new Address(1, "asd", "asd", "asdfw", "asew"), new Address(1, "asd", "asd", "asdfw", "asew"), "1234455", 123, 345, 345, new DateTime(), new Client("Bob", "Dylan", "1234455", "email", new Address(1, "as", "as", "as", "as"))));
+
+            Assert.That(() => Controllers.LoadController.GetInstance(),
+                Throws.TypeOf<Exception>());            
+        }
+
+        [Test]
+        public void TruckController()
+        {
+            List<Truck> trucks1 = new List<Truck>();
+            List<Truck> trucks2 = new List<Truck>();
+
+            trucks1.Add(new Truck("asd", "asdew", 100, 100, 100, 100, 100));
+            trucks2.Add(new Truck("asd", "asdew", 200, 200, 200, 200, 200));
+            trucks1.Add(new Truck("lpm", "khoi", 10, 1000, 1300, 100, 1030));
+            trucks2.Add(new Truck("knoi", "iojk", 1020, 100, 10340, 100, 1100));
+
+            Assert.AreEqual(2, trucks1.Count);
+            Assert.AreEqual(2, trucks2.Count);
+
+            TruckController truckCtrl1 = null;
+            TruckController truckCtrl2 = null;
+
+            Thread thread1 = new Thread(() => truckCtrl1=Controllers.TruckController.Create(trucks1));
+            Thread thread2 = new Thread(() => truckCtrl2=Controllers.TruckController.Create(trucks2));
+            thread1.Start();
+            thread1.Join();
+
+            thread2.Start();
+            thread2.Join();
+
+            Assert.AreEqual(truckCtrl1,truckCtrl2);
+            Assert.AreNotEqual(null, truckCtrl2);
+            Assert.AreEqual(2, Controllers.TruckController.GetInstance().GetAllTrucks().Count);
         }
     }
 }
