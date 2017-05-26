@@ -43,7 +43,7 @@ namespace ApiHttpClient.Tests
             ApiErrorResult actualErrorResult = (ApiErrorResult)await dispatcher.LoginUser(emptyloginData);
 
             Assert.AreEqual(expectedErrorResult.ErrorMessages[0], actualErrorResult.ErrorMessages[0]);
-            Assert.AreEqual(expectedErrorResult.ErrorMessages[0], actualErrorResult.ErrorMessages[0]);
+            Assert.AreEqual(expectedErrorResult.ErrorMessages[1], actualErrorResult.ErrorMessages[1]);
             Assert.AreEqual(expectedErrorResult.StatusCode, actualErrorResult.StatusCode);
         }
     }
