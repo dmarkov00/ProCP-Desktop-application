@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enumerations\City.cs" />
     <Compile Include="Enumerations\LoadState.cs" />
     <Compile Include="Enumerations\MaintananceAction.cs" />
     <Compile Include="Extensions\HttpResponseMessageExtensions.cs" />

@@ -41,7 +41,6 @@ namespace WPFLoadSimulation
             
         }
         
-        
 
         private async void CreateLoadController()
         {
