@@ -14,6 +14,7 @@ namespace Controllers
          */
         private static volatile ClientController instance;
         private static object syncRoot = new Object();
+
         public static ClientController GetInstance()
         {
             if (instance != null)
@@ -36,7 +37,7 @@ namespace Controllers
             this.clients = clients;
         }
 
-        public List<Client> GetClients()
+        public List<Client> GetAllClients()
         {
             return clients;
         }
@@ -45,6 +46,12 @@ namespace Controllers
         {
             if(!clients.Contains(c))
             clients.Add(c);
+        }
+
+        public void RemoveClient(Client c)
+        {
+            if (clients.Contains(c))
+                clients.Remove(c);
         }
     }
 }

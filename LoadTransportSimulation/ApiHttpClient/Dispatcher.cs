@@ -9,8 +9,29 @@ namespace ApiHttpClient
 {
     public class Dispatcher
     {
+
         private static readonly HttpClient client = new HttpClient();
-        public Dispatcher()
+
+        //Singleton implemented
+        //To access it use Dispatcher.GetInstance()
+
+        private static volatile Dispatcher instance;
+        private static object syncRoot = new Object();
+
+        public static Dispatcher GetInstance()
+        {
+            if (instance == null)
+            {
+                lock (syncRoot)
+                {
+                    if (instance == null)
+                        instance = new Dispatcher();
+                }       
+            }
+            return instance;
+        }
+
+        private Dispatcher()
         {
             httpClient = new HttpClient();
             // Base address, every request builds upon it acess different resource

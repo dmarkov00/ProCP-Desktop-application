@@ -11,7 +11,7 @@ namespace ApiHttpClient.Tests
     [TestFixture]
     public class DriverTests
     {
-        private Dispatcher dispatcher = new Dispatcher();
+        private Dispatcher dispatcher = Dispatcher.GetInstance();
         [Test]
         public async Task Getting_Driver_By_Id_Successfully()
         {

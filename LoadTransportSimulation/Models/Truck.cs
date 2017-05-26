@@ -62,7 +62,7 @@ namespace Models
         }
 
         
-        [JsonProperty("avgFuelComsumption")]
+        [JsonProperty("avgFuelConsumption")]
         public double AvgFuelConsumpt
         {
             get

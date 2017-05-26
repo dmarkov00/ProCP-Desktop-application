@@ -10,7 +10,7 @@ namespace ApiHttpClient.Tests
     [TestFixture]
     public class TruckTests
     {
-        private Dispatcher dispatcher = new Dispatcher();
+        private Dispatcher dispatcher = Dispatcher.GetInstance();
 
         [Test]
         public async Task Create_Truck()

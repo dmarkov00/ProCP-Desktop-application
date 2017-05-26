@@ -1,5 +1,6 @@
 ﻿using Models;
 using System.Collections.Generic;
+using System;
 
 namespace Controllers
 {
@@ -7,7 +8,33 @@ namespace Controllers
     {
         private List<Truck> trucks;
 
-        public TruckController(List<Truck> trucks)
+        /*Singleton implemented
+        * -when you want to use the controller the first time, use DriverController.Create(list);
+        * -afterwards, anywhere in the program, to get the instance, use DriverController.GetInstance();
+        */
+
+        private static volatile TruckController instance;
+        private static object syncRoot = new Object();
+
+        public static TruckController GetInstance()
+        {
+            if (instance != null)
+                return instance;
+            else
+                throw new Exception("Object not created");
+        }
+
+        public static TruckController Create(List<Truck> loads)
+        {
+            lock (syncRoot)
+            {
+                if (instance == null)
+                    instance = new TruckController(loads);
+            }
+            return instance;
+        }
+
+        private TruckController(List<Truck> trucks)
         {
             this.trucks = trucks;
         }
@@ -19,6 +46,7 @@ namespace Controllers
         }
         public string RemoveTruck(Truck t)
         {
+            trucks.Remove(t);
             return "Truck added successfully";
         }
         public List<Truck> GetAllTrucks()

@@ -87,5 +87,10 @@ namespace Models
             this.country = country;
             this.zipcode = zipcode;
         }
+
+        public override string ToString()
+        {
+            return houseNr + ", " + street +", " ;
+        }
     }
 }
