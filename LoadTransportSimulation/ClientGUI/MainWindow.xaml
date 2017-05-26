@@ -18,12 +18,12 @@
                                         <RowDefinition/>
                                         <RowDefinition/>
                                     </Grid.RowDefinitions>
-                                    <DataGrid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="0" Grid.RowSpan="2" Margin="0,0,0,35">
+                                    <DataGrid Name="LoadsAvailableDGW" AutoGenerateColumns="false" ItemsSource="{Binding}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="0" Grid.RowSpan="2" Margin="0,0,0,35">
                                         <DataGrid.Columns>
                                             <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Selected" Width="*"/>
-                                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Start city" Width="*"/>
-                                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="End City" Width="*"/>
-                                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Due" Width="*"/>
+                                            <DataGridTextColumn Binding="{Binding StartLocation}" ClipboardContentBinding="{x:Null}" Header="Start city" Width="*"/>
+                                            <DataGridTextColumn Binding="{Binding EndLocation}" ClipboardContentBinding="{x:Null}" Header="End City" Width="*"/>
+                                            <DataGridTextColumn Binding="{Binding MaxArrivalTime}" ClipboardContentBinding="{x:Null}" Header="Due" Width="*"/>
                                         </DataGrid.Columns>
                                     </DataGrid>
                                     <Button Name="LoadsAddNewLoad" Click="LoadsAddNewLoad_Click" Content="Add load" Grid.Row="2" VerticalAlignment="Bottom" Height="30"/>
@@ -174,19 +174,19 @@
                         <RadioButton Content="Past trucks" Margin="10,10"/>
                     </StackPanel>
                     <Label Content="Click on a truck to see maintenance schedule below" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Row="1" Padding="0" Grid.ColumnSpan="2" Margin="0,0,0,191.6" Grid.RowSpan="2"/>
-                    <DataGrid HorizontalAlignment="Stretch"  Grid.Row="2" Grid.ColumnSpan="3" VerticalAlignment="Stretch" >
+                    <DataGrid Name ="TrucksDGV" ItemsSource="{Binding}" AutoGenerateColumns="False" HorizontalAlignment="Stretch"  Grid.Row="2" Grid.ColumnSpan="3" VerticalAlignment="Stretch" >
                         <DataGrid.Columns>
                             <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Selected" Width="auto"/>
-                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Licence &#x0a;Plate" Width="*"/>
-                            <DataGridComboBoxColumn ClipboardContentBinding="{x:Null}" Header="Driver" SelectedValueBinding="{x:Null}" SelectedItemBinding="{x:Null}" TextBinding="{x:Null}" Width="*"/>
-                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Location" Width="*"/>
-                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Available" Width="auto"/>
-                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Payload &#x0a;Capacity" Width="*"/>
-                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Avg fuel &#x0a;consump" Width="*"/>
-                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Weight Kg" Width="*"/>
-                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Height M" Width="*"/>
-                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Width M" Width="*"/>
-                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Length M" Width="*"/>
+                            <DataGridTextColumn Binding="{Binding LicencePlate}" ClipboardContentBinding="{x:Null}" Header="Licence &#x0a;Plate" Width="*"/>
+                            <DataGridTextColumn ClipboardContentBinding="{Binding CurrentDriver}" Header="Driver"  Width="*"/>
+                            <DataGridTextColumn Binding="{Binding Location_id}" ClipboardContentBinding="{x:Null}" Header="Location" Width="*"/>
+                            <DataGridTextColumn Binding="{Binding IsBusy}" ClipboardContentBinding="{x:Null}" Header="Is Busy" Width="auto"/>
+                            <DataGridTextColumn Binding="{Binding PayloadCapacityKg}" ClipboardContentBinding="{x:Null}" Header="Payload &#x0a;Capacity" Width="*"/>
+                            <DataGridTextColumn Binding="{Binding AvgFuelConsumpt}" ClipboardContentBinding="{x:Null}" Header="Avg fuel &#x0a;consump" Width="*"/>
+                            <DataGridTextColumn Binding="{Binding WeightKg}" ClipboardContentBinding="{x:Null}" Header="Weight Kg" Width="*"/>
+                            <DataGridTextColumn Binding="{Binding HeightInMeters}" ClipboardContentBinding="{x:Null}" Header="Height M" Width="*"/>
+                            <DataGridTextColumn Binding="{Binding WidthInMeters}" ClipboardContentBinding="{x:Null}" Header="Width M" Width="*"/>
+                            <DataGridTextColumn Binding="{Binding LengthInMeters}" ClipboardContentBinding="{x:Null}" Header="Length M" Width="*"/>
                         </DataGrid.Columns>
                     </DataGrid>
                     <StackPanel HorizontalAlignment="Stretch" Grid.Row="4" Grid.RowSpan="1" VerticalAlignment="Stretch" Orientation="Horizontal" Grid.ColumnSpan="1" Grid.Column="0" >
@@ -251,15 +251,14 @@
 
                     </StackPanel>
 
-                    <DataGrid HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Stretch" Grid.ColumnSpan="2" Grid.RowSpan="1" Margin="5,5,5,25">
+                    <DataGrid Name="DriversDGV" AutoGenerateColumns="false" ItemsSource="{Binding}" HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Stretch" Grid.ColumnSpan="2" Grid.RowSpan="1" Margin="5,5,5,25">
                         <DataGrid.Columns>
                             <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Selected" Width="auto"/>
-                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="First Name" Width="*"/>
-                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Last Name" Width="*"/>
-                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Phone" Width="*"/>
-                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Email" Width="*"/>
-                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Date of Birth" Width="*"/>
-                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Available" />
+                            <DataGridTextColumn Binding="{Binding FirstName}" ClipboardContentBinding="{x:Null}" Header="First Name" Width="*"/>
+                            <DataGridTextColumn Binding="{Binding LastName}" ClipboardContentBinding="{x:Null}" Header="Last Name" Width="*"/>
+                            <DataGridTextColumn Binding="{Binding Phone}" ClipboardContentBinding="{x:Null}" Header="Phone" Width="*"/>
+                            <DataGridTextColumn Binding="{Binding Email}" ClipboardContentBinding="{x:Null}" Header="Email" Width="*"/>
+                            <DataGridTextColumn Binding="{Binding IsBusy}" ClipboardContentBinding="{x:Null}" Header="Is Busy" />
                         </DataGrid.Columns>
                     </DataGrid>
                     <Button Content="Delete selected drivers"  HorizontalAlignment="Right" Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Width="200" Height="30"/>
@@ -284,14 +283,13 @@
                         <RadioButton Content="Past clients" Margin="10,10"/>
                     </StackPanel>
 
-                    <DataGrid HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Stretch" Grid.ColumnSpan="2" Grid.RowSpan="1" Margin="5,5,5,25">
+                    <DataGrid Name ="ClientDGV" AutoGenerateColumns="False" ItemsSource="{Binding}" HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Stretch" Grid.ColumnSpan="2" Grid.RowSpan="1" Margin="5,5,5,25">
                         <DataGrid.Columns>
                             <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Selected" Width="auto"/>
-                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="First Name" Width="*"/>
-                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Last Name" Width="*"/>
-                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Phone" Width="*"/>
-                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Email" Width="*"/>
-                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Address" Width="*"/>
+                            <DataGridTextColumn Binding="{Binding Name}" ClipboardContentBinding="{x:Null}" Header="First Name" Width="*"/>
+                            <DataGridTextColumn Binding="{Binding Phone}" ClipboardContentBinding="{x:Null}" Header="Phone" Width="*"/>
+                            <DataGridTextColumn Binding="{Binding Email}" ClipboardContentBinding="{x:Null}" Header="Email" Width="*"/>
+                            <DataGridTextColumn Binding="{Binding Address}" ClipboardContentBinding="{x:Null}" Header="Address" Width="*"/>
                             <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Company" />
                         </DataGrid.Columns>
                     </DataGrid>

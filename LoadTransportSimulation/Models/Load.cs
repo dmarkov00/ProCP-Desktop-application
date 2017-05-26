@@ -1,8 +1,9 @@
 ﻿using System;
 using Common.Enumerations;
+using Common;
 namespace Models
 {
-    public class Load
+    public class Load : IApiCallResult
     {
 
         public Client Client { get; set; }
@@ -12,8 +13,8 @@ namespace Models
         public decimal WeightKg { get; private set; }
         public double EstSalaryEur { get; set; } //full, estimated salary (without fee taken off yet)
         public double ActSalaryEur { get; set; } //final salary after subtracting delay fee
-        public int DelayFeePercPerHour { get; private set; } //delay fee percentage per one hour of delay
-        public DateTime MaxArrivalTime { get; private set; }
+        public int DelayFeePercPerHour { get;  set; } //delay fee percentage per one hour of delay
+        public DateTime MaxArrivalTime { get;  set; }
         public DateTime ActArrivalTime { get; set; }
         public LoadState LoadState { get; set; }
         public int LoadId { get; private set; }

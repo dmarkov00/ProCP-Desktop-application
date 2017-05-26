@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Controllers;
 
 namespace WPFLoadSimulation
 {
@@ -27,6 +28,43 @@ namespace WPFLoadSimulation
         {
             InitializeComponent();
             client = ApiHttpClient.Dispatcher.GetInstance();
+            ShowOfferedLoads();
+            ShowAllTrucks();
+            ShowAllDrivers();
+            ShowAllClients();
+        }
+
+       
+        private async void ShowOfferedLoads()
+        {
+            IEnumerable<IApiCallResult> loads = await client.GetMany<Load>("loads");
+            List<Load> targetList = new List<Load>(loads.Cast<Load>());
+            LoadsAvailableDGW.DataContext = targetList;
+            return;
+        }
+
+        private async void ShowAllTrucks()
+        {
+            IEnumerable<IApiCallResult> trucks = await client.GetMany<Truck>("trucks");
+            List<Truck> targetList = new List<Truck>(trucks.Cast<Truck>());
+            TrucksDGV.DataContext = targetList;
+            return;
+        }
+
+        private async void ShowAllDrivers()
+        {
+            IEnumerable<IApiCallResult> drivers = await client.GetMany<Driver>("drivers");
+            List<Driver> targetList = new List<Driver>(drivers.Cast<Driver>());
+            DriversDGV.DataContext = targetList;
+            return;
+        }
+
+        private async void ShowAllClients()
+        {
+            IEnumerable<IApiCallResult> clients = await client.GetMany<Client>("clients");
+            List<Client> targetList = new List<Client>(clients.Cast<Client>());
+            ClientDGV.DataContext = targetList;
+            return;
         }
 
         private void ProfileChangeInfo_Click(object sender, RoutedEventArgs e)
@@ -79,18 +117,14 @@ namespace WPFLoadSimulation
             newtruck.Show();
         }
 
-        private async void RadioButton_Checked(object sender, RoutedEventArgs e)
+        private void RadioButton_Checked(object sender, RoutedEventArgs e)
         {
-            IEnumerable<IApiCallResult> trucks = await client.GetMany<Truck>("trucks");
-            List<Truck> targetList = new List<Truck>(trucks.Cast<Truck>());
-            return;
+            
         }
 
-        private async void RadioButton_Checked_1(object sender, RoutedEventArgs e)
+        private void RadioButton_Checked_1(object sender, RoutedEventArgs e)
         {
-            IEnumerable<IApiCallResult> drivers = await client.GetMany<Driver>("drivers");
-            List<Driver> targetList = new List<Driver>(drivers.Cast<Driver>());
-            return;
+            
         }
     }
 }

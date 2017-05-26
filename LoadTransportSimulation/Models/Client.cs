@@ -3,52 +3,40 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Common;
 
 namespace Models
 {
-    public class Client
+    public class Client : IApiCallResult
     {
         //private string companyName;
-        private string firstName;
-        private string lastName;
+        private string name;
         private string phone;
         private string email;
-        private Address address;
+        private string address;
         private List<Load> loads;
 
-        public Client(string fname, string lname, string phone, string email, Address address)
+        public Client(string name, string phone, string email, string address)
         {
-            this.firstName = fname;
-            this.lastName = lname;
+            this.Name = name;
             this.phone = phone;
             this.email = email;
             this.address = address;
             loads = new List<Load>();
         }
 
-        public string FirstName
+        public string Name
         {
             get
             {
-                return firstName;
+                return name;
             }
             set
             {
-                firstName = value;
+                name = value;
             }
         }
 
-        public string LastName
-        {
-            get
-            {
-                return lastName;
-            }
-            set
-            {
-                lastName = value;
-            }
-        }
 
         public string Phone
         {
@@ -74,7 +62,7 @@ namespace Models
             }
         }
 
-        public Address Address
+        public string Address
         {
             get
             {
