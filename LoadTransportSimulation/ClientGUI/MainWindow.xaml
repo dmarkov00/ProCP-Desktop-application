@@ -129,18 +129,16 @@
                                 </DataGrid>
 
                                 <Label Content="Loads within selected route" HorizontalAlignment="Left" Grid.Row="4" Grid.ColumnSpan="2" VerticalAlignment="Bottom" FontWeight="SemiBold" Padding="0" Margin="0,10,0,0"/>
-                                <DataGrid HorizontalAlignment="Stretch"  Grid.Row="5" Grid.ColumnSpan="2" VerticalAlignment="Stretch" Margin="0,0,0,20">
+                                <DataGrid Name="LoadsFromRouteDGV" ItemsSource="{Binding}" AutoGenerateColumns="false" HorizontalAlignment="Stretch"  Grid.Row="5" Grid.ColumnSpan="2" VerticalAlignment="Stretch" Margin="0,0,0,20">
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Start &#x0a;Location" Width="*"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="End &#x0a;Location" Width="*"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Client" Width="*"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Content" Width="*"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Weight" Width="*"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Max &#x0a;Delivery Time" Width="*"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Delay fee % &#x0a;per h" Width="*"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Full &#x0a;Salary" Width="*"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Final &#x0a;Salary" Width="*"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Time &#x0a;arrived" Width="*"/>
+                                        <DataGridTextColumn Binding="{Binding StartLocation}" ClipboardContentBinding="{x:Null}" Header="Start &#x0a;Location" Width="*"/>
+                                        <DataGridTextColumn Binding="{Binding EndLocation}" ClipboardContentBinding="{x:Null}" Header="End &#x0a;Location" Width="*"/>
+                                        <DataGridTextColumn Binding="{Binding Client.Name}" ClipboardContentBinding="{x:Null}" Header="Client" Width="*"/>
+                                        <DataGridTextColumn Binding="{Binding Content}" ClipboardContentBinding="{x:Null}" Header="Content" Width="*"/>
+                                        <DataGridTextColumn Binding="{Binding WeightKg}" ClipboardContentBinding="{x:Null}" Header="Weight" Width="*"/>
+                                        <DataGridTextColumn Binding="{Binding MaxArrivalTime}" ClipboardContentBinding="{x:Null}" Header="Max &#x0a;Delivery Time" Width="*"/>
+                                      <DataGridTextColumn Binding="{Binding SalaryEur}" ClipboardContentBinding="{x:Null}" Header="Final &#x0a;Salary" Width="*"/>
+                                        <DataGridTextColumn Binding="{Binding ActArrivalTime}" ClipboardContentBinding="{x:Null}" Header="Time &#x0a;arrived" Width="*"/>
                                         <DataGridTextColumn Header="Comment"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
@@ -169,12 +167,12 @@
                         <RowDefinition Height="4.5*" MaxHeight="240"/>
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0" HorizontalAlignment="Stretch" Orientation="Horizontal" Grid.ColumnSpan="3">
-                        <RadioButton Content="All trucks" Margin="10,10" Checked="RadioButton_Checked"/>
+                        <RadioButton Content="All trucks" Margin="10,10" />
                         <RadioButton Content="Current trucks" Margin="10,10" />
-                        <RadioButton Content="Past trucks" Margin="10,10"/>
+                        <RadioButton Content="Past trucks" Margin="10,10" />
                     </StackPanel>
                     <Label Content="Click on a truck to see maintenance schedule below" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Row="1" Padding="0" Grid.ColumnSpan="2" Margin="0,0,0,191.6" Grid.RowSpan="2"/>
-                    <DataGrid Name ="TrucksDGV" ItemsSource="{Binding}" AutoGenerateColumns="False" HorizontalAlignment="Stretch"  Grid.Row="2" Grid.ColumnSpan="3" VerticalAlignment="Stretch" >
+                    <DataGrid Name ="TrucksDGV" ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False" HorizontalAlignment="Stretch"  Grid.Row="2" Grid.ColumnSpan="3" VerticalAlignment="Stretch" >
                         <DataGrid.Columns>
                             <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Selected" Width="auto"/>
                             <DataGridTextColumn Binding="{Binding LicencePlate}" ClipboardContentBinding="{x:Null}" Header="Licence &#x0a;Plate" Width="*"/>
@@ -227,7 +225,7 @@
                     </Grid>
                     <Label Content="Assign new driver:" Grid.Column="2" Grid.Row="4" FontWeight="SemiBold" VerticalAlignment="Bottom" Padding="0"/>
                     <ComboBox Grid.Column="2" Grid.Row="5" HorizontalAlignment="Stretch" Height="30" Margin="10" VerticalAlignment="Top"/>
-                    <Button Content="Delete selected trucks" Grid.Column="2" HorizontalAlignment="Right" Grid.Row="3" VerticalAlignment="Top" Margin="10" Width="200" Height="30"/>
+                    <Button Name="bt_TrucksDeleteSelected" Content="Delete selected trucks" Grid.Column="2" HorizontalAlignment="Right" Grid.Row="3" VerticalAlignment="Top" Margin="10" Width="200" Height="30" Click="bt_TrucksDeleteSelected_Click"/>
                     <Button Name="TrucksAddNew" Click="TrucksAddNew_Click" Content="Add new truck" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Grid.Row="3" VerticalAlignment="Top" Margin="10" Width="200" Height="30"/>
                 </Grid>
             </TabItem>
@@ -245,7 +243,7 @@
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0" HorizontalAlignment="Stretch" Orientation="Horizontal">
-                        <RadioButton Content="All drivers" Margin="10,10" Checked="RadioButton_Checked_1"/>
+                        <RadioButton Content="All drivers" Margin="10,10" />
                         <RadioButton Content="Current drivers" Margin="10,10" />
                         <RadioButton Content="Past drivers" Margin="10,10"/>
 
@@ -253,7 +251,6 @@
 
                     <DataGrid Name="DriversDGV" AutoGenerateColumns="false" ItemsSource="{Binding}" HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Stretch" Grid.ColumnSpan="2" Grid.RowSpan="1" Margin="5,5,5,25">
                         <DataGrid.Columns>
-                            <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Selected" Width="auto"/>
                             <DataGridTextColumn Binding="{Binding FirstName}" ClipboardContentBinding="{x:Null}" Header="First Name" Width="*"/>
                             <DataGridTextColumn Binding="{Binding LastName}" ClipboardContentBinding="{x:Null}" Header="Last Name" Width="*"/>
                             <DataGridTextColumn Binding="{Binding Phone}" ClipboardContentBinding="{x:Null}" Header="Phone" Width="*"/>
@@ -261,7 +258,7 @@
                             <DataGridTextColumn Binding="{Binding IsBusy}" ClipboardContentBinding="{x:Null}" Header="Is Busy" />
                         </DataGrid.Columns>
                     </DataGrid>
-                    <Button Content="Delete selected drivers"  HorizontalAlignment="Right" Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Width="200" Height="30"/>
+                    <Button Name="DriverDeleteSelected" Content="Delete selected drivers"  HorizontalAlignment="Right" Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Width="200" Height="30" Click="bt_DriverDeleteSelected_Click"/>
                     <Button Name="DriversAddNew" Click="DriversAddNew_Click" Content="Add new driver"  HorizontalAlignment="Left" Grid.Row="2" Grid.Column="0" VerticalAlignment="Top" Width="250" Height="30"/>
 
                 </Grid>
@@ -283,7 +280,7 @@
                         <RadioButton Content="Past clients" Margin="10,10"/>
                     </StackPanel>
 
-                    <DataGrid Name ="ClientDGV" AutoGenerateColumns="False" ItemsSource="{Binding}" HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Stretch" Grid.ColumnSpan="2" Grid.RowSpan="1" Margin="5,5,5,25">
+                    <DataGrid Name ="ClientDGV" AutoGenerateColumns="False" ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Stretch" Grid.ColumnSpan="2" Grid.RowSpan="1" Margin="5,5,5,25">
                         <DataGrid.Columns>
                             <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Selected" Width="auto"/>
                             <DataGridTextColumn Binding="{Binding Name}" ClipboardContentBinding="{x:Null}" Header="First Name" Width="*"/>
@@ -295,7 +292,7 @@
                     </DataGrid>
                     <Button Name ="ClientsAddNew" Click="ClientsAddNew_Click" Content="Add new client" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Stretch" MaxHeight="30" Width="250" />
 
-                    <Button Content="Delete selected clients"  HorizontalAlignment="Right" Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Width="200" Height="30"/>
+                    <Button Name="bt_ClientsDeleteSelected" Content="Delete selected clients"  HorizontalAlignment="Right" Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Width="200" Height="30" Click="bt_ClientsDeleteSelected_Click"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Report" Padding="20,5" Margin="-6,0,1.2,-2.4">

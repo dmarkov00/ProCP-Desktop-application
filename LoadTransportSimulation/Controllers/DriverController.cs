@@ -44,7 +44,8 @@ namespace Controllers
 
         public string RemoveDriver(Driver t)
         {
-            return "Truck added successfully";
+            this.drivers.Remove(t);
+            return "Truck removed";
         }
 
         public List<Driver> GetAllDrivers()
@@ -60,7 +61,7 @@ namespace Controllers
         {
             return drivers;
         }
-        public Driver GetTruck(string id)
+        public Driver GetDriver(string id)
         {
             return drivers[0];
         }

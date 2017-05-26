@@ -14,7 +14,6 @@ namespace Models
         //private DateTime birthDate;
         private string phone;
         private string email;
-        private Truck currentTruck;
         private bool isBusy;
         //private bool isInCompany;
 
@@ -74,18 +73,7 @@ namespace Models
             }
         }
 
-        internal Truck CurrentTruck
-        {
-            get
-            {
-                return currentTruck;
-            }
-
-            set
-            {
-                currentTruck = value;
-            }
-        }
+       
 
         [JsonProperty("taken")]
         public bool IsBusy

@@ -47,5 +47,11 @@ namespace Controllers
             if(!clients.Contains(c))
             clients.Add(c);
         }
+
+        public void RemoveClient(Client c)
+        {
+            if (clients.Contains(c))
+                clients.Remove(c);
+        }
     }
 }

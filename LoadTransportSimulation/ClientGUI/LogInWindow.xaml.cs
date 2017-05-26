@@ -21,19 +21,15 @@ namespace WPFLoadSimulation
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
 
-            try
-            {
+            
                 await Login();
                 User.GetInstance();
                 MainWindow main = new MainWindow();
                 main.Show();
 
                 this.Close();
-            }
-            catch(Exception)
-            {
-                MessageBox.Show("Something went wrong with the Sign in!");
-            }
+            
+           
             
         }
 

@@ -33,25 +33,25 @@ namespace Controllers
             route.TotalTimeUsed = time;
         }
 
-        public void CalculateEstimatedSalary()
-        {
-            double sum = 0;
-            foreach (Load l in route.Loads)
-            {
-                sum += l.EstSalaryEur;
-            }
-            route.TotalEstimatedSalary = sum;
-        }
+        //public void CalculateEstimatedSalary()
+        //{
+        //    double sum = 0;
+        //    foreach (Load l in route.Loads)
+        //    {
+        //        sum += l.EstSalaryEur;
+        //    }
+        //    route.TotalEstimatedSalary = sum;
+        //}
 
-        public void CalculateActualSalary()
-        {
-            double sum = 0;
-            foreach (Load l in route.Loads)
-            {
-                sum += l.ActSalaryEur;
-            }
-            route.TotalActualSalary = sum;
-        }
+        //public void CalculateActualSalary()
+        //{
+        //    double sum = 0;
+        //    foreach (Load l in route.Loads)
+        //    {
+        //        sum += l.ActSalaryEur;
+        //    }
+        //    route.TotalActualSalary = sum;
+        //}
         public void CalculateFinalRevenue()
         {
             double final = route.TotalActualSalary - route.ActCost;

@@ -46,6 +46,7 @@ namespace Controllers
         }
         public string RemoveTruck(Truck t)
         {
+            trucks.Remove(t);
             return "Truck added successfully";
         }
         public List<Truck> GetAllTrucks()
