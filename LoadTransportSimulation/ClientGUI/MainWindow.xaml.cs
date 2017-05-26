@@ -24,46 +24,66 @@ namespace WPFLoadSimulation
     public partial class MainWindow : Window
     {
         ApiHttpClient.Dispatcher client;
+
+        private ClientController clientCtrl;
+        private DriverController driverCtrl;
+        private TruckController truckCtrl;
+        private LoadController loadCtrl;
+
         public MainWindow()
         {
             InitializeComponent();
             client = ApiHttpClient.Dispatcher.GetInstance();
+            Initialize();
             ShowOfferedLoads();
             ShowAllTrucks();
             ShowAllDrivers();
             ShowAllClients();
         }
 
-       
-        private async void ShowOfferedLoads()
+        private async void Initialize()
         {
             IEnumerable<IApiCallResult> loads = await client.GetMany<Load>("loads");
-            List<Load> targetList = new List<Load>(loads.Cast<Load>());
-            LoadsAvailableDGW.DataContext = targetList;
-            return;
-        }
+            List<Load> targetListLoads = new List<Load>(loads.Cast<Load>());
+            loadCtrl=LoadController.Create(targetListLoads);
 
-        private async void ShowAllTrucks()
-        {
             IEnumerable<IApiCallResult> trucks = await client.GetMany<Truck>("trucks");
-            List<Truck> targetList = new List<Truck>(trucks.Cast<Truck>());
-            TrucksDGV.DataContext = targetList;
-            return;
-        }
+            List<Truck> targetListTrucks = new List<Truck>(trucks.Cast<Truck>());
+            truckCtrl = TruckController.Create(targetListTrucks);
 
-        private async void ShowAllDrivers()
-        {
             IEnumerable<IApiCallResult> drivers = await client.GetMany<Driver>("drivers");
-            List<Driver> targetList = new List<Driver>(drivers.Cast<Driver>());
-            DriversDGV.DataContext = targetList;
+            List<Driver> targetListDrivers = new List<Driver>(drivers.Cast<Driver>());
+            driverCtrl = DriverController.Create(targetListDrivers);
+
+            IEnumerable<IApiCallResult> clients = await client.GetMany<Client>("clients");
+            List<Client> targetListClients = new List<Client>(clients.Cast<Client>());
+            clientCtrl = ClientController.Create(targetListClients);
+        }
+
+       
+        private void ShowOfferedLoads()
+        {    
+            LoadsAvailableDGW.DataContext = loadCtrl.GetAllLoads();
             return;
         }
 
-        private async void ShowAllClients()
+        private void ShowAllTrucks()
         {
-            IEnumerable<IApiCallResult> clients = await client.GetMany<Client>("clients");
-            List<Client> targetList = new List<Client>(clients.Cast<Client>());
-            ClientDGV.DataContext = targetList;
+            
+            TrucksDGV.DataContext = truckCtrl.GetAllTrucks();
+            return;
+        }
+
+        private void ShowAllDrivers()
+        {
+            
+            DriversDGV.DataContext = driverCtrl.GetAllDrivers();
+            return;
+        }
+
+        private void ShowAllClients()
+        {
+            ClientDGV.DataContext = clientCtrl.GetAllClients();
             return;
         }
 

@@ -37,7 +37,7 @@ namespace Controllers
             this.clients = clients;
         }
 
-        public List<Client> GetClients()
+        public List<Client> GetAllClients()
         {
             return clients;
         }
