@@ -1,18 +1,34 @@
 ﻿using Common;
+using System;
 using Newtonsoft.Json;
+using System.Windows;
+using System.Collections.Generic;
 
 namespace Models
 {
     public class User: IApiCallResult
     {
+        private static volatile User instance;
+        private static object syncRoot = new Object();
 
-        public User(string name, string email, string phone, string token)
+        public static User GetInstance()
         {
-            this.Name = name;
-            this.email = email;
-            this.phone = phone;
-            this.token = token;
+            if (instance != null)
+                return instance;
+            else
+                throw new Exception("Object not created");
         }
+        
+        public static User Create(User u)
+        {
+            lock (syncRoot)
+            {
+                if (instance == null)
+                    instance = u;
+            }
+            return instance;
+        }
+
         private string name;
         private string email;
         private string phone;

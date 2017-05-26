@@ -14,6 +14,7 @@ namespace Controllers
          */
         private static volatile ClientController instance;
         private static object syncRoot = new Object();
+
         public static ClientController GetInstance()
         {
             if (instance != null)
