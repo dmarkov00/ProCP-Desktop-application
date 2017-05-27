@@ -15,6 +15,7 @@ namespace Models
         private string email;
         private string address;
         private List<Load> loads;
+        private string id;
 
         public Client(string name, string phone, string email, string address)
         {
@@ -23,6 +24,18 @@ namespace Models
             this.email = email;
             this.address = address;
             loads = new List<Load>();
+        }
+
+        public string Id
+        {
+            get
+            {
+                return id;
+            }
+            set
+            {
+                id = value;
+            }
         }
 
         public string Name

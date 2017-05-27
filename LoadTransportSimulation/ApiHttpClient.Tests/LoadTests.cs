@@ -33,7 +33,7 @@ namespace ApiHttpClient.Tests
         [Test]
         public async Task Create_Load_Succesfully()
         {
-            Load expectedResult = new Load(1, 2, "Example load", 500, 1200, new DateTime(1994, 5, 5), 2);
+            Load expectedResult = new Load(1, 2, "Example load", 500, 1200, 1200, 0, new DateTime(1994, 5, 5), 2);
             IApiCallResult truck = await dispatcher.Post("loads", expectedResult);
 
         }

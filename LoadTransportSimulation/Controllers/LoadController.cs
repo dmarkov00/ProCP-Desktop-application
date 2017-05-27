@@ -48,7 +48,7 @@ namespace Controllers
         public List<Load> GetAvailableLoads()
         {
             List<Load> availableloads = new List<Load>();
-
+            
             foreach (Load l in loads)
             {
                 if (l.LoadState == LoadState.AVAILABLE)

@@ -128,12 +128,11 @@ namespace WPFLoadSimulation
         }
 
 
-        private void bt_DriverDeleteSelected_Click(object sender, RoutedEventArgs e)
+        private async void bt_DriverDeleteSelected_Click(object sender, RoutedEventArgs e)
         {
             
-            Console.WriteLine("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
             Driver driver = (Driver)DriversDGV.SelectedItem;
-            //string result = await client.Delete("drivers", driver.Id.toString());
+           string result = await client.Delete("drivers", driver.Id.ToString());
             driverCtrl.RemoveDriver(driver);
 
            DriversDGV.DataContext = null;
@@ -141,20 +140,20 @@ namespace WPFLoadSimulation
 
         }
 
-        private void bt_TrucksDeleteSelected_Click(object sender, RoutedEventArgs e)
+        private async void bt_TrucksDeleteSelected_Click(object sender, RoutedEventArgs e)
         {
             Truck t = (Truck)TrucksDGV.SelectedItem;
             truckCtrl.RemoveTruck(t);
-            //string result = await client.Delete("trucks", t.Id.toString());
+            string result = await client.Delete("trucks", t.Id);
             TrucksDGV.DataContext = null;
             TrucksDGV.DataContext = truckCtrl.GetAllTrucks();
         }
 
-        private void bt_ClientsDeleteSelected_Click(object sender, RoutedEventArgs e)
+        private async void bt_ClientsDeleteSelected_Click(object sender, RoutedEventArgs e)
         {
             Client c = (Client)ClientDGV.SelectedItem;
             clientCtrl.RemoveClient(c);
-            //string result = await client.Delete("clients", c.Id.toString());
+            string result = await client.Delete("clients", c.Id);
             ClientDGV.DataContext = null;
             ClientDGV.DataContext = clientCtrl.GetAllClients();
         }
