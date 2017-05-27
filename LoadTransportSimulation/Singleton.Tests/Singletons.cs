@@ -69,10 +69,10 @@ namespace Singleton.Tests
             List<Truck> trucks1 = new List<Truck>();
             List<Truck> trucks2 = new List<Truck>();
 
-            trucks1.Add(new Truck("asd", "asdew", 100, 100, 100, 100, 100));
-            trucks2.Add(new Truck("asd", "asdew", 200, 200, 200, 200, 200));
-            trucks1.Add(new Truck("lpm", "khoi", 10, 1000, 1300, 100, 1030));
-            trucks2.Add(new Truck("knoi", "iojk", 1020, 100, 10340, 100, 1100));
+            trucks1.Add(new Truck("asd", 1, 100, 100, 100, 100, 100));
+            trucks2.Add(new Truck("asd", 1, 200, 200, 200, 200, 200));
+            trucks1.Add(new Truck("lpm", 1, 10, 1000, 1300, 100, 1030));
+            trucks2.Add(new Truck("knoi", 1, 1020, 100, 10340, 100, 1100));
 
             Assert.AreEqual(2, trucks1.Count);
             Assert.AreEqual(2, trucks2.Count);

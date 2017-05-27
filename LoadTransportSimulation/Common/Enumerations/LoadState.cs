@@ -2,6 +2,6 @@
 {
     public enum LoadState
     {
-        AVAILABLE, ONTRANSPORT, DELIVERED
+        AVAILABLE=1, ONTRANSPORT=2, DELIVERED=3
     }
 }

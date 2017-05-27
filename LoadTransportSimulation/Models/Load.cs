@@ -11,7 +11,7 @@ namespace Models
 
 
         public Load(int startLocationID, int endLocationID, string content,
-            decimal weight, double fullsalary, double finalsal, double delay, DateTime maxarrival, int clientID)
+            decimal weight, double fullsalary, double finalsal, double delay, DateTime maxarrival, int clientID, int loadstatus)
         {
             this.StartLocationID = startLocationID;
             this.EndLocationID = endLocationID;
@@ -22,32 +22,37 @@ namespace Models
             this.DelayFeePercHour = delay;
             this.MaxArrivalTime = maxarrival;
             this.Client = clientID;
-            this.LoadState = LoadState.AVAILABLE;
+            this.LoadStateID = loadstatus;
 
             this.StartLocationCity = (City)StartLocationID;
             this.EndLocationCity = (City)EndLocationID;
-            
+            this.LoadState = (LoadState)LoadStateID;
+            this.ActArrivalTime = null;
         }
-        [JsonProperty("client_id")] 
+        [JsonProperty("client_id")]
         public int Client { get; set; }
         [JsonProperty("startLocation_id")]
         public int StartLocationID { get; private set; }
-        public City StartLocationCity { get; private set; }
+        public City StartLocationCity { get; set; }
         [JsonProperty("endLocation_id")]
         public int EndLocationID { get; private set; }
-        public City EndLocationCity { get; private set; }
+        public City EndLocationCity { get;  set; }
         public string Content { get; private set; }
         public decimal WeightKg { get; private set; }
         [JsonProperty("fullsalary")]
         public double FullSalaryEur { get; set; }
         [JsonProperty("finalsalary")]
-        public double FinalSalaryEur { get; set; }
+        public double? FinalSalaryEur { get; set; }
         [JsonProperty("delayfeePercHour")]
         public double DelayFeePercHour { get; set; }//delay fee percentage per one hour of delay
-        [JsonProperty("deadline")] 
-        public DateTime MaxArrivalTime { get; set; }
-        [JsonProperty("arrivaldate")] 
-        public DateTime ActArrivalTime { get; set; }
+        [JsonProperty("deadline")]
+        public DateTime? MaxArrivalTime { get; set; }
+        [JsonProperty("arrivaldate")]
+        public DateTime? ActArrivalTime { get; set; }
+
+        [JsonProperty("loadstatus")]
+        public int LoadStateID {get; set;}
+
         public LoadState LoadState { get; set; }
         [JsonProperty("id")]
         public int ID { get; private set; }
@@ -58,16 +63,22 @@ namespace Models
             double finalsalary = 0;
             double delayfee = 0;
 
-            TimeSpan delaytime = (ActArrivalTime - MaxArrivalTime);
-            double delayhours = delaytime.TotalHours;
-            if (delayhours > 0)
-            {
-                delayfee = delayhours * (FullSalaryEur * (Convert.ToDouble(DelayFeePercHour) / 100));
-            }
+            TimeSpan? delaytime = (ActArrivalTime - MaxArrivalTime);
+            
+            //double delayhours = delaytime.TotalHours;
+            //if (delayhours > 0)
+            //{
+            //    delayfee = delayhours * (FullSalaryEur * (Convert.ToDouble(DelayFeePercHour) / 100));
+            //}
 
             finalsalary = FullSalaryEur - delayfee;
             FinalSalaryEur = finalsalary;
             return finalsalary;
+        }
+
+        public override string ToString()
+        {
+            return this.StartLocationCity + " - " + this.EndLocationCity + " - " + this.MaxArrivalTime;
         }
 
     }

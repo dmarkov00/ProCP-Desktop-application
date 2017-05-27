@@ -30,7 +30,7 @@ namespace WPFLoadSimulation
         {
             try
             {
-                Truck expectedResult = new Truck(licencePlate.Text, "1", Convert.ToInt32(payloadCapacity.Text), Convert.ToInt32(weight.Text), Convert.ToDouble(width.Text), Convert.ToDouble(height.Text), Convert.ToDouble(length.Text));
+                Truck expectedResult = new Truck(licencePlate.Text, 1, Convert.ToInt32(payloadCapacity.Text), Convert.ToInt32(weight.Text), Convert.ToDouble(width.Text), Convert.ToDouble(height.Text), Convert.ToDouble(length.Text));
                 IApiCallResult truck = await ApiHttpClient.Dispatcher.GetInstance().Post("trucks", expectedResult);
                 this.Close();
             }

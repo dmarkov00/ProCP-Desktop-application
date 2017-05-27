@@ -7,7 +7,7 @@ namespace Models
 {
     public class Truck:IApiCallResult
     {
-        public Truck(string licencePlate, string location_id, int payloadCapacityKg, int weightKg, double widthInMeters, double heightInMeters, double lengthInMeters)
+        public Truck(string licencePlate, int location_id, int payloadCapacityKg, int weightKg, double widthInMeters, double heightInMeters, double lengthInMeters)
         {
             this.LicencePlate = licencePlate;
             this.Location_id = location_id;
@@ -16,12 +16,14 @@ namespace Models
             this.WidthInMeters = widthInMeters;
             this.HeightInMeters = heightInMeters;
             this.LengthInMeters = lengthInMeters;
+            this.LocationCity = (City)Location_id;
         }
         private string id;
         private string licencePlate;
         private string company_id;
         private string driver_id;
-        private string location_id;
+        private int location_id;
+        private City locationCity;
         private bool broken;
         private Driver currentDriver;
         private double avgFuelConsumpt;
@@ -33,6 +35,18 @@ namespace Models
         private bool isBusy;
         private bool isInCompany;
         private List<TruckMaintenance> maintenanceList;
+
+        public City LocationCity
+        {
+            get
+            {
+                return locationCity;
+            }
+            set
+            {
+                locationCity = value;
+            }
+        }
 
         [JsonProperty("licensePlate")]
         public string LicencePlate
@@ -62,7 +76,7 @@ namespace Models
         }
 
         
-        [JsonProperty("avgFuelConsumption")]
+        [JsonProperty("avgFuelComsumption")]
         public double AvgFuelConsumpt
         {
             get
@@ -206,7 +220,7 @@ namespace Models
             }
         }
         [JsonProperty("location_id")]
-        public string Location_id
+        public int Location_id
         {
             get
             {
@@ -237,6 +251,11 @@ namespace Models
         {
 
             return "Maintenance added successfully";
+        }
+
+        public override string ToString()
+        {
+            return this.LicencePlate + " - Location: " + this.LocationCity + " - Capacity Kg: " + this.PayloadCapacityKg;
         }
     }
 }

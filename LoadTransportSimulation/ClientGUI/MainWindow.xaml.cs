@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Controllers;
+using GoogleApiIntegration;
 
 namespace WPFLoadSimulation
 {
@@ -29,6 +30,7 @@ namespace WPFLoadSimulation
         private DriverController driverCtrl;
         private TruckController truckCtrl;
         private LoadController loadCtrl;
+        private RouteController routeCtrl;
 
         public MainWindow()
         {
@@ -38,16 +40,23 @@ namespace WPFLoadSimulation
             CreateTruckController();
             CreateDriverController();
             CreateLoadController();
-            
+            CreateRouteController();
         }
+
         
+        
+        private void CreateRouteController()
+        {
+            List<Route> routes = new List<Route>();
+            routeCtrl = RouteController.Create(routes);
+        } 
 
         private async void CreateLoadController()
         {
             IEnumerable<IApiCallResult> loads = await client.GetMany<Load>("loads");
             List<Load> targetListLoads = new List<Load>(loads.Cast<Load>());
             loadCtrl = LoadController.Create(targetListLoads);
-            LoadsAvailableDGW.DataContext = loadCtrl.GetAllLoads();
+            LoadsAvailableDGW.DataContext = loadCtrl.GetAvailableLoads();
             LoadsFromRouteDGV.DataContext = loadCtrl.GetAllLoads();
             return;
         }
@@ -59,6 +68,13 @@ namespace WPFLoadSimulation
             List<Truck> targetListTrucks = new List<Truck>(trucks.Cast<Truck>());
             truckCtrl = TruckController.Create(targetListTrucks);
             TrucksDGV.DataContext = truckCtrl.GetAllTrucks();
+
+
+            foreach (Truck t in truckCtrl.GetAvailableTrucks())
+            {
+                cb_assignTruckToRoute.Items.Add(t);
+            }
+
             return;
         }
 
@@ -115,11 +131,7 @@ namespace WPFLoadSimulation
             newclient.Show();
         }
 
-        private void LoadsAddNewLoad_Click(object sender, RoutedEventArgs e)
-        {
-            NewLoadWindow newload = new NewLoadWindow();
-            newload.Show();
-        }
+        
 
         private void TrucksAddNew_Click(object sender, RoutedEventArgs e)
         {
@@ -156,6 +168,47 @@ namespace WPFLoadSimulation
             string result = await client.Delete("clients", c.Id);
             ClientDGV.DataContext = null;
             ClientDGV.DataContext = clientCtrl.GetAllClients();
+        }
+
+        private void bt_LoadsAddToRoute_Click(object sender, RoutedEventArgs e)
+        {
+            foreach(Load l in LoadsAvailableDGW.SelectedItems)
+            {
+                lb_selectedLoadsForRoute.Items.Add(l);
+                LoadsAvailableDGW.Items.Remove(l);
+            }
+        }
+
+        
+
+        private void bt_calculateEstimation_Click(object sender, RoutedEventArgs e)
+        {
+            lb_routeEstimation.Items.Clear();
+            List<Load> loads = new List<Load>();
+            foreach (Load l in lb_selectedLoadsForRoute.Items)
+            {
+                loads.Add(l);
+            }
+
+            Route route = new Route(loads);
+            route.Truck = (Truck)cb_assignTruckToRoute.SelectedItem;
+            routeCtrl.SetEstimations(route);
+            lb_routeEstimation.Items.Add("Estimated distance: " +route.EstDistanceKm + "km");
+            lb_routeEstimation.Items.Add("Estimated time: " 
+                + route.EstTimeDrivingTimeSpan.Days + "days:"
+                + route.EstTimeDrivingTimeSpan.Hours + "hh:"
+                + route.EstTimeDrivingTimeSpan.Minutes + "min");
+            lb_routeEstimation.Items.Add("Estimated fuel consump: " + route.EstFuelConsumptionLiters +"L");
+        }
+
+        private void LoadsAvailableDGW_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            lb_selectedLoadsForRoute.Items.Add(LoadsAvailableDGW.SelectedItem);
+        }
+
+        private void lb_selectedLoadsForRoute_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            lb_selectedLoadsForRoute.Items.Remove(lb_selectedLoadsForRoute.SelectedItem);
         }
     }
 }

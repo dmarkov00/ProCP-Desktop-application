@@ -53,6 +53,10 @@
       <Project>{cd31907c-9b91-4af5-a576-1e75d2ec7a0f}</Project>
       <Name>Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\GoogleApiIntegration\GoogleApiIntegration.csproj">
+      <Project>{96047cc3-8c23-43c6-b643-9c9b00bcfa47}</Project>
+      <Name>GoogleApiIntegration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Models\Models.csproj">
       <Project>{9cc65c70-5773-4836-b90c-70f9a7eac5e0}</Project>
       <Name>Models</Name>

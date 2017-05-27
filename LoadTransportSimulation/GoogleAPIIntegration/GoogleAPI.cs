@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Common;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Common.Enumerations;
 
 namespace GoogleApiIntegration
 {
@@ -34,8 +36,11 @@ namespace GoogleApiIntegration
         //string request = @"https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=Washington,DC&destinations=New+York+City,NY&key=YOUR_API_KEY";
         public string calculatedistance(int indexStart, int indexDest)
         {
-            string start = privateNames[indexStart];
-            string end = privateNames[indexDest];
+            City startcity = (City)indexStart;
+            City endCity = (City)indexDest;
+
+            string start = startcity.ToString();
+            string end = endCity.ToString();
             string html = string.Empty;
             string url = @"https://maps.googleapis.com/maps/api/distancematrix/xml?origins="
             + start + "&destinations=" + end + "&key=AIzaSyB6R-ta400Xr4tVfEAqk3h7E1iUHB2rVOE";
@@ -49,13 +54,41 @@ namespace GoogleApiIntegration
             {
                 html = reader.ReadToEnd();
             }
-
-
             XDocument doc = XDocument.Load(url);
             var authors = doc.Descendants("distance").Descendants("text");
             foreach (var author in authors)
             {
                 return author.Value.Remove(author.Value.Length - 3);
+            }
+
+            return html;
+        }
+
+        public string calculatetime(int indexStart, int indexDest)
+        {
+            City startcity = (City)indexStart;
+            City endCity = (City)indexDest;
+
+            string start = startcity.ToString();
+            string end = endCity.ToString();
+            string html = string.Empty;
+            string url = @"https://maps.googleapis.com/maps/api/distancematrix/xml?origins="
+            + start + "&destinations=" + end + "&key=AIzaSyB6R-ta400Xr4tVfEAqk3h7E1iUHB2rVOE";
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.AutomaticDecompression = DecompressionMethods.GZip;
+
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            using (Stream stream = response.GetResponseStream())
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                html = reader.ReadToEnd();
+            }
+            XDocument doc = XDocument.Load(url);
+            var authors = doc.Descendants("duration").Descendants("value");
+            foreach (var author in authors)
+            {
+                return author.Value;
             }
 
             return html;
