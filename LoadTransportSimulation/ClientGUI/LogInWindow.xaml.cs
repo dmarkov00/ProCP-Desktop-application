@@ -22,8 +22,8 @@ namespace WPFLoadSimulation
         {
 
             
-                await Login();
-                User.GetInstance();
+                //await Login();
+                //User.GetInstance();
                 MainWindow main = new MainWindow();
                 main.Show();
 

@@ -55,9 +55,9 @@ namespace Singleton.Tests
             List<Load> loads1 = new List<Load>();
             List<Load> loads2 = new List<Load>();
 
-            loads1.Add(new Load(new Address(1,"asd","asd","asdfw","asew"), new Address(1, "asd", "asd", "asdfw", "asew"), "1234455", 123,345, new DateTime(), new Client("Bob Dylan", "1234455", "email",  "as")));
-            loads2.Add(new Load(new Address(1, "asd", "asd", "asdfw", "asew"), new Address(1, "asd", "asd", "asdfw", "asew"), "1234455", 123, 345, new DateTime(), new Client("Bob Dylan", "1234455", "email", "as")));
-            loads2.Add(new Load(new Address(1, "asd", "asd", "asdfw", "asew"), new Address(1, "asd", "asd", "asdfw", "asew"), "1234455", 123, 345, new DateTime(), new Client("Bob Dylan", "1234455", "email",  "as")));
+            //loads1.Add(new Load(new Address(1,"asd","asd","asdfw","asew"), new Address(1, "asd", "asd", "asdfw", "asew"), "1234455", 123,345, new DateTime(), new Client("Bob Dylan", "1234455", "email",  "as")));
+            //loads2.Add(new Load(new Address(1, "asd", "asd", "asdfw", "asew"), new Address(1, "asd", "asd", "asdfw", "asew"), "1234455", 123, 345, new DateTime(), new Client("Bob Dylan", "1234455", "email", "as")));
+            //loads2.Add(new Load(new Address(1, "asd", "asd", "asdfw", "asew"), new Address(1, "asd", "asd", "asdfw", "asew"), "1234455", 123, 345, new DateTime(), new Client("Bob Dylan", "1234455", "email",  "as")));
 
             Assert.That(() => Controllers.LoadController.GetInstance(),
                 Throws.TypeOf<Exception>());            

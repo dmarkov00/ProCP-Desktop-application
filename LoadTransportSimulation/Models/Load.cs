@@ -1,34 +1,43 @@
 ﻿using System;
 using Common.Enumerations;
 using Common;
+using Newtonsoft.Json;
+
 namespace Models
 {
     public class Load : IApiCallResult
     {
 
-        public Client Client { get; set; }
-        public Address StartLocation { get; private set; }
-        public Address EndLocation { get; private set; }
-        public string Content { get; private set; }
-        public decimal WeightKg { get; private set; }
-        public double SalaryEur { get; set; }  //delay fee percentage per one hour of delay
-        public DateTime MaxArrivalTime { get;  set; }
-        public DateTime ActArrivalTime { get; set; }
-        public LoadState LoadState { get; set; }
-        public int LoadId { get; private set; }
 
-        public Load(Address start, Address end, string content,
-            decimal weight, double salary,  DateTime maxarrival, Client client)
+
+        public Load(int startLocationID, int endLocationID, string content,
+            decimal weight, double salary, DateTime maxarrival, int clientID)
         {
-            this.StartLocation = start;
-            this.EndLocation = end;
+            this.StartLocationID = startLocationID;
+            this.EndLocationID = startLocationID;
             this.Content = content;
             this.WeightKg = weight;
             this.SalaryEur = salary;
             this.MaxArrivalTime = maxarrival;
-            this.Client = client;
+            this.Client = clientID;
             this.LoadState = LoadState.AVAILABLE;
         }
+        [JsonProperty("client_id")] 
+        public int Client { get; set; }
+        [JsonProperty("startLocation_id")]
+        public int StartLocationID { get; private set; }
+        [JsonProperty("endLocation_id")]
+        public int EndLocationID { get; private set; }
+        public string Content { get; private set; }
+        public decimal WeightKg { get; private set; }
+        public double SalaryEur { get; set; }  //delay fee percentage per one hour of delay
+        [JsonProperty("deadline")] 
+        public DateTime MaxArrivalTime { get; set; }
+        [JsonProperty("actualArrivalTime")] 
+        public DateTime ActArrivalTime { get; set; }
+        public LoadState LoadState { get; set; }
+        [JsonProperty("id")]
+        public int ID { get; private set; }
 
         //public double CalculateFinalSalary()
         //{

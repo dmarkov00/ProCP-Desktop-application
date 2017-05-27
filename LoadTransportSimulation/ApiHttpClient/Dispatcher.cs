@@ -11,7 +11,8 @@ namespace ApiHttpClient
     {
 
         private static readonly HttpClient client = new HttpClient();
-
+        private static HttpClient httpClient;
+        private static ApiCRUD apiCRUD;
         //Singleton implemented
         //To access it use Dispatcher.GetInstance()
 
@@ -39,8 +40,7 @@ namespace ApiHttpClient
             apiCRUD = new ApiCRUD(httpClient);
 
         }
-        private static HttpClient httpClient;
-        private static ApiCRUD apiCRUD;
+      
         public async Task<IApiCallResult> Get<T>(string requestUri, string id)
         {
             return await apiCRUD.GetAsync<T>(requestUri, id);

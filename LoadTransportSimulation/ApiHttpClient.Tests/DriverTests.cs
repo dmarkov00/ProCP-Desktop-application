@@ -16,9 +16,9 @@ namespace ApiHttpClient.Tests
         public async Task Getting_Driver_By_Id_Successfully()
         {
             //Ask the API to provide driver with id 2
-            Driver driver = (Driver)await dispatcher.Get<Truck>("trucks", "1");
+            Driver driver = (Driver)await dispatcher.Get<Driver>("drivers", "2");
             //We make sure the driver id is 2
-            Assert.AreEqual(driver.Id, "2");
+            Assert.AreEqual(driver.FirstName, "Daf");
         }
 
         [Test]

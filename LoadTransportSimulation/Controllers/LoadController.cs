@@ -88,7 +88,7 @@ namespace Controllers
         {
             foreach (Load l in loads)
             {
-                if (l.LoadId == loadid)
+                if (l.ID == loadid)
                     return l;
             }
             return null;
