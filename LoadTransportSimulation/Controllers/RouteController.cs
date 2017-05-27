@@ -55,7 +55,7 @@ namespace Controllers
             r.EstTimeDrivingMinutes = Convert.ToInt32(r.EstTimeDrivingTimeSpan.TotalMinutes);
 
             GoogleAPI api = new GoogleAPI();
-            r.EstFuelConsumptionLiters = Convert.ToInt32(api.calculateFuelConsumption(r.EstDistanceKm.ToString(),r.Truck.AvgFuelConsumpt));
+            r.EstFuelConsumptionLiters = Convert.ToInt32(api.calculateFuelConsumption(Convert.ToInt32(r.EstDistanceKm),r.Truck.AvgFuelConsumpt));
         }
 
 
@@ -69,8 +69,7 @@ namespace Controllers
 
             try
             {
-                string truckToFirstLoad = googleapi.calculatedistance(r.Truck.Location_id, r.Loads[0].StartLocationID);
-                km += Convert.ToInt32(truckToFirstLoad);
+                km= googleapi.calculatedistance(r.Truck.Location_id, r.Loads[0].StartLocationID);
 
                 for (int i = 0; i < r.Loads.Count; i++)
                 {

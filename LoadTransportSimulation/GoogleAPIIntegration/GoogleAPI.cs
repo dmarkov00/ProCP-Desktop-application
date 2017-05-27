@@ -34,8 +34,9 @@ namespace GoogleApiIntegration
         }
         //private string apiKEY;
         //string request = @"https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=Washington,DC&destinations=New+York+City,NY&key=YOUR_API_KEY";
-        public string calculatedistance(int indexStart, int indexDest)
+        public int calculatedistance(int indexStart, int indexDest)
         {
+            //i exchanged the list for the enumeration and consume "value" instead of "text"
             City startcity = (City)indexStart;
             City endCity = (City)indexDest;
 
@@ -55,13 +56,14 @@ namespace GoogleApiIntegration
                 html = reader.ReadToEnd();
             }
             XDocument doc = XDocument.Load(url);
-            var authors = doc.Descendants("distance").Descendants("text");
+            var authors = doc.Descendants("distance").Descendants("value");
             foreach (var author in authors)
             {
-                return author.Value.Remove(author.Value.Length - 3);
+                int dist = Convert.ToInt32(author.Value);
+                return dist / 1000;
             }
 
-            return html;
+            return 0;
         }
 
         public string calculatetime(int indexStart, int indexDest)
@@ -94,23 +96,26 @@ namespace GoogleApiIntegration
             return html;
         }
 
-        public double calculateFuelConsumption(string distance, double consumptionPerHundredKM)
+        public double calculateFuelConsumption(int distance, double consumptionPerHundredKM)
         {
             double fuelCons = consumptionPerHundredKM;
-            double dist = 0;
-            var count = distance.Count(x => x == ',');
-            if (Double.TryParse(distance, out dist))
-            {
-                if (count != 0)
-                {
-                    dist = dist * (10 ^ count);
-                }
-                else
-                {
-                    dist = dist / 100;
-                }
-                fuelCons = dist * fuelCons;
-            }
+            double dist = distance;
+
+
+            //var count = distance.Count(x => x == ',');
+            //if (Double.TryParse(distance, out dist))
+            //{
+            //    if (count != 0)
+            //    {
+            //        dist = dist * (10 ^ count);
+            //    }
+            //    else
+            //    {
+            //        dist = dist / 100;
+            //    }
+            //    fuelCons = dist * fuelCons;
+            //}
+            fuelCons = dist * fuelCons;
             return fuelCons;
         }
     }
