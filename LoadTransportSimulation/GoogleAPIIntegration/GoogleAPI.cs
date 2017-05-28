@@ -96,27 +96,6 @@ namespace GoogleApiIntegration
             return html;
         }
 
-        public double calculateFuelConsumption(int distance, double consumptionPerHundredKM)
-        {
-            double fuelCons = consumptionPerHundredKM;
-            double dist = distance;
-
-
-            //var count = distance.Count(x => x == ',');
-            //if (Double.TryParse(distance, out dist))
-            //{
-            //    if (count != 0)
-            //    {
-            //        dist = dist * (10 ^ count);
-            //    }
-            //    else
-            //    {
-            //        dist = dist / 100;
-            //    }
-            //    fuelCons = dist * fuelCons;
-            //}
-            fuelCons = dist * (fuelCons/100);
-            return fuelCons;
-        }
+        
     }
 }

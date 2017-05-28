@@ -50,74 +50,21 @@ namespace Controllers
 
         public void SetEstimations(Route r)
         {
-           r.EstDistanceKm = CalculateFullDistance(r);
-            r.EstTimeDrivingTimeSpan = GetFullTimeDriving(r);
-            r.EstTimeDrivingMinutes = Convert.ToInt32(r.EstTimeDrivingTimeSpan.TotalMinutes);
-
-            GoogleAPI api = new GoogleAPI();
-            r.EstFuelConsumptionLiters = Convert.ToInt32(api.calculateFuelConsumption(Convert.ToInt32(r.EstDistanceKm),r.Truck.AvgFuelConsumpt));
-        }
-
-
-        /// <summary>
-        /// Calculates full distance: trucks location -> first load startpoint -> first load endpoint -> second load startpoint ...
-        /// </summary>
-        public int CalculateFullDistance(Route r)
-        {  
-            GoogleAPI googleapi = new GoogleAPI();
-            int km = 0;
-
             try
             {
-                km= googleapi.calculatedistance(r.Truck.Location_id, r.Loads[0].StartLocationID);
-
-                for (int i = 0; i < r.Loads.Count; i++)
-                {
-                    km += Convert.ToInt32(googleapi.calculatedistance(r.Loads[i].StartLocationID, r.Loads[i].EndLocationID));
-                    
-                    if (r.Loads.Count - 1 == i)
-                        return km;
-
-                    else
-                        km += Convert.ToInt32(googleapi.calculatedistance(r.Loads[i].EndLocationID, r.Loads[i + 1].StartLocationID));
-
-                }
-                return km;
+                r.CalculateEstFullDistance();
+                r.CalculateEstFullTimeDriving();
+                r.CalculateEstFuelConsumption();
+                r.CalculateEstFuelCost();
+                r.CalculateEstimatedSalary();
             }
             catch (Exception)
             {
-                return 0;
+                return;
             }
             
         }
-
-        public TimeSpan GetFullTimeDriving(Route r)
-        {
-            GoogleAPI googleapi = new GoogleAPI();
-            long seconds = 0;
-
-            try
-            {
-                seconds += Convert.ToInt64(googleapi.calculatetime(r.Truck.Location_id, r.Loads[0].StartLocationID));
-                
-                for (int i = 0; i < r.Loads.Count; i++)
-                {
-                    seconds += Convert.ToInt64(googleapi.calculatetime(r.Loads[i].StartLocationID, r.Loads[i].EndLocationID));
-
-                    if (r.Loads.Count - 1 == i)
-                        return TimeSpan.FromSeconds(seconds);
-
-                    else
-                       seconds += Convert.ToInt64(googleapi.calculatetime(r.Loads[i].EndLocationID, r.Loads[i + 1].StartLocationID));
-
-                }
-                return TimeSpan.FromSeconds(seconds);
-            }
-            catch (Exception)
-            {
-                return  TimeSpan.FromSeconds(seconds);
-            }
-        }
+        
         
     }
 }

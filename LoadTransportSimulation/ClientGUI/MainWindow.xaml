@@ -77,13 +77,31 @@
                                                 </Grid.RowDefinitions>
                                                 <Label Content="Route information" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" FontWeight="SemiBold" Padding="0,3,0,0"/>
                                                 <Label Content="Current loads for this route:" HorizontalAlignment="Left"  Grid.Row="1" Grid.Column="0" VerticalAlignment="Bottom" Padding="0,0,0,0"/>
-                                                <ListBox Name="lb_selectedLoadsForRoute" HorizontalAlignment="Stretch"  Grid.Row="2" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" VerticalAlignment="Stretch" Margin="0,0,10,0" MouseDoubleClick="lb_selectedLoadsForRoute_MouseDoubleClick" IsManipulationEnabled="True" />
-                                                <Label Content="Assign a truck for the route:" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="3" Grid.RowSpan="1" VerticalAlignment="Bottom" Padding="0,0,0,0" />
+                                                <ListView Name="lb_selectedLoadsForRoute" ItemsSource="{Binding}" HorizontalAlignment="Stretch"  Grid.Row="2" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" VerticalAlignment="Stretch" Margin="0,0,10,0" MouseDoubleClick="lb_selectedLoadsForRoute_MouseDoubleClick" IsManipulationEnabled="True" >
+                                                    <ListView.View>
+                                                        <GridView>
+                                                            <GridViewColumn Header="Start" DisplayMemberBinding="{Binding StartLocationCity}" Width="auto"/>
+                                                            <GridViewColumn Header="End" DisplayMemberBinding="{Binding EndLocationCity}" Width="auto"/>
+                                                            <GridViewColumn Header="Deadline" DisplayMemberBinding="{Binding MaxArrivalTime}" Width="auto"/>
+                                                            <GridViewColumn Header="Content" DisplayMemberBinding="{Binding Content}" Width="auto"/>
+                                                            <GridViewColumn Header="Salary" DisplayMemberBinding="{Binding FullSalaryEur}" Width="auto"/>
+                                                        </GridView>
+                                                    </ListView.View>
+                                                </ListView>
+                                                <Label Content="Assign a truck for the route:" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="3" Grid.RowSpan="1" VerticalAlignment="Bottom" Padding="0,0,0,0"/>
                                                 <ComboBox Name="cb_assignTruckToRoute" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="1" Margin="160,10,10,0" HorizontalAlignment="Stretch" MaxHeight="30" VerticalAlignment="Bottom"/>
                                                 <Button Name="bt_calculateEstimation" Content="Calculate estimation" HorizontalAlignment="Stretch" Grid.Row="4" VerticalAlignment="Stretch" Margin="0, 10, 10, 0" Height="30" Click="bt_calculateEstimation_Click"/>
                                                 <Button Content="Submit Route" Grid.Column="1" HorizontalAlignment="Stretch" Margin="0, 10,0,0" Grid.Row="4" VerticalAlignment="Stretch" Height="30" FontWeight="Medium" />
                                                 <Label Content="Route estimation" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Bottom" Padding="0,0,0,0"/>
-                                                <ListBox Name="lb_routeEstimation" Grid.Column="1"  HorizontalAlignment="Stretch"  Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Stretch" />
+                                                <ListView Name="lb_routeEstimation" Grid.Column="1"  HorizontalAlignment="Stretch"  Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Stretch" >
+                                                    <ListView.View>
+                                                        <GridView>
+                                                            <GridViewColumn Header="Description" DisplayMemberBinding="{Binding description}" Width="auto"/>
+                                                            <GridViewColumn Header="Result" DisplayMemberBinding="{Binding result}" Width="auto"/>
+                                                            <GridViewColumn Header="Unit" DisplayMemberBinding="{Binding unit}" Width="auto"/>
+                                                        </GridView>
+                                                    </ListView.View>
+                                                </ListView>
                                             </Grid>
                                         </TabItem>
                                     </TabControl>

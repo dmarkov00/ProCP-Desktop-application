@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GoogleApiIntegration;
 
 namespace Models
 {
@@ -15,15 +16,15 @@ namespace Models
 
         public TimeSpan EstTimeDrivingTimeSpan { get; set; }
         public int EstTimeDrivingMinutes { get; set; }
-        public decimal EstDistanceKm { get; set; }
+        public int EstDistanceKm { get; set; }
         public int EstFuelConsumptionLiters { get; set; }
-        public double EstCost { get; set; }
+        public double EstFuelCost { get; set; }
 
         public TimeSpan ActTimeDrivingTimeSpan { get; set; }
         public int ActTimeDrivingMinutes { get; set; }
-        public decimal ActDistanceKm { get; set; }
+        public int ActDistanceKm { get; set; }
         public int ActFuelConsumptionLiters { get; set; }
-        public double ActCost { get; set; }
+        public double ActFuelCost { get; set; }
 
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
@@ -46,31 +47,134 @@ namespace Models
             this.TotalTimeUsed = time;
         }
 
-        //public void CalculateEstimatedSalary()
-        //{
-        //    double sum = 0;
-        //    foreach (Load l in route.Loads)
-        //    {
-        //        sum += l.EstSalaryEur;
-        //    }
-        //    route.TotalEstimatedSalary = sum;
-        //}
-
-        //public void CalculateActualSalary()
-        //{
-        //    double sum = 0;
-        //    foreach (Load l in route.Loads)
-        //    {
-        //        sum += l.ActSalaryEur;
-        //    }
-        //    route.TotalActualSalary = sum;
-        //}
-        public void CalculateFinalRevenue()
+        /// <summary>
+        /// Salary earned if all loads are delivered on time
+        /// </summary>
+        public void CalculateEstimatedSalary()
         {
-            double final = TotalActualSalary - ActCost;
-            FinalRevenue = final;
+            double sum = 0;
+            foreach (Load l in Loads)
+            {
+                sum += l.FullSalaryEur;
+            }
+            this.TotalEstimatedSalary = sum;
         }
 
-        //methods to calculate cost and set other route properties
+        /// <summary>
+        /// Salary earned after delays and fees are calculated off
+        /// </summary>
+        public void CalculateActualSalary()
+        {
+            double sum = 0;
+            foreach (Load l in Loads)
+            {
+                sum += (Double)l.FinalSalaryEur;
+            }
+            this.TotalActualSalary = sum;
+        }
+
+        /// <summary>
+        /// Calculates final revenue (all salaries earned from loads - fuelcost)
+        /// </summary>
+        public void CalculateFinalRevenue()
+        {
+            double final = TotalActualSalary - ActFuelCost;
+            FinalRevenue = final;
+        }
+        
+        /// <summary>
+        /// Calculates estimated fuel consumption per current route
+        /// </summary>
+        /// <returns></returns>
+        public void CalculateEstFuelConsumption()
+        {
+            int fuelCons = Convert.ToInt32(EstDistanceKm * (Truck.AvgFuelConsumpt / 100));
+            this.EstFuelConsumptionLiters = fuelCons;
+        }
+
+        /// <summary>
+        /// Calculates full distance: trucks location -> first load startpoint -> first load endpoint -> second load startpoint ...
+        /// </summary>
+        public void CalculateEstFullDistance()
+        {
+            GoogleAPI googleapi = new GoogleAPI();
+            int km = 0;
+
+            try
+            {
+                km = googleapi.calculatedistance(Truck.Location_id, Loads[0].StartLocationID);
+
+                for (int i = 0; i < Loads.Count; i++)
+                {
+                    km += Convert.ToInt32(googleapi.calculatedistance(Loads[i].StartLocationID, Loads[i].EndLocationID));
+
+                    if (Loads.Count - 1 == i)
+                    {
+                        this.EstDistanceKm = km;
+                    }
+
+                    else
+                        km += Convert.ToInt32(googleapi.calculatedistance(Loads[i].EndLocationID, Loads[i + 1].StartLocationID));
+
+                }
+                this.EstDistanceKm = km;
+            }
+            catch (Exception)
+            {
+                this.EstDistanceKm=0;
+            }
+
+        }
+
+
+        /// <summary>
+        /// Calculates time needed to finish the route
+        /// </summary>
+        /// <returns></returns>
+        public void CalculateEstFullTimeDriving()
+        {
+            GoogleAPI googleapi = new GoogleAPI();
+            long seconds = 0;
+
+            try
+            {
+                seconds += Convert.ToInt64(googleapi.calculatetime(Truck.Location_id, Loads[0].StartLocationID));
+
+                for (int i = 0; i < Loads.Count; i++)
+                {
+                    seconds += Convert.ToInt64(googleapi.calculatetime(Loads[i].StartLocationID, Loads[i].EndLocationID));
+
+                    if (Loads.Count - 1 == i)
+                    {
+                        this.EstTimeDrivingTimeSpan = TimeSpan.FromSeconds(seconds);
+                        this.EstTimeDrivingMinutes = Convert.ToInt32(EstTimeDrivingTimeSpan.TotalMinutes);
+                    }
+                       
+
+                    else
+                        seconds += Convert.ToInt64(googleapi.calculatetime(Loads[i].EndLocationID, Loads[i + 1].StartLocationID));
+
+                }
+                this.EstTimeDrivingTimeSpan = TimeSpan.FromSeconds(seconds);
+                this.EstTimeDrivingMinutes = Convert.ToInt32(EstTimeDrivingTimeSpan.TotalMinutes);
+            }
+            catch (Exception)
+            {
+                this.EstTimeDrivingTimeSpan = TimeSpan.FromSeconds(seconds);
+                this.EstTimeDrivingMinutes = Convert.ToInt32(EstTimeDrivingTimeSpan.TotalMinutes);
+
+            }
+        }
+
+
+        /// <summary>
+        /// Calculates fuel cost based on assumed average of 1.40 per liter in Europe
+        /// </summary>
+        public void CalculateEstFuelCost()
+        {
+            //average truck fuel price per liter in europe is around 1.40
+            this.EstFuelCost = this.EstFuelConsumptionLiters * 1.40;
+        }
+
     }
 }

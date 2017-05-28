@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Controllers;
 using GoogleApiIntegration;
+using System.ComponentModel;
 
 namespace WPFLoadSimulation
 {
@@ -172,38 +173,61 @@ namespace WPFLoadSimulation
 
         private void bt_LoadsAddToRoute_Click(object sender, RoutedEventArgs e)
         {
-            foreach(Load l in LoadsAvailableDGW.SelectedItems)
+            foreach(Load load in LoadsAvailableDGW.SelectedItems)
             {
-                lb_selectedLoadsForRoute.Items.Add(l);
-                LoadsAvailableDGW.Items.Remove(l);
+                lb_selectedLoadsForRoute.Items.Add(new { start = load.StartLocationCity, end = load.EndLocationCity, deadline = load.MaxArrivalTime, content = load.Content, salary = load.FullSalaryEur });
+                //LoadsAvailableDGW.Items.Remove(load);
             }
         }
 
-        
 
-        private void bt_calculateEstimation_Click(object sender, RoutedEventArgs e)
+
+        private  void bt_calculateEstimation_Click(object sender, RoutedEventArgs e)
         {
-            lb_routeEstimation.Items.Clear();
+            BackgroundWorker bw = new BackgroundWorker();
             List<Load> loads = new List<Load>();
+            Route route = new Route(loads);
+            bt_calculateEstimation.IsEnabled = false;
+
+            lb_routeEstimation.Items.Clear();
+            lb_routeEstimation.Items.Add(new { description = "Calculating" });
             foreach (Load l in lb_selectedLoadsForRoute.Items)
             {
                 loads.Add(l);
             }
-
-            Route route = new Route(loads);
             route.Truck = (Truck)cb_assignTruckToRoute.SelectedItem;
-            routeCtrl.SetEstimations(route);
-            lb_routeEstimation.Items.Add("Estimated distance: " +route.EstDistanceKm + "km");
-            lb_routeEstimation.Items.Add("Estimated time: " 
-                + route.EstTimeDrivingTimeSpan.Days + "days:"
-                + route.EstTimeDrivingTimeSpan.Hours + "hh:"
-                + route.EstTimeDrivingTimeSpan.Minutes + "min");
-            lb_routeEstimation.Items.Add("Estimated fuel consump: " + route.EstFuelConsumptionLiters +"L");
+
+            bw.DoWork += new DoWorkEventHandler(
+                delegate (object o, DoWorkEventArgs args)
+                {
+                    
+                    BackgroundWorker b = o as BackgroundWorker;
+                    routeCtrl.SetEstimations(route);
+
+                });
+
+            bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(
+                delegate (object o, RunWorkerCompletedEventArgs args)
+                {
+                    lb_routeEstimation.Items.Clear();
+                    lb_routeEstimation.Items.Add(new { description = "Estimated distance: ", result = route.EstDistanceKm, unit = "Km" });
+                    lb_routeEstimation.Items.Add(new { description = "Estimated time: ", result = route.EstTimeDrivingTimeSpan.ToString(@"d\d\:h\h\:m\m\:s\s", System.Globalization.CultureInfo.InvariantCulture), unit = "days:hours:min:sec" });
+                    lb_routeEstimation.Items.Add(new { description = "Estimated fuel consump: ", result = route.EstFuelConsumptionLiters, unit = "Liters" });
+                    lb_routeEstimation.Items.Add(new { description = "Estimated fuel cost: ", result = route.EstFuelCost, unit = "Eur" });
+                    lb_routeEstimation.Items.Add(new { description = "Estimated salary: ", result = route.TotalEstimatedSalary, unit = "Eur" });
+                    lb_routeEstimation.Items.Add(new { description = "Estimated revenue: ", result = (route.TotalEstimatedSalary - route.EstFuelCost).ToString(), unit = "Eur" });
+                    bt_calculateEstimation.IsEnabled = true;
+                }
+            );
+
+            bw.RunWorkerAsync();
+           
         }
 
         private void LoadsAvailableDGW_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            lb_selectedLoadsForRoute.Items.Add(LoadsAvailableDGW.SelectedItem);
+            Load load = (Load)LoadsAvailableDGW.SelectedItem;
+            lb_selectedLoadsForRoute.Items.Add(load);
         }
 
         private void lb_selectedLoadsForRoute_MouseDoubleClick(object sender, MouseButtonEventArgs e)
