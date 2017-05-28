@@ -19,6 +19,9 @@ using GoogleApiIntegration;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Threading;
+using System.IO;
+using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 
 namespace WPFLoadSimulation
 {
@@ -39,21 +42,21 @@ namespace WPFLoadSimulation
         {
             InitializeComponent();
             client = ApiHttpClient.Dispatcher.GetInstance();
+
             
-            CreateTruckController();
             CreateDriverController();
             CreateLoadController();
-            
+
         }
 
-        
+
         private void CreateRouteController()
         {
-            List<Route> routes = new List<Route>();
+            ObservableCollection<Route> routes = new ObservableCollection<Route>();
             routeCtrl = RouteController.Create(routes);
             routesDGV.ItemsSource = routeCtrl.GetAllRoutes();
-            
-        } 
+
+        }
 
         private async void CreateLoadController()
         {
@@ -65,7 +68,7 @@ namespace WPFLoadSimulation
             CreateRouteController();
             return;
         }
-        
+
 
         private async void CreateTruckController()
         {
@@ -74,7 +77,7 @@ namespace WPFLoadSimulation
             List<Truck> targetListTrucks = new List<Truck>(trucks.Cast<Truck>());
             truckCtrl = TruckController.Create(targetListTrucks);
             TrucksDGV.DataContext = truckCtrl.GetAllTrucks();
-
+            truckCtrl.AssignDriversToTrucks();
 
             foreach (Truck t in truckCtrl.GetAvailableTrucks())
             {
@@ -90,6 +93,7 @@ namespace WPFLoadSimulation
             List<Driver> targetListDrivers = new List<Driver>(drivers.Cast<Driver>());
             driverCtrl = DriverController.Create(targetListDrivers);
             DriversDGV.DataContext = driverCtrl.GetAllDrivers();
+            CreateTruckController();
             return;
         }
 
@@ -138,7 +142,7 @@ namespace WPFLoadSimulation
             newclient.Show();
         }
 
-        
+
 
         private void TrucksAddNew_Click(object sender, RoutedEventArgs e)
         {
@@ -149,13 +153,13 @@ namespace WPFLoadSimulation
 
         private async void bt_DriverDeleteSelected_Click(object sender, RoutedEventArgs e)
         {
-            
+
             Driver driver = (Driver)DriversDGV.SelectedItem;
-           string result = await client.Delete("drivers", driver.Id.ToString());
+            string result = await client.Delete("drivers", driver.Id.ToString());
             driverCtrl.RemoveDriver(driver);
 
-           DriversDGV.DataContext = null;
-           DriversDGV.DataContext = driverCtrl.GetAllDrivers();
+            DriversDGV.DataContext = null;
+            DriversDGV.DataContext = driverCtrl.GetAllDrivers();
 
         }
 
@@ -179,7 +183,7 @@ namespace WPFLoadSimulation
 
         private void bt_LoadsAddToRoute_Click(object sender, RoutedEventArgs e)
         {
-            foreach(Load load in LoadsAvailableDGW.SelectedItems)
+            foreach (Load load in LoadsAvailableDGW.SelectedItems)
             {
                 lb_selectedLoadsForRoute.Items.Add(new { start = load.StartLocationCity, end = load.EndLocationCity, deadline = load.MaxArrivalTime, content = load.Content, salary = load.FullSalaryEur });
                 //LoadsAvailableDGW.Items.Remove(load);
@@ -188,7 +192,7 @@ namespace WPFLoadSimulation
 
 
         public Route route;
-        private  void bt_calculateEstimation_Click(object sender, RoutedEventArgs e)
+        private void bt_calculateEstimation_Click(object sender, RoutedEventArgs e)
         {
             BackgroundWorker bw = new BackgroundWorker();
             List<Load> loads = new List<Load>();
@@ -221,22 +225,29 @@ namespace WPFLoadSimulation
                     lb_routeEstimation.Items.Add(new { description = "Estimated salary: ", result = route.TotalEstimatedSalary, unit = "Eur" });
                     lb_routeEstimation.Items.Add(new { description = "Estimated revenue: ", result = (route.TotalEstimatedSalary - route.EstFuelCost).ToString(), unit = "Eur" });
                     bt_calculateEstimation.IsEnabled = true;
+                    bt_submitRoute.IsEnabled = true;
                 }
             );
             bw.RunWorkerAsync();
+
         }
 
         private void bt_submitRoute_Click(object sender, RoutedEventArgs e)
         {
-            bt_submitRoute.IsEnabled = false;
+            
             routeCtrl.AddRouteToList(route);
-            bt_submitRoute.IsEnabled=true;
+            lb_routeEstimation.Items.Clear();
+            lb_selectedLoadsForRoute.Items.Clear();
+            cb_assignTruckToRoute.SelectedItem = null;
+            bt_submitRoute.IsEnabled = false;
+            bt_calculateEstimation.IsEnabled = false;
         }
 
         private void LoadsAvailableDGW_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             Load load = (Load)LoadsAvailableDGW.SelectedItem;
             lb_selectedLoadsForRoute.Items.Add(load);
+            bt_submitRoute.IsEnabled = false;
         }
 
         private void lb_selectedLoadsForRoute_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -254,12 +265,12 @@ namespace WPFLoadSimulation
             lv_loadDetails.Items.Add(new { description = "End Location", value = load.EndLocationCity });
             lv_loadDetails.Items.Add(new { description = "Deadline", value = load.MaxArrivalTime });
             lv_loadDetails.Items.Add(new { description = "Salary", value = load.FullSalaryEur });
-            lv_loadDetails.Items.Add(new { description = "Delay % per hour", value = load.DelayFeePercHour});
+            lv_loadDetails.Items.Add(new { description = "Delay % per hour", value = load.DelayFeePercHour });
             lv_loadDetails.Items.Add(new { description = "Content", value = load.Content });
-            lv_loadDetails.Items.Add(new { description = "Weight", value = load.WeightKg});
+            lv_loadDetails.Items.Add(new { description = "Weight", value = load.WeightKg });
 
             lv_loadClient.Items.Add(new { description = "Name", value = load.Client.Name });
-            lv_loadClient.Items.Add(new { description = "Phone", value = load.Client.Phone});
+            lv_loadClient.Items.Add(new { description = "Phone", value = load.Client.Phone });
             lv_loadClient.Items.Add(new { description = "Email", value = load.Client.Email });
             lv_loadClient.Items.Add(new { description = "Address", value = load.Client.Address });
 
@@ -272,12 +283,74 @@ namespace WPFLoadSimulation
             LoadsFromRouteDGV.DataContext = r.Loads;
         }
 
-        private void routesDGV_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        StringBuilder sb;
+        private void bt_generatereport_Click(object sender, RoutedEventArgs e)
         {
-            if (route != null)
+             sb = new StringBuilder();
+            foreach (Route r in routeCtrl.GetAllRoutes())
             {
-                routesDGV.DataContext = route.Loads;
+                sb.Append(JsonConvert.SerializeObject(r, Formatting.Indented));
+                sb.Append("-");
             }
+
+            bt_downloadreport.IsEnabled = true;
+            tb_report.Text =sb.ToString();
+        }
+
+        private void bt_downloadreport_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.SaveFileDialog savedialog = new Microsoft.Win32.SaveFileDialog();
+            Regex rgx = new Regex("[^0-9-]");
+            savedialog.FileName = "Report" + rgx.Replace(System.DateTime.Now.ToString(), "");
+            savedialog.DefaultExt = ".txxt"; 
+            savedialog.Filter = "Text file  | *.txt"; 
+
+            StreamWriter sw;
+            if (savedialog.ShowDialog() == true)
+            {
+                using (sw = new StreamWriter(savedialog.FileName))
+                {
+                    sw.Write(sb);
+                }
+            }
+            bt_downloadreport.IsEnabled = false;
+        }
+
+
+        //not called for now, needs some care with deserializing timespan 
+        private void bt_loadreport_Click(object sender, RoutedEventArgs e)
+        {
+            string jsonOutput = "";
+            List<Route> routesFromFile = new List<Route>();
+
+            Microsoft.Win32.OpenFileDialog opendialog = new Microsoft.Win32.OpenFileDialog();
+            opendialog.Filter = "Text file  | *.txt";
+            
+            if (opendialog.ShowDialog() == true)
+            {
+                using (StreamReader sr = new StreamReader(opendialog.FileName))
+                {
+                    jsonOutput = sr.ReadToEnd();
+                }
+            }
+
+            string[] singleRoutes = Regex.Split(jsonOutput, "-");
+            foreach (string substring in singleRoutes)
+            {
+                
+                Route route = JsonConvert.DeserializeObject<Route>(substring);
+                routesFromFile.Add(route);
+            }
+
+            foreach(Route r in routesFromFile)
+            {
+                routeCtrl.AddRouteToList(r);
+            }
+        }
+
+        private void cb_assignTruckToRoute_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            bt_calculateEstimation.IsEnabled = true;
         }
     }
 }

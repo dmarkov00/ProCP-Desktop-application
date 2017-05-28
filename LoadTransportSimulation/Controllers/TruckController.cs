@@ -65,5 +65,15 @@ namespace Controllers
         {
             return trucks[0];
         }
+
+        public void AssignDriversToTrucks()
+        {
+            DriverController driverctrl = DriverController.GetInstance();
+            
+            for (int t = 0; t < trucks.Count; t++)
+                for (int d = 0; d < driverctrl.GetAllDrivers().Count; d++)
+                    if (trucks[t].Driver_id == driverctrl.GetAllDrivers()[d].Id)
+                        trucks[t].CurrentDriver = driverctrl.GetAllDrivers()[d];
+        }
     }
 }

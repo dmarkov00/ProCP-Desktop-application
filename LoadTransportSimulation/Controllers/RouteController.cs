@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using Common;
 using GoogleApiIntegration;
 using System.Text.RegularExpressions;
+using System.Collections.ObjectModel;
+using System.Windows.Data;
 
 namespace Controllers
 {
     public class RouteController
     {
-        private List<Route> routes;
+        private ObservableCollection<Route> routes;
+        private object _lock = new Object();
         
         private static volatile RouteController instance;
         private static object syncRoot = new Object();
@@ -22,7 +25,7 @@ namespace Controllers
                 throw new Exception("Object not created");
         }
 
-        public static RouteController Create(List<Route> routes)
+        public static RouteController Create(ObservableCollection<Route> routes)
         {
             lock (syncRoot)
             {
@@ -32,13 +35,14 @@ namespace Controllers
             return instance;
         }
 
-        public RouteController(List<Route> r)
+        public RouteController(ObservableCollection<Route> r)
         {
             this.routes = r;
+            BindingOperations.EnableCollectionSynchronization(routes, _lock);
         }
 
        
-        public List<Route> GetAllRoutes()
+        public ObservableCollection<Route> GetAllRoutes()
         {
             return routes;
         }
