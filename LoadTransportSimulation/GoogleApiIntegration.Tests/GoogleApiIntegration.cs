@@ -12,10 +12,10 @@ namespace UnitTests
         {
             GoogleAPI api = new GoogleAPI();
             string kmFromBerlinToMoscow = api.calculatedistance(0, 3).ToString();
-            string expRes = "1,818";
+            string expRes = "163";
             Assert.AreEqual(kmFromBerlinToMoscow, expRes);
             double res = Convert.ToDouble(kmFromBerlinToMoscow);
-            Assert.IsTrue(res.Equals(1.818));
+            Assert.IsTrue(res.Equals(163));
         }
 
         [Test]

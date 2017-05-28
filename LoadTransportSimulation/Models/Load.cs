@@ -37,7 +37,9 @@ namespace Models
         [JsonProperty("endLocation_id")]
         public int EndLocationID { get; private set; }
         public City EndLocationCity { get;  set; }
+        [JsonProperty("content")]
         public string Content { get; private set; }
+        [JsonProperty("weight")]
         public decimal WeightKg { get; private set; }
         [JsonProperty("fullsalary")]
         public double FullSalaryEur { get; set; }
