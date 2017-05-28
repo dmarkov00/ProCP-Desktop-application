@@ -17,6 +17,8 @@ using System.Windows.Shapes;
 using Controllers;
 using GoogleApiIntegration;
 using System.ComponentModel;
+using System.Collections.ObjectModel;
+using System.Threading;
 
 namespace WPFLoadSimulation
 {
@@ -37,19 +39,20 @@ namespace WPFLoadSimulation
         {
             InitializeComponent();
             client = ApiHttpClient.Dispatcher.GetInstance();
-            CreateClientController();
+            
             CreateTruckController();
             CreateDriverController();
             CreateLoadController();
-            CreateRouteController();
+            
         }
 
-        
         
         private void CreateRouteController()
         {
             List<Route> routes = new List<Route>();
             routeCtrl = RouteController.Create(routes);
+            routesDGV.ItemsSource = routeCtrl.GetAllRoutes();
+            
         } 
 
         private async void CreateLoadController()
@@ -58,9 +61,11 @@ namespace WPFLoadSimulation
             List<Load> targetListLoads = new List<Load>(loads.Cast<Load>());
             loadCtrl = LoadController.Create(targetListLoads);
             LoadsAvailableDGW.DataContext = loadCtrl.GetAvailableLoads();
-            LoadsFromRouteDGV.DataContext = loadCtrl.GetAllLoads();
+            CreateClientController();
+            CreateRouteController();
             return;
         }
+        
 
         private async void CreateTruckController()
         {
@@ -95,6 +100,7 @@ namespace WPFLoadSimulation
             List<Client> targetListClients = new List<Client>(clients.Cast<Client>());
             clientCtrl = ClientController.Create(targetListClients);
             ClientDGV.DataContext = clientCtrl.GetAllClients();
+            loadCtrl.SetClientsForLoads();
             return;
         }
 
@@ -181,12 +187,12 @@ namespace WPFLoadSimulation
         }
 
 
-
+        public Route route;
         private  void bt_calculateEstimation_Click(object sender, RoutedEventArgs e)
         {
             BackgroundWorker bw = new BackgroundWorker();
             List<Load> loads = new List<Load>();
-            Route route = new Route(loads);
+            route = new Route(loads);
             bt_calculateEstimation.IsEnabled = false;
 
             lb_routeEstimation.Items.Clear();
@@ -200,10 +206,8 @@ namespace WPFLoadSimulation
             bw.DoWork += new DoWorkEventHandler(
                 delegate (object o, DoWorkEventArgs args)
                 {
-                    
                     BackgroundWorker b = o as BackgroundWorker;
                     routeCtrl.SetEstimations(route);
-
                 });
 
             bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(
@@ -219,9 +223,14 @@ namespace WPFLoadSimulation
                     bt_calculateEstimation.IsEnabled = true;
                 }
             );
-
             bw.RunWorkerAsync();
-           
+        }
+
+        private void bt_submitRoute_Click(object sender, RoutedEventArgs e)
+        {
+            bt_submitRoute.IsEnabled = false;
+            routeCtrl.AddRouteToList(route);
+            bt_submitRoute.IsEnabled=true;
         }
 
         private void LoadsAvailableDGW_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -233,6 +242,42 @@ namespace WPFLoadSimulation
         private void lb_selectedLoadsForRoute_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             lb_selectedLoadsForRoute.Items.Remove(lb_selectedLoadsForRoute.SelectedItem);
+        }
+
+        private void LoadsAvailableDGW_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            lv_loadClient.Items.Clear();
+            lv_loadDetails.Items.Clear();
+
+            Load load = (Load)LoadsAvailableDGW.SelectedItem;
+            lv_loadDetails.Items.Add(new { description = "Start Location", value = load.StartLocationCity });
+            lv_loadDetails.Items.Add(new { description = "End Location", value = load.EndLocationCity });
+            lv_loadDetails.Items.Add(new { description = "Deadline", value = load.MaxArrivalTime });
+            lv_loadDetails.Items.Add(new { description = "Salary", value = load.FullSalaryEur });
+            lv_loadDetails.Items.Add(new { description = "Delay % per hour", value = load.DelayFeePercHour});
+            lv_loadDetails.Items.Add(new { description = "Content", value = load.Content });
+            lv_loadDetails.Items.Add(new { description = "Weight", value = load.WeightKg});
+
+            lv_loadClient.Items.Add(new { description = "Name", value = load.Client.Name });
+            lv_loadClient.Items.Add(new { description = "Phone", value = load.Client.Phone});
+            lv_loadClient.Items.Add(new { description = "Email", value = load.Client.Email });
+            lv_loadClient.Items.Add(new { description = "Address", value = load.Client.Address });
+
+            //web_load.Navigate("https://www.google.com/maps/dir/" + load.StartLocationCity + "/" + load.EndLocationCity);
+        }
+
+        private void routesDGV_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Route r = (Route)routesDGV.SelectedItem;
+            LoadsFromRouteDGV.DataContext = r.Loads;
+        }
+
+        private void routesDGV_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (route != null)
+            {
+                routesDGV.DataContext = route.Loads;
+            }
         }
     }
 }

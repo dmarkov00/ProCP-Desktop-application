@@ -99,7 +99,24 @@ namespace Controllers
             this.loads.Add(l);
         }
 
+        public void SetClientsForLoads()
+        {
+            ClientController clientctrl = ClientController.GetInstance();
+            List<Client> clients = clientctrl.GetAllClients();
 
+            for(int l=0; l<loads.Count; l++)
+            {
+                for (int c=0; c<clients.Count; c++)
+                {
+                    if(loads[l].ClientID == Convert.ToInt32(clients[c].Id))
+                    {
+                        loads[l].Client = clients[c];
+                    }
+                }
+
+            }
+
+        }
 
     }
 

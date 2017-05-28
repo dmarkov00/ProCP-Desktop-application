@@ -46,6 +46,10 @@ namespace Controllers
         public void AddRouteToList(Route r)
         {
             routes.Add(r);
+            r.StartLocation = r.Truck.LocationCity;
+           r.EndLocation = r.Loads[r.Loads.Count - 1].EndLocationCity;
+            r.StartTime = System.DateTime.Now;
+            r.NrOfLoads = r.Loads.Count;
         }
 
         public void SetEstimations(Route r)

@@ -21,7 +21,7 @@ namespace Models
             this.FinalSalaryEur = finalsal;
             this.DelayFeePercHour = delay;
             this.MaxArrivalTime = maxarrival;
-            this.Client = clientID;
+            this.ClientID = clientID;
             this.LoadStateID = loadstatus;
 
             this.StartLocationCity = (City)StartLocationID;
@@ -29,8 +29,10 @@ namespace Models
             this.LoadState = (LoadState)LoadStateID;
             this.ActArrivalTime = null;
         }
+        
+
         [JsonProperty("client_id")]
-        public int Client { get; set; }
+        public int ClientID { get; set; }
         [JsonProperty("startLocation_id")]
         public int StartLocationID { get; private set; }
         public City StartLocationCity { get; set; }
@@ -58,7 +60,7 @@ namespace Models
         public LoadState LoadState { get; set; }
         [JsonProperty("id")]
         public int ID { get; private set; }
-        public string ClientName { get; set; }
+        public Client Client { get; set; }
 
         public double CalculateFinalSalary()
         {

@@ -20,9 +20,9 @@ namespace Models
         public Client(string name, string phone, string email, string address)
         {
             this.Name = name;
-            this.phone = phone;
-            this.email = email;
-            this.address = address;
+            this.Phone = phone;
+            this.Email = email;
+            this.Address = address;
             loads = new List<Load>();
         }
 
@@ -74,7 +74,7 @@ namespace Models
                 email = value;
             }
         }
-
+        
         public string Address
         {
             get

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GoogleApiIntegration;
+using Common.Enumerations;
+using System.Collections.ObjectModel;
 
 namespace Models
 {
@@ -28,18 +30,23 @@ namespace Models
 
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
-        public Address StartLocation { get; set; }
+        public City StartLocation { get; set; }
+        public City EndLocation { get; set; }
         public Driver Driver { get; set; }
         public Truck Truck { get; set; }
         public List<Load> Loads { get; set; }
+        public int NrOfLoads { get; set; }
 
         public Route(List<Load> loads/*, Truck truck, Driver driver, Address startloc*/)
         {
             this.Loads = loads;
-           // this.Truck = truck;
-           // this.Driver = driver;
-           // this.StartLocation = startloc;
+            
+            // this.Truck = truck;
+            // this.Driver = driver;
+            // this.StartLocation = startloc;
         }
+
+        
 
         public void GetTimeConsumedPerRoute()
         {

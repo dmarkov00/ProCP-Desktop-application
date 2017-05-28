@@ -15,10 +15,10 @@
                                         <ColumnDefinition Width="5*"/>
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
+                                        <RowDefinition Height="2.5*"/>
+                                        <RowDefinition Height="3*"/>
                                     </Grid.RowDefinitions>
-                                    <DataGrid Name="LoadsAvailableDGW" AutoGenerateColumns="false" ItemsSource="{Binding}"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="0" Grid.RowSpan="2" Margin="0,0,0,35" MouseDoubleClick="LoadsAvailableDGW_MouseDoubleClick" IsReadOnly="True">
+                                    <DataGrid Name="LoadsAvailableDGW" AutoGenerateColumns="false" ItemsSource="{Binding}" ToolTip="Double click on load to add it to route, or select multiple with Ctrl and click button below" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="0" Grid.RowSpan="2" Margin="0,0,0,35" MouseDoubleClick="LoadsAvailableDGW_MouseDoubleClick" IsReadOnly="True" MouseLeftButtonUp="LoadsAvailableDGW_MouseLeftButtonUp">
                                         <DataGrid.Columns>
                                             <DataGridTextColumn Binding="{Binding StartLocationCity}" ClipboardContentBinding="{x:Null}" Header="Start city" Width="*"/>
                                             <DataGridTextColumn Binding="{Binding EndLocationCity}" ClipboardContentBinding="{x:Null}" Header="End City" Width="*"/>
@@ -35,29 +35,35 @@
                                                         <ColumnDefinition/>
                                                     </Grid.ColumnDefinitions>
                                                     <Grid.RowDefinitions>
-                                                        <RowDefinition Height="2*"/>
+                                                        <RowDefinition Height="1*"/>
                                                         <RowDefinition Height="5*"/>
-                                                        <RowDefinition Height="2*"/>
-                                                        <RowDefinition Height="3*"/>
+                                                        <RowDefinition Height="0.5*"/>
                                                     </Grid.RowDefinitions>
-                                                    <ListBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="0"  Grid.Row="1" Grid.RowSpan="1" Margin="0,0,10,0">
-                                                        <ListBox.GroupStyle>
-                                                            <GroupStyle/>
-                                                            <GroupStyle/>
-                                                        </ListBox.GroupStyle>
-                                                    </ListBox>
+                                                    <ListView Name="lv_loadDetails" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="0"  Grid.Row="1" Grid.RowSpan="1" Margin="0,0,10,0">
+                                                        <ListView.View>
+                                                            <GridView>
+                                                                <GridViewColumn Header="Description" DisplayMemberBinding="{Binding description}" Width="100"/>
+                                                                <GridViewColumn Header="Value" DisplayMemberBinding="{Binding value}" Width="100"/>
+                                                            </GridView>
+                                                        </ListView.View>
+                                                    </ListView>
                                                     <Label Content="Load:" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Grid.Column="0" Grid.Row="0" />
-                                                    <Label Content="Start and end address:" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Grid.Row="2" Grid.RowSpan="1"/>
-                                                    <ListBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" Margin="0,0,10,0"/>
                                                     <Label Content="Client" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Column="1" Grid.Row="0"/>
-                                                    <ListBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="2"  Grid.Row="1" Grid.RowSpan="1" Margin="0,0,10,0"/>
+                                                    <ListView Name="lv_loadClient" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="2"  Grid.Row="1" Grid.RowSpan="1" Margin="0,0,10,0">
+                                                        <ListView.View>
+                                                            <GridView>
+                                                                <GridViewColumn Header="Description" DisplayMemberBinding="{Binding description}" Width="100"/>
+                                                                <GridViewColumn Header="Value" DisplayMemberBinding="{Binding value}" Width="100"/>
+                                                            </GridView>
+                                                        </ListView.View>
+                                                    </ListView>
 
                                                 </Grid>
                                             </Grid>
                                         </TabItem>
                                         <TabItem Header="See load on map">
                                             <Grid Background="#FFE5E5E5">
-                                                <WebBrowser HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" Source="http://maps.google.com" />
+                                                <WebBrowser Name="web_load" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" Source="http://maps.google.com" />
                                             </Grid>
                                         </TabItem>
                                     </TabControl>
@@ -71,13 +77,13 @@
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="0*"/>
                                                     <RowDefinition Height="1.5*"/>
-                                                    <RowDefinition Height="5*"/>
-                                                    <RowDefinition Height="2*"/>
+                                                    <RowDefinition Height="7*"/>
+                                                    <RowDefinition Height="1.5*"/>
                                                     <RowDefinition Height="auto"/>
                                                 </Grid.RowDefinitions>
                                                 <Label Content="Route information" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" FontWeight="SemiBold" Padding="0,3,0,0"/>
                                                 <Label Content="Current loads for this route:" HorizontalAlignment="Left"  Grid.Row="1" Grid.Column="0" VerticalAlignment="Bottom" Padding="0,0,0,0"/>
-                                                <ListView Name="lb_selectedLoadsForRoute" ItemsSource="{Binding}" HorizontalAlignment="Stretch"  Grid.Row="2" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" VerticalAlignment="Stretch" Margin="0,0,10,0" MouseDoubleClick="lb_selectedLoadsForRoute_MouseDoubleClick" IsManipulationEnabled="True" >
+                                                <ListView Name="lb_selectedLoadsForRoute"  ItemsSource="{Binding}" ToolTip="Double click to remove a load" HorizontalAlignment="Stretch"  Grid.Row="2" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" VerticalAlignment="Stretch" Margin="0,0,10,0" MouseDoubleClick="lb_selectedLoadsForRoute_MouseDoubleClick" IsManipulationEnabled="True" >
                                                     <ListView.View>
                                                         <GridView>
                                                             <GridViewColumn Header="Start" DisplayMemberBinding="{Binding StartLocationCity}" Width="auto"/>
@@ -89,9 +95,9 @@
                                                     </ListView.View>
                                                 </ListView>
                                                 <Label Content="Assign a truck for the route:" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="3" Grid.RowSpan="1" VerticalAlignment="Bottom" Padding="0,0,0,0"/>
-                                                <ComboBox Name="cb_assignTruckToRoute" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="1" Margin="160,10,10,0" HorizontalAlignment="Stretch" MaxHeight="30" VerticalAlignment="Bottom"/>
+                                                <ComboBox Name="cb_assignTruckToRoute" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="1" Margin="160,5,10,0" HorizontalAlignment="Stretch" MaxHeight="30" VerticalAlignment="Bottom"/>
                                                 <Button Name="bt_calculateEstimation" Content="Calculate estimation" HorizontalAlignment="Stretch" Grid.Row="4" VerticalAlignment="Stretch" Margin="0, 10, 10, 0" Height="30" Click="bt_calculateEstimation_Click"/>
-                                                <Button Content="Submit Route" Grid.Column="1" HorizontalAlignment="Stretch" Margin="0, 10,0,0" Grid.Row="4" VerticalAlignment="Stretch" Height="30" FontWeight="Medium" />
+                                                <Button Name="bt_submitRoute" Content="Submit Route" Grid.Column="1" HorizontalAlignment="Stretch" Margin="0, 10,0,0" Grid.Row="4" VerticalAlignment="Stretch" Height="30" FontWeight="Medium" Click="bt_submitRoute_Click" />
                                                 <Label Content="Route estimation" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Bottom" Padding="0,0,0,0"/>
                                                 <ListView Name="lb_routeEstimation" Grid.Column="1"  HorizontalAlignment="Stretch"  Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Stretch" >
                                                     <ListView.View>
@@ -108,7 +114,7 @@
                                 </Grid>
                             </Grid>
                         </TabItem>
-                        <TabItem Header="Active or Delivered" Padding="15,2">
+                        <TabItem Name="tab_routes" Header="Active or Delivered" Padding="15,2" >
                             <Grid Background="#FFE5E5E5" Margin="10">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/>
@@ -127,26 +133,27 @@
                                 <RadioButton Content="Currently Active" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="90,10,0,0"/>
                                 <RadioButton Content="Finished" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="220,10,0,0"/>
                                 <Label Content="Route information with estimation" Grid.ColumnSpan="2" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Bottom" FontWeight="SemiBold" Padding="0" Margin="0,10,0,0"/>
-                                <DataGrid HorizontalAlignment="Stretch"  Grid.Row="2"  VerticalAlignment="Stretch" AutoGenerateColumns="False" >
+                                
+                                <DataGrid Name="routesDGV" IsSynchronizedWithCurrentItem="True"  HorizontalAlignment="Stretch"  Grid.Row="2" DataContext="{Binding}" VerticalAlignment="Stretch" AutoGenerateColumns="False" SelectionChanged="routesDGV_SelectionChanged" DataContextChanged="routesDGV_DataContextChanged" >
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Started from" Width="2.5*" />
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="End location" Width="2.5*"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Loads" Width="1*"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Truck" Width="2*"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Driver" Width="2*"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Start time" Width="1*"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Estimated &#x0a;km" Width="1*"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Estimated &#x0a;time driving" Width="1*"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Estimated &#x0a;fuel consump" Width="1*"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Estimated &#x0a;cost" Width="1*"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Estimated &#x0a;salary" Width="1*"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="End time" Width="1*" FontWeight="Bold"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Actual &#x0a;km" Width="1*" FontWeight="Bold"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Actual&#x0a;time driving" Width="1*" FontWeight="Bold"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Actual&#x0a;fuel used" Width="1*" FontWeight="Bold"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Actual &#x0a;cost" Width="1*" Foreground="Black" FontWeight="Bold"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Actual &#x0a;salary" Width="1*" Foreground="#FF040000" FontWeight="Bold" />
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Revenue" Width="1*"/>
+                                        <DataGridTextColumn Binding="{Binding StartLocation}" ClipboardContentBinding="{x:Null}" Header="Started location" IsReadOnly="True" Width="2.5*" />
+                                        <DataGridTextColumn Binding="{Binding EndLocation}" ClipboardContentBinding="{x:Null}" Header="End location" IsReadOnly="True" Width="2.5*"/>
+                                        <DataGridTextColumn Binding="{Binding NrOfLoads}" ClipboardContentBinding="{x:Null}" Header="Loads" IsReadOnly="True" Width="1*"/>
+                                        <DataGridTextColumn Binding="{Binding Truck}" ClipboardContentBinding="{x:Null}" Header="Truck" IsReadOnly="True" Width="2*"/>
+                                        <DataGridTextColumn Binding="{Binding Driver}" ClipboardContentBinding="{x:Null}" Header="Driver" IsReadOnly="True" Width="2*"/>
+                                        <DataGridTextColumn Binding="{Binding StartTime}" ClipboardContentBinding="{x:Null}" Header="Start time" IsReadOnly="True" Width="1*"/>
+                                        <DataGridTextColumn Binding="{Binding EstDistanceKm}" ClipboardContentBinding="{x:Null}" Header="Estimated &#x0a;km" IsReadOnly="True" Width="1*"/>
+                                        <DataGridTextColumn Binding="{Binding EstTimeDrivingTimeSpan}" ClipboardContentBinding="{x:Null}" Header="Estimated &#x0a;time driving" IsReadOnly="True" Width="1*"/>
+                                        <DataGridTextColumn Binding="{Binding EstFuelConsumptionLiters}" ClipboardContentBinding="{x:Null}" Header="Estimated &#x0a;fuel consump" IsReadOnly="True" Width="1*"/>
+                                        <DataGridTextColumn Binding="{Binding EstCost}" ClipboardContentBinding="{x:Null}" Header="Estimated &#x0a;cost" IsReadOnly="True" Width="1*"/>
+                                        <DataGridTextColumn Binding="{Binding TotalEstimatedSalary}" ClipboardContentBinding="{x:Null}" Header="Estimated &#x0a;salary" IsReadOnly="True" Width="1*"/>
+                                        <DataGridTextColumn Binding="{Binding EndTime}" ClipboardContentBinding="{x:Null}" Header="End time" Width="1*" FontWeight="Bold"/>
+                                        <DataGridTextColumn Binding="{Binding ActDistanceKm}" ClipboardContentBinding="{x:Null}" Header="Actual &#x0a;km" Width="1*" FontWeight="Bold"/>
+                                        <DataGridTextColumn Binding="{Binding ActTimeDrivingTimeSpan}" ClipboardContentBinding="{x:Null}" Header="Actual&#x0a;time driving" Width="1*" FontWeight="Bold"/>
+                                        <DataGridTextColumn Binding="{Binding ActFuelConsumptionLiters}" ClipboardContentBinding="{x:Null}" Header="Actual&#x0a;fuel used" Width="1*" FontWeight="Bold"/>
+                                        <DataGridTextColumn Binding="{Binding ActFuelCost}" ClipboardContentBinding="{x:Null}" Header="Actual &#x0a;cost" Width="1*" Foreground="Black" FontWeight="Bold"/>
+                                        <DataGridTextColumn Binding="{Binding TotalActualSalary}" ClipboardContentBinding="{x:Null}" Header="Actual &#x0a;salary" Width="1*" Foreground="#FF040000" FontWeight="Bold" />
+                                        <DataGridTextColumn Binding="{Binding FinalRevenue}" ClipboardContentBinding="{x:Null}" Header="Revenue" Width="1*"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
 
