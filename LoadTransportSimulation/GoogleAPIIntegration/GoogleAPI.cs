@@ -115,7 +115,7 @@ namespace GoogleApiIntegration
             //    }
             //    fuelCons = dist * fuelCons;
             //}
-            fuelCons = dist * fuelCons;
+            fuelCons = dist * (fuelCons/100);
             return fuelCons;
         }
     }
