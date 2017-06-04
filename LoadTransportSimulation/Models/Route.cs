@@ -6,32 +6,53 @@ using System.Threading.Tasks;
 using GoogleApiIntegration;
 using Common.Enumerations;
 using System.Collections.ObjectModel;
+using Newtonsoft.Json;
 
 namespace Models
 {
     public class Route
     {
+        [JsonProperty("sum_salaries")]
         public double TotalEstimatedSalary { get; set; }
+        [JsonProperty("sum_actual_salaries")]
         public double TotalActualSalary { get; set; }
+        [JsonProperty("revenue")]
         public double FinalRevenue { get; set; }
+        [JsonProperty("act_time_used")]
         public TimeSpan TotalTimeUsed { get; set; }
-
+ 
+        [JsonProperty("est_time_driving")]
         public TimeSpan EstTimeDrivingTimeSpan { get; set; }
-        public int EstTimeDrivingMinutes { get; set; }
+
+        [JsonProperty("est_distance")] 
         public int EstDistanceKm { get; set; }
+        [JsonProperty("est_fuelConsumption")]
         public int EstFuelConsumptionLiters { get; set; }
         public double EstFuelCost { get; set; }
 
         public TimeSpan ActTimeDrivingTimeSpan { get; set; }
+        [JsonProperty("act_time_used")]       
         public int ActTimeDrivingMinutes { get; set; }
+        [JsonProperty("act_time_used")]
+
         public int ActDistanceKm { get; set; }
+        [JsonProperty("act_time_used")]
+
         public int ActFuelConsumptionLiters { get; set; }
         public double ActFuelCost { get; set; }
 
+        [JsonProperty("start_time")]
         public DateTime StartTime { get; set; }
+
+        [JsonProperty("end_time")]
         public DateTime EndTime { get; set; }
+
+        [JsonProperty("start_location_id")]
         public City StartLocation { get; set; }
+
+        [JsonProperty("end_location_id")]
         public City EndLocation { get; set; }
+
         public Driver Driver { get; set; }
         public Truck Truck { get; set; }
         public List<Load> Loads { get; set; }
