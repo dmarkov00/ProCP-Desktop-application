@@ -36,6 +36,7 @@ namespace Models
         private Company company;
         private string token;
 
+        [JsonProperty("email")]
         public string Email
         {
             get
@@ -49,6 +50,7 @@ namespace Models
             }
         }
 
+        [JsonProperty("phone")]
         public string Phone
         {
             get
@@ -89,6 +91,7 @@ namespace Models
             }
         }
 
+        [JsonProperty("password")]
         public string Password
         {
             get
@@ -102,6 +105,7 @@ namespace Models
             }
         }
 
+        [JsonProperty("name")]
         public string Name
         {
             get
@@ -114,10 +118,5 @@ namespace Models
                 name = value;
             }
         }
-
-
-
-
-
     }
 }

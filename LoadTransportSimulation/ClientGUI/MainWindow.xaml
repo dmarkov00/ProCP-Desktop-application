@@ -3,7 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Load Simulation" Height="546.26" Width="868.4">
     <Grid>
-        <TabControl Name ="LoadsTabControl" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"  RenderTransformOrigin="0.494,0.5" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="135*"/>
+            <ColumnDefinition Width="727*"/>
+        </Grid.ColumnDefinitions>
+        <TabControl Name ="LoadsTabControl" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"  RenderTransformOrigin="0.494,0.5" Grid.ColumnSpan="2" Margin="0,0,0,-0.333" >
             <TabItem Header="Loads" Padding="20,5" >
                 <Grid Background="#FFE5E5E5">
                     <TabControl HorizontalAlignment="Stretch"   VerticalAlignment="Stretch"  >
@@ -134,7 +138,7 @@
                                 <RadioButton Content="Finished" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="220,10,0,0"/>-->
                                 <Label Content="Route information with estimation" Grid.ColumnSpan="2" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Bottom" FontWeight="SemiBold" Padding="0" Margin="0,10,0,0"/>
 
-                                <DataGrid Name="routesDGV" IsSynchronizedWithCurrentItem="True"  HorizontalAlignment="Stretch"  Grid.Row="2" ItemsSource="{Binding}" VerticalAlignment="Stretch" AutoGenerateColumns="False" SelectionChanged="routesDGV_SelectionChanged" >
+                                <DataGrid Name="routesDGV" IsSynchronizedWithCurrentItem="True"  HorizontalAlignment="Stretch"  Grid.Row="2" ItemsSource="{Binding}" VerticalAlignment="Stretch" AutoGenerateColumns="False" SelectionChanged="routesDGV_SelectionChanged" SelectionMode="Single" >
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Binding="{Binding StartLocation}" ClipboardContentBinding="{x:Null}" Header="Started location" IsReadOnly="True" Width="2.5*" />
                                         <DataGridTextColumn Binding="{Binding EndLocation}" ClipboardContentBinding="{x:Null}" Header="End location" IsReadOnly="True" Width="2.5*"/>
@@ -158,7 +162,7 @@
                                 </DataGrid>
 
                                 <Label Content="Loads within selected route" HorizontalAlignment="Left" Grid.Row="4" Grid.ColumnSpan="2" VerticalAlignment="Bottom" FontWeight="SemiBold" Padding="0" Margin="0,10,0,0"/>
-                                <DataGrid Name="LoadsFromRouteDGV" ItemsSource="{Binding}" AutoGenerateColumns="false" HorizontalAlignment="Stretch"  Grid.Row="5" Grid.ColumnSpan="2" VerticalAlignment="Stretch" Margin="0,0,0,20">
+                                <DataGrid Name="LoadsFromRouteDGV" ItemsSource="{Binding}" AutoGenerateColumns="false" HorizontalAlignment="Stretch"  Grid.Row="5" Grid.ColumnSpan="2" VerticalAlignment="Stretch" Margin="0,0,0,20" SelectionMode="Single">
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Binding="{Binding StartLocationCity}" ClipboardContentBinding="{x:Null}" Header="Start &#x0a;Location" Width="*"/>
                                         <DataGridTextColumn Binding="{Binding EndLocationCity}" ClipboardContentBinding="{x:Null}" Header="End &#x0a;Location" Width="*"/>
@@ -201,9 +205,8 @@
                     <StackPanel Grid.Row="0" HorizontalAlignment="Stretch" Orientation="Horizontal" Grid.ColumnSpan="3">
                     </StackPanel>
                     <Label Content="Click on a truck to see maintenance schedule below" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Row="1" Padding="0" Grid.ColumnSpan="2" Margin="0,0,0,191.6" Grid.RowSpan="2"/>
-                    <DataGrid Name ="TrucksDGV" ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False" HorizontalAlignment="Stretch"  Grid.Row="2" Grid.ColumnSpan="3" VerticalAlignment="Stretch" >
+                    <DataGrid Name ="TrucksDGV" ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False" HorizontalAlignment="Stretch"  Grid.Row="2" Grid.ColumnSpan="3" VerticalAlignment="Stretch" SelectionMode="Single" >
                         <DataGrid.Columns>
-                            <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Selected" Width="auto"/>
                             <DataGridTextColumn Binding="{Binding LicencePlate}" ClipboardContentBinding="{x:Null}" Header="Licence &#x0a;Plate" Width="*"/>
                             <DataGridTextColumn Binding="{Binding CurrentDriver.LastName}" Header="Driver"  Width="*"/>
                             <DataGridTextColumn Binding="{Binding LocationCity}" ClipboardContentBinding="{x:Null}" Header="Location" Width="*"/>
@@ -275,7 +278,7 @@
 
                     </StackPanel>
 
-                    <DataGrid Name="DriversDGV" AutoGenerateColumns="false" ItemsSource="{Binding}" HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Stretch" Grid.ColumnSpan="2" Grid.RowSpan="1" Margin="5,5,5,25">
+                    <DataGrid Name="DriversDGV" AutoGenerateColumns="false" ItemsSource="{Binding}" HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Stretch" Grid.ColumnSpan="2" Grid.RowSpan="1" Margin="5,5,5,25" SelectionMode="Single">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding FirstName}" ClipboardContentBinding="{x:Null}" Header="First Name" Width="*"/>
                             <DataGridTextColumn Binding="{Binding LastName}" ClipboardContentBinding="{x:Null}" Header="Last Name" Width="*"/>
@@ -303,9 +306,8 @@
                     <StackPanel Grid.Row="0" HorizontalAlignment="Stretch" Orientation="Horizontal">
                     </StackPanel>
 
-                    <DataGrid Name ="ClientDGV" AutoGenerateColumns="False" ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Stretch" Grid.ColumnSpan="2" Grid.RowSpan="1" Margin="5,5,5,25">
+                    <DataGrid Name ="ClientDGV" AutoGenerateColumns="False" ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Stretch" Grid.ColumnSpan="2" Grid.RowSpan="1" Margin="5,5,5,25" SelectionMode="Single">
                         <DataGrid.Columns>
-                            <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Selected" Width="auto"/>
                             <DataGridTextColumn Binding="{Binding Name}" ClipboardContentBinding="{x:Null}" Header="First Name" Width="*"/>
                             <DataGridTextColumn Binding="{Binding Phone}" ClipboardContentBinding="{x:Null}" Header="Phone" Width="*"/>
                             <DataGridTextColumn Binding="{Binding Email}" ClipboardContentBinding="{x:Null}" Header="Email" Width="*"/>

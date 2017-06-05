@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Common;
+using Newtonsoft.Json;
 
 namespace Models
 {
@@ -17,6 +18,7 @@ namespace Models
         private List<Load> loads;
         private string id;
 
+        
         public Client(string name, string phone, string email, string address)
         {
             this.Name = name;
@@ -26,6 +28,7 @@ namespace Models
             loads = new List<Load>();
         }
 
+        [JsonProperty("id")]
         public string Id
         {
             get
@@ -38,6 +41,7 @@ namespace Models
             }
         }
 
+        [JsonProperty("name")]
         public string Name
         {
             get
@@ -50,7 +54,7 @@ namespace Models
             }
         }
 
-
+        [JsonProperty("phone")]
         public string Phone
         {
             get
@@ -63,6 +67,7 @@ namespace Models
             }
         }
 
+        [JsonProperty("email")]
         public string Email
         {
             get
@@ -74,7 +79,8 @@ namespace Models
                 email = value;
             }
         }
-        
+
+        [JsonProperty("address")]
         public string Address
         {
             get
