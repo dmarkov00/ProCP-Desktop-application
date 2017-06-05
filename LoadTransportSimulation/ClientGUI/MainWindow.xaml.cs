@@ -246,7 +246,10 @@ namespace WPFLoadSimulation
         private void LoadsAvailableDGW_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             Load load = (Load)LoadsAvailableDGW.SelectedItem;
-            lb_selectedLoadsForRoute.Items.Add(load);
+            if (!lb_selectedLoadsForRoute.Items.Contains(load))
+            {
+                lb_selectedLoadsForRoute.Items.Add(load);
+            }
             bt_submitRoute.IsEnabled = false;
         }
 
