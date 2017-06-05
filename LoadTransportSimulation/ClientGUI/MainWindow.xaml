@@ -126,11 +126,11 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="3*"/>
+                                    <RowDefinition Height="176*"/>
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="3*"/>
-                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="175*"/>
+                                    <RowDefinition Height="30*"/>
                                     <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
                                 <!--<RadioButton Content="All routes" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,10,0,0" />
@@ -178,7 +178,7 @@
                                         <DataGridTextColumn Header="Comment"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
-                                <Button Content="Mark route as delivered" HorizontalAlignment="Left"  Grid.Row="6" VerticalAlignment="Stretch" Height="30" Width="200" Margin="10,4,20,0" />
+                                <Button Content="Mark route as delivered" HorizontalAlignment="Left"  Grid.Row="6" VerticalAlignment="Bottom" Height="30" Width="200" Margin="10,0,0,-0.333" Grid.RowSpan="2" Click="bt_MarkRouteDelivered_Click" />
 
 
                             </Grid>

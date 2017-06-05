@@ -42,11 +42,8 @@ namespace WPFLoadSimulation
         {
             InitializeComponent();
             client = ApiHttpClient.Dispatcher.GetInstance();
-
-            
             CreateDriverController();
             CreateLoadController();
-
         }
 
 
@@ -55,7 +52,6 @@ namespace WPFLoadSimulation
             ObservableCollection<Route> routes = new ObservableCollection<Route>();
             routeCtrl = RouteController.Create(routes);
             routesDGV.ItemsSource = routeCtrl.GetAllRoutes();
-
         }
 
         private async void CreateLoadController()
@@ -364,6 +360,15 @@ namespace WPFLoadSimulation
         private void cb_assignTruckToRoute_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             bt_calculateEstimation.IsEnabled = true;
+        }
+
+        private void bt_MarkRouteDelivered_Click(object sender, RoutedEventArgs e)
+        {
+            Route r=(Route)routesDGV.SelectedItem;
+            Truck t = TruckController.GetInstance().GetTruck(r.Truck.LicencePlate);
+            t.LocationCity = r.EndLocation;
+            t.Location_id = (int)r.EndLocation;
+            t.IsBusy = false;
         }
     }
 }
