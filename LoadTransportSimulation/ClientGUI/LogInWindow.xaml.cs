@@ -4,7 +4,7 @@ using Models;
 using Common;
 using System;
 using System.Threading.Tasks;
-
+using System.Windows.Input;
 
 namespace WPFLoadSimulation
 {
@@ -18,19 +18,21 @@ namespace WPFLoadSimulation
             InitializeComponent();
         }
 
+        private void tb_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                Button_Click(sender,e);
+            }
+        }
+
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-
-            
-                //await Login();
-                //User.GetInstance();
+                await Login();
+                User.GetInstance();
                 MainWindow main = new MainWindow();
                 main.Show();
-
-                this.Close();
-            
-           
-            
+                this.Close();    
         }
 
         private async Task Login()
