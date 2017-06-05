@@ -17,7 +17,7 @@ namespace Common.Extensions
         /// <returns>ApiErrorResult object</returns>
         public async static Task<ApiErrorResult> ConvertToApiErrorResult(this HttpResponseMessage responseResult)
         {          
-            ApiErrorResult apiErrorResult = new ApiErrorResult(responseResult.StatusCode.ToString(),responseResult.ReasonPhrase);
+            ApiErrorResult apiErrorResult = new ApiErrorResult(((int)responseResult.StatusCode).ToString(),responseResult.ReasonPhrase);
 
             // Gets error messages as JSON string
             string errorMessagesAsJson = await responseResult.Content.ReadAsStringAsync();

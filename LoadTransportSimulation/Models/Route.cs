@@ -28,6 +28,8 @@ namespace Models
         public int EstDistanceKm { get; set; }
         [JsonProperty("est_fuelConsumption")]
         public int EstFuelConsumptionLiters { get; set; }
+
+
         public double EstFuelCost { get; set; }
 
         public TimeSpan ActTimeDrivingTimeSpan { get; set; }
@@ -175,7 +177,7 @@ namespace Models
                     if (Loads.Count - 1 == i)
                     {
                         this.EstTimeDrivingTimeSpan = TimeSpan.FromSeconds(seconds);
-                        this.EstTimeDrivingMinutes = Convert.ToInt32(EstTimeDrivingTimeSpan.TotalMinutes);
+                        //this.EstTimeDrivingMinutes = Convert.ToInt32(EstTimeDrivingTimeSpan.TotalMinutes);
                     }
                        
 
@@ -184,12 +186,12 @@ namespace Models
 
                 }
                 this.EstTimeDrivingTimeSpan = TimeSpan.FromSeconds(seconds);
-                this.EstTimeDrivingMinutes = Convert.ToInt32(EstTimeDrivingTimeSpan.TotalMinutes);
+                //this.EstTimeDrivingMinutes = Convert.ToInt32(EstTimeDrivingTimeSpan.TotalMinutes);
             }
             catch (Exception)
             {
                 this.EstTimeDrivingTimeSpan = TimeSpan.FromSeconds(seconds);
-                this.EstTimeDrivingMinutes = Convert.ToInt32(EstTimeDrivingTimeSpan.TotalMinutes);
+                //this.EstTimeDrivingMinutes = Convert.ToInt32(EstTimeDrivingTimeSpan.TotalMinutes);
 
             }
         }
