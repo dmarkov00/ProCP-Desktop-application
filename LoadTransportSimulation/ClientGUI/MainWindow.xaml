@@ -257,7 +257,7 @@
                     </Grid>
                     <Label Content="Assign new driver:" Grid.Column="2" Grid.Row="4" FontWeight="SemiBold" VerticalAlignment="Bottom" Padding="0"/>
                     <ComboBox Grid.Column="2" Grid.Row="5" HorizontalAlignment="Stretch" Height="30" Margin="10" VerticalAlignment="Top"/>
-                    <Button Name="bt_TrucksDeleteSelected" Content="Delete selected trucks" Grid.Column="2" HorizontalAlignment="Right" Grid.Row="3" VerticalAlignment="Top" Margin="10" Width="200" Height="30" Click="bt_TrucksDeleteSelected_Click"/>
+                    <Button Name="bt_TrucksDeleteSelected" Content="Delete selected truck" Grid.Column="2" HorizontalAlignment="Right" Grid.Row="3" VerticalAlignment="Top" Margin="10" Width="200" Height="30" Click="bt_TrucksDeleteSelected_Click"/>
                     <Button Name="TrucksAddNew" Click="TrucksAddNew_Click" Content="Add new truck" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Grid.Row="3" VerticalAlignment="Top" Margin="10" Width="200" Height="30"/>
                 </Grid>
             </TabItem>
@@ -287,7 +287,7 @@
                             <DataGridTextColumn Binding="{Binding IsBusy}" ClipboardContentBinding="{x:Null}" Header="Is Busy" />
                         </DataGrid.Columns>
                     </DataGrid>
-                    <Button Name="DriverDeleteSelected" Content="Delete selected drivers"  HorizontalAlignment="Right" Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Width="200" Height="30" Click="bt_DriverDeleteSelected_Click"/>
+                    <Button Name="DriverDeleteSelected" Content="Delete selected driver"  HorizontalAlignment="Right" Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Width="200" Height="30" Click="bt_DriverDeleteSelected_Click"/>
                     <Button Name="DriversAddNew" Click="DriversAddNew_Click" Content="Add new driver"  HorizontalAlignment="Left" Grid.Row="2" Grid.Column="0" VerticalAlignment="Top" Width="250" Height="30"/>
 
                 </Grid>
@@ -317,7 +317,7 @@
                     </DataGrid>
                     <Button Name ="ClientsAddNew" Click="ClientsAddNew_Click" Content="Add new client" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Stretch" MaxHeight="30" Width="250" />
 
-                    <Button Name="bt_ClientsDeleteSelected" Content="Delete selected clients"  HorizontalAlignment="Right" Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Width="200" Height="30" Click="bt_ClientsDeleteSelected_Click"/>
+                    <Button Name="bt_ClientsDeleteSelected" Content="Delete selected client"  HorizontalAlignment="Right" Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Width="200" Height="30" Click="bt_ClientsDeleteSelected_Click"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Report" Padding="20,5" Margin="-6,0,1.2,-2.4">

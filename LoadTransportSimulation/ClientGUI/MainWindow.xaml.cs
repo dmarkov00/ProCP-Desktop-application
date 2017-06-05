@@ -155,30 +155,40 @@ namespace WPFLoadSimulation
         {
 
             Driver driver = (Driver)DriversDGV.SelectedItem;
-            string result = await client.Delete("drivers", driver.Id.ToString());
-            driverCtrl.RemoveDriver(driver);
-
-            DriversDGV.DataContext = null;
-            DriversDGV.DataContext = driverCtrl.GetAllDrivers();
-
+            MessageBoxResult answer=MessageBox.Show("Are you sure you want to delete driver "+driver.FirstName+" "+driver.LastName+" ?", "Driver deletion", MessageBoxButton.YesNo);
+            if (answer==MessageBoxResult.Yes)
+            {
+                string result = await client.Delete("drivers", driver.Id.ToString());
+                driverCtrl.RemoveDriver(driver);
+                DriversDGV.DataContext = null;
+                DriversDGV.DataContext = driverCtrl.GetAllDrivers();
+            }      
         }
 
         private async void bt_TrucksDeleteSelected_Click(object sender, RoutedEventArgs e)
         {
             Truck t = (Truck)TrucksDGV.SelectedItem;
-            truckCtrl.RemoveTruck(t);
-            string result = await client.Delete("trucks", t.Id);
-            TrucksDGV.DataContext = null;
-            TrucksDGV.DataContext = truckCtrl.GetAllTrucks();
+            MessageBoxResult answer = MessageBox.Show("Are you sure you want to delete truck " + t.LicencePlate + " ?", "Truck deletion", MessageBoxButton.YesNo);
+            if (answer == MessageBoxResult.Yes)
+            {
+                truckCtrl.RemoveTruck(t);
+                string result = await client.Delete("trucks", t.Id);
+                TrucksDGV.DataContext = null;
+                TrucksDGV.DataContext = truckCtrl.GetAllTrucks();
+            }
         }
 
         private async void bt_ClientsDeleteSelected_Click(object sender, RoutedEventArgs e)
         {
             Client c = (Client)ClientDGV.SelectedItem;
-            clientCtrl.RemoveClient(c);
-            string result = await client.Delete("clients", c.Id);
-            ClientDGV.DataContext = null;
-            ClientDGV.DataContext = clientCtrl.GetAllClients();
+            MessageBoxResult answer = MessageBox.Show("Are you sure you want to delete client " + c.Name  + " ?", "Client deletion", MessageBoxButton.YesNo);
+            if (answer == MessageBoxResult.Yes)
+            {
+                clientCtrl.RemoveClient(c);
+                string result = await client.Delete("clients", c.Id);
+                ClientDGV.DataContext = null;
+                ClientDGV.DataContext = clientCtrl.GetAllClients();
+            }
         }
 
         private void bt_LoadsAddToRoute_Click(object sender, RoutedEventArgs e)
