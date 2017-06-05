@@ -8,6 +8,14 @@ namespace Models
 {
     public class User: IApiCallResult
     {
+
+        private string name;
+        private string email;
+        private string phone;
+        private string password;
+        private Company company;
+        private string token;
+
         private static volatile User instance;
         private static object syncRoot = new Object();
 
@@ -28,13 +36,6 @@ namespace Models
             }
             return instance;
         }
-
-        private string name;
-        private string email;
-        private string phone;
-        private string password;
-        private Company company;
-        private string token;
 
         [JsonProperty("email")]
         public string Email

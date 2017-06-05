@@ -12,6 +12,12 @@ namespace Models
 {
     public class Route
     {
+
+        public Driver Driver { get; set; }
+        public Truck Truck { get; set; }
+        public List<Load> Loads { get; set; }
+        public int NrOfLoads { get; set; }
+
         [JsonProperty("sum_salaries")]
         public double TotalEstimatedSalary { get; set; }
         [JsonProperty("sum_actual_salaries")]
@@ -54,11 +60,6 @@ namespace Models
 
         [JsonProperty("end_location_id")]
         public City EndLocation { get; set; }
-
-        public Driver Driver { get; set; }
-        public Truck Truck { get; set; }
-        public List<Load> Loads { get; set; }
-        public int NrOfLoads { get; set; }
 
         public Route(List<Load> loads/*, Truck truck, Driver driver, Address startloc*/)
         {
@@ -195,7 +196,6 @@ namespace Models
 
             }
         }
-
 
         /// <summary>
         /// Calculates fuel cost based on assumed average of 1.40 per liter in Europe

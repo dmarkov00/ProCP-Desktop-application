@@ -10,7 +10,6 @@ namespace Models
 {
     public class Client : IApiCallResult
     {
-        //private string companyName;
         private string name;
         private string phone;
         private string email;
