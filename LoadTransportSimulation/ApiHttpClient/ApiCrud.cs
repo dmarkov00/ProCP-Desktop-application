@@ -92,13 +92,14 @@ namespace ApiHttpClient
 
                 return modelCastedToCallResult;     
         }
+
         /// <summary>
-        /// Method used the create a resoursce in the api database
+        /// Method used the create a resource in the api database
         /// </summary>
         /// <typeparam name="T">The type of the resource to be created</typeparam>
         /// <param name="requestUri">Api entry point </param>
-        /// <param name="modelData"></param>
-        /// <returns></returns>
+        /// <param name="modelData">The sent data to be written</param>
+        /// <returns>The created entity </returns>
         public async Task<IApiCallResult> PostAsync<T>(string requestUri, T modelData)
         {
             // Converting the form data from c# object to json and setting it in the content to be sent

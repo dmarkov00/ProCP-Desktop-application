@@ -31,6 +31,19 @@ namespace ApiHttpClient.Tests
             Assert.AreEqual("Not Found", ((ApiErrorResult)actualResult).ReasonPhrase);
             Assert.AreEqual("Record not found", ((ApiErrorResult)actualResult).ErrorMessages[0]);
         }
+        [Test]
+        public async Task Creating_Entity_With_Empty_Data()
+        {
+            // Here we test if the server validation is functioning properly and if is handled properly
+            // on the client , by trying to create in this case the example is a Truck, without the required fields 
 
+            IApiCallResult actualResult = await dispatcher.Post("trucks", new { });
+
+            Assert.AreEqual("422", ((ApiErrorResult)actualResult).StatusCode);
+            Assert.AreEqual("Unprocessable Entity", ((ApiErrorResult)actualResult).ReasonPhrase);
+            Assert.AreEqual("The license plate field is required.", ((ApiErrorResult)actualResult).ErrorMessages[0]);
+            Assert.AreEqual("The pay load capacity field is required.", ((ApiErrorResult)actualResult).ErrorMessages[1]);
+            Assert.AreEqual("The weight field is required.", ((ApiErrorResult)actualResult).ErrorMessages[2]);
+        }
     }
 }
