@@ -154,7 +154,7 @@ namespace WPFLoadSimulation
             MessageBoxResult answer=MessageBox.Show("Are you sure you want to delete driver "+driver.FirstName+" "+driver.LastName+" ?", "Driver deletion", MessageBoxButton.YesNo);
             if (answer==MessageBoxResult.Yes)
             {
-                string result = await client.Delete("drivers", driver.Id.ToString());
+                IApiCallResult result = await client.Delete("drivers", driver.Id.ToString());
                 driverCtrl.RemoveDriver(driver);
                 DriversDGV.DataContext = null;
                 DriversDGV.DataContext = driverCtrl.GetAllDrivers();
@@ -168,7 +168,7 @@ namespace WPFLoadSimulation
             if (answer == MessageBoxResult.Yes)
             {
                 truckCtrl.RemoveTruck(t);
-                string result = await client.Delete("trucks", t.Id);
+                IApiCallResult result = await client.Delete("trucks", t.Id);
                 TrucksDGV.DataContext = null;
                 TrucksDGV.DataContext = truckCtrl.GetAllTrucks();
             }
@@ -181,7 +181,7 @@ namespace WPFLoadSimulation
             if (answer == MessageBoxResult.Yes)
             {
                 clientCtrl.RemoveClient(c);
-                string result = await client.Delete("clients", c.Id);
+                IApiCallResult result = await client.Delete("clients", c.Id);
                 ClientDGV.DataContext = null;
                 ClientDGV.DataContext = clientCtrl.GetAllClients();
             }

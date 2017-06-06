@@ -46,7 +46,7 @@ namespace ApiHttpClient.Tests
         {
             string expectedResult = "200";
 
-            string actualResult = await dispatcher.Delete("drivers", "2");
+            //string actualResult = await dispatcher.Delete("drivers", "2");
         }
 
 

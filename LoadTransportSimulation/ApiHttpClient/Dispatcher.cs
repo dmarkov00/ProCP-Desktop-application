@@ -60,7 +60,7 @@ namespace ApiHttpClient
         {
             return await apiCRUD.PutAsync<T>(requestUri, id, modelData);
         }
-        public async Task<string> Delete(string requestUri, string id)
+        public async Task<IApiCallResult> Delete(string requestUri, string id)
         {
           return await  apiCRUD.DeleteAsync(requestUri, id);
         }
