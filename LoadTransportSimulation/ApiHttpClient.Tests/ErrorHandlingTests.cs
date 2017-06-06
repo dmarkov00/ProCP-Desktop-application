@@ -31,5 +31,6 @@ namespace ApiHttpClient.Tests
             Assert.AreEqual("Not Found", ((ApiErrorResult)actualResult).ReasonPhrase);
             Assert.AreEqual("Record not found", ((ApiErrorResult)actualResult).ErrorMessages[0]);
         }
+
     }
 }

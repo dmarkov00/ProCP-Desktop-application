@@ -27,10 +27,10 @@ namespace ApiHttpClient
         /// <param name="id">Pointer to specific resource</param>
         /// <returns></returns>
         public async Task<IApiCallResult> DeleteAsync(string requestUri, string id)
-        { 
+        {
             // Executing delete request to the passed resource url
             HttpResponseMessage response = await httpClient.DeleteAsync(requestUri + "/" + id);
-            
+
             if (response.IsSuccessStatusCode)
             {
                 // If the entity is deleted successfully we return null
@@ -71,34 +71,26 @@ namespace ApiHttpClient
             }
         }
         /// <summary>
-        /// Method used for retrieving of multiple entities
+        /// Method used for retrieving of multiple entities.
+        /// In the case of this method no client error is possible because it is hadled
+        /// by the backend of the application, that's why there isn't such error handling present
         /// </summary>
         /// <typeparam name="T">Type of the expected result</typeparam>
         /// <param name="requestUri">Api entry point </param>
         /// <returns>List of entities</returns>
         public async Task<List<IApiCallResult>> GetManyAsync<T>(string requestUri)
-        {
+        {           
             HttpResponseMessage response = await httpClient.GetAsync(requestUri);
 
-            // The method doesn't have error handling
-            //if (response.IsSuccessStatusCode)
-            //{
-            // Extracting the json string response
-            result = await response.Content.ReadAsStringAsync();
+                // Extracting the json string response
+                result = await response.Content.ReadAsStringAsync();
 
-            List<T> modelDeserializedFromJson = JsonConvert.DeserializeObject<List<T>>(result);
+                List<T> modelDeserializedFromJson = JsonConvert.DeserializeObject<List<T>>(result);
 
-            // If it is not casted to IApiResult gives error, because of the return type of the method
-            List<IApiCallResult> modelCastedToCallResult = modelDeserializedFromJson.Cast<IApiCallResult>().ToList();
+                // We have to cast it to ApiCallResult, to be able to return
+                List<IApiCallResult> modelCastedToCallResult = modelDeserializedFromJson.Cast<IApiCallResult>().ToList();
 
-            return modelCastedToCallResult;
-            //}
-            //else
-            //{
-            //    ApiErrorResult apiErrorResult = await response.ConvertToApiErrorResult();
-
-            //    return apiErrorResult;
-            //}
+                return modelCastedToCallResult;     
         }
         /// <summary>
         /// Method used the create a resoursce in the api database
@@ -158,7 +150,7 @@ namespace ApiHttpClient
 
             // Sending post request with converted to json data and attached headers
             HttpResponseMessage response = await httpClient.PutAsync(requestUri + "/" + id, postContent);
- 
+
             if (response.IsSuccessStatusCode)
             {
                 // Extracting the json string response
