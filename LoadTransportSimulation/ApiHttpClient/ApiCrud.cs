@@ -70,6 +70,7 @@ namespace ApiHttpClient
                 return apiErrorResult;
             }
         }
+
         /// <summary>
         /// Method used for retrieving of multiple entities.
         /// In the case of this method no client error is possible because it is hadled
@@ -131,6 +132,7 @@ namespace ApiHttpClient
                 return apiErrorResult;
             }
         }
+
         /// <summary>
         /// Method used to update certain entity by sending put requst
         /// </summary>
@@ -138,16 +140,16 @@ namespace ApiHttpClient
         /// <param name="requestUri">Api entry point </param>
         /// <param name="id">Pointer to certain resource</param>
         /// <param name="modelData">The model that is being sent</param>
-        /// <returns></returns>
+        /// <returns>The updated entity</returns>
         public async Task<IApiCallResult> PutAsync<T>(string requestUri, string id, T modelData)
         {
             // Converting the form data from c# object to json and setting it in the content to be sent
             HttpContent postContent = new StringContent(JsonConvert.SerializeObject(modelData));
 
-            // Attaching headers
+            // Attaching headers, requered by the api to respond correctly
             postContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
-            //var t = await postContent.ReadAsStringAsync(); // to be deleted later on
+            var t = await postContent.ReadAsStringAsync(); // to be deleted later on
 
             // Sending post request with converted to json data and attached headers
             HttpResponseMessage response = await httpClient.PutAsync(requestUri + "/" + id, postContent);
