@@ -10,6 +10,15 @@ namespace Models
         private DateTime date;
         private MaintenanceAction actionPerformed;
 
+        public TruckMaintenance(Truck truck, Driver driver, double cost, DateTime date, MaintenanceAction actionPerformed)
+        {
+            this.truck = truck;
+            this.driver = driver;
+            this.cost = cost;
+            this.date = date;
+            this.actionPerformed = actionPerformed;
+        }
+
         internal Truck Truck
         {
             get
@@ -73,15 +82,6 @@ namespace Models
             {
                 actionPerformed = value;
             }
-        }
-
-        public TruckMaintenance(Truck truck, Driver driver, double cost, DateTime date, MaintenanceAction actionPerformed)
-        {
-            this.truck = truck;
-            this.driver = driver;
-            this.cost = cost;
-            this.date = date;
-            this.actionPerformed = actionPerformed;
         }
     }
 }

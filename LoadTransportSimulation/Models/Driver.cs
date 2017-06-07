@@ -9,13 +9,17 @@ namespace Models
         private string id;
         private string firstName;
         private string lastName;
-
-        ////Needs further attention as we need only date not datetime
-        //private DateTime birthDate;
         private string phone;
         private string email;
         private bool isBusy;
-        //private bool isInCompany;
+
+        public Driver(string firstName, string lastName, string phone, string email)
+        {
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.phone = phone;
+            this.email = email;
+        }
 
         [JsonProperty("fName")]
         public string FirstName
@@ -89,18 +93,6 @@ namespace Models
             }
         }
 
-        //public bool IsInCompany
-        //{
-        //    get
-        //    {
-        //        return isInCompany;
-        //    }
-
-        //    set
-        //    {
-        //        isInCompany = value;
-        //    }
-        //}
         [JsonProperty("id")]
         public string Id
         {
@@ -113,14 +105,6 @@ namespace Models
             {
                 id = value;
             }
-        }
-
-        public Driver(string firstName, string lastName, string phone, string email)
-        {
-            this.firstName = firstName;
-            this.lastName = lastName;
-            this.phone = phone;
-            this.email = email;
         }
     }
 }

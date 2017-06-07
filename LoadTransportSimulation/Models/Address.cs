@@ -14,6 +14,16 @@ namespace Models
         private string country;
         private string zipcode;
 
+        public Address(int houseNr, string street, string city, string country, string zipcode)
+        {
+            this.houseNr = houseNr;
+            this.street = street;
+            this.city = city;
+            this.country = country;
+            this.zipcode = zipcode;
+        }
+
+
         public int HouseNr
         {
             get
@@ -77,15 +87,6 @@ namespace Models
             {
                 zipcode = value;
             }
-        }
-
-        public Address(int houseNr, string street, string city, string country, string zipcode)
-        {
-            this.houseNr = houseNr;
-            this.street = street;
-            this.city = city;
-            this.country = country;
-            this.zipcode = zipcode;
         }
 
         public override string ToString()

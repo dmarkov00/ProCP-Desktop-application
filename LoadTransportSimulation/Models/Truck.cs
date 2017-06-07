@@ -7,17 +7,6 @@ namespace Models
 {
     public class Truck:IApiCallResult
     {
-        public Truck(string licencePlate, int location_id, int payloadCapacityKg, int weightKg, double widthInMeters, double heightInMeters, double lengthInMeters)
-        {
-            this.LicencePlate = licencePlate;
-            this.Location_id = location_id;
-            this.PayloadCapacityKg = payloadCapacityKg;
-            this.WeightKg = weightKg;
-            this.WidthInMeters = widthInMeters;
-            this.HeightInMeters = heightInMeters;
-            this.LengthInMeters = lengthInMeters;
-            this.LocationCity = (City)Location_id;
-        }
         private string id;
         private string licencePlate;
         private string company_id;
@@ -35,6 +24,18 @@ namespace Models
         private bool isBusy;
         private bool isInCompany;
         private List<TruckMaintenance> maintenanceList;
+
+        public Truck(string licencePlate, int location_id, int payloadCapacityKg, int weightKg, double widthInMeters, double heightInMeters, double lengthInMeters)
+        {
+            this.LicencePlate = licencePlate;
+            this.Location_id = location_id;
+            this.PayloadCapacityKg = payloadCapacityKg;
+            this.WeightKg = weightKg;
+            this.WidthInMeters = widthInMeters;
+            this.HeightInMeters = heightInMeters;
+            this.LengthInMeters = lengthInMeters;
+            this.LocationCity = (City)Location_id;
+        }
 
         public City LocationCity
         {
@@ -247,10 +248,21 @@ namespace Models
         }
 
      
-        public string AddMaintenance(MaintenanceAction maintenance)
+        public string AddMaintenance(TruckMaintenance maintenance)
         {
+            if (!maintenanceList.Contains(maintenance)) {
+                maintenanceList.Add(maintenance);
+                return "Maintenance has been added!";
+            }
+            else
+            {
+                return "Maintenance already existing!";
+            }
+        }
 
-            return "Maintenance added successfully";
+        public List<TruckMaintenance> GetMaintenances()
+        {
+            return maintenanceList;
         }
 
         public override string ToString()

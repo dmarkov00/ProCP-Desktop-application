@@ -7,9 +7,6 @@ namespace Models
 {
     public class Load : IApiCallResult
     {
-
-
-
         public Load(int startLocationID, int endLocationID, string content,
             decimal weight, double fullsalary, double finalsal, double delay, DateTime maxarrival, int clientID, int loadstatus)
         {
@@ -30,7 +27,6 @@ namespace Models
             this.ActArrivalTime = null;
         }
         
-
         [JsonProperty("client_id")]
         public int ClientID { get; set; }
         [JsonProperty("startLocation_id")]
@@ -67,14 +63,12 @@ namespace Models
             double finalsalary = 0;
             double delayfee = 0;
 
-            TimeSpan? delaytime = (ActArrivalTime - MaxArrivalTime);
-            
+            TimeSpan? delaytime = (ActArrivalTime - MaxArrivalTime);      
             //double delayhours = delaytime.TotalHours;
             //if (delayhours > 0)
             //{
             //    delayfee = delayhours * (FullSalaryEur * (Convert.ToDouble(DelayFeePercHour) / 100));
             //}
-
             finalsalary = FullSalaryEur - delayfee;
             FinalSalaryEur = finalsalary;
             return finalsalary;

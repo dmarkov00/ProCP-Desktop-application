@@ -5,10 +5,37 @@ namespace Models
     {
         private string companyName;
         private Address address;
-        //private TruckController truckCtrl;
-        //private DriverController driveCtrl;
-        //private LoadController loadCtrl;
-        //private RouteController routeCtrl;
-        //private ClientController clientCtrl;
+
+        public Company(string companyName, Address address)
+        {
+            this.companyName = companyName;
+            this.address = address;
+        }
+
+        public string CompanyName
+        {
+            get
+            {
+                return companyName;
+            }
+
+            set
+            {
+                companyName = value;
+            }
+        }
+
+        public Address Address
+        {
+            get
+            {
+                return address;
+            }
+
+            set
+            {
+                address = value;
+            }
+        }
     }
 }
