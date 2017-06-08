@@ -16,6 +16,9 @@ namespace WPFLoadSimulation
         public LogInWindow()
         {
             InitializeComponent();
+ 
+            // Initial creation of dispacher on application start 
+            ApiHttpClient.Dispatcher.Create("");
         }
 
         private void tb_KeyDown(object sender, KeyEventArgs e)
@@ -40,6 +43,7 @@ namespace WPFLoadSimulation
             var loginData = new { email = userName.Text, password = userPassword.Password };
             User u = (User)await ApiHttpClient.Dispatcher.GetInstance().LoginUser(loginData);
             User.Create(u);
+            ApiHttpClient.Dispatcher.Create(User.GetInstance().Token);
         }
     }
 }

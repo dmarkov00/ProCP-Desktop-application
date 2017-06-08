@@ -12,10 +12,10 @@ namespace ApiHttpClient
 {
     public class ApiCRUD
     {
-        public ApiCRUD(HttpClient httpClient)
+        public ApiCRUD(HttpClient httpClient, string apiToken)
         {
             this.httpClient = httpClient;
-            httpClient.DefaultRequestHeaders.Add("api_token", GlobalConstants.testToken2);
+            httpClient.DefaultRequestHeaders.Add("api_token", apiToken);
         }
 
         private HttpClient httpClient;

@@ -12,7 +12,8 @@ namespace ApiHttpClient
 
         private static readonly HttpClient client = new HttpClient();
         private static HttpClient httpClient;
-        private static ApiCRUD apiCRUD;
+        private static  ApiCRUD apiCRUD;
+        private  string apiToken;
         //Singleton implemented
         //To access it use Dispatcher.GetInstance()
 
@@ -21,26 +22,34 @@ namespace ApiHttpClient
 
         public static Dispatcher GetInstance()
         {
-            if (instance == null)
+            if (instance != null)
             {
-                lock (syncRoot)
-                {
-                    if (instance == null)
-                        instance = new Dispatcher();
-                }       
+                return instance;
+            }
+            else
+            {
+                throw new Exception("Object not created");
+            }
+        }
+        public static Dispatcher Create(string apiToken)
+        {
+            lock (syncRoot)
+            {
+                if (instance == null || ((Dispatcher)instance).apiToken == "")
+                    instance = new Dispatcher(apiToken); 
             }
             return instance;
         }
 
-        private Dispatcher()
+        private Dispatcher(string apiToken)
         {
             httpClient = new HttpClient();
             // Base address, every request builds upon it acess different resource
             httpClient.BaseAddress = new Uri("http://127.0.0.1:8000/api/");
-            apiCRUD = new ApiCRUD(httpClient);
-
+            this.apiToken = apiToken;
+            apiCRUD = new ApiCRUD(httpClient, this.apiToken);
         }
-      
+
         public async Task<IApiCallResult> Get<T>(string requestUri, string id)
         {
             return await apiCRUD.GetAsync<T>(requestUri, id);
@@ -62,7 +71,7 @@ namespace ApiHttpClient
         }
         public async Task<IApiCallResult> Delete(string requestUri, string id)
         {
-          return await  apiCRUD.DeleteAsync(requestUri, id);
+            return await apiCRUD.DeleteAsync(requestUri, id);
         }
 
         public async Task<string> AssignTruckToDriver(int truckId, string token)
