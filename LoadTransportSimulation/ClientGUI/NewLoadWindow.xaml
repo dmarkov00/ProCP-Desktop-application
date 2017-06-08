@@ -1,7 +1,7 @@
 ﻿<Window x:Class="WPFLoadSimulation.NewLoadWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="NewLoadWindow" Height="350" Width="460"
+        Title="New Load" Height="350" Width="460"
         WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid Background="#FFE5E5E5" Margin="10">

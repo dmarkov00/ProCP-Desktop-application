@@ -72,8 +72,9 @@ namespace WPFLoadSimulation
             IEnumerable<IApiCallResult> trucks = await client.GetMany<Truck>("trucks");
             List<Truck> targetListTrucks = new List<Truck>(trucks.Cast<Truck>());
             truckCtrl = TruckController.Create(targetListTrucks);
-            TrucksDGV.DataContext = truckCtrl.GetAllTrucks();
+            TrucksDGV.ItemsSource = truckCtrl.GetAllTrucks();
             truckCtrl.AssignDriversToTrucks();
+            cb_assignDriverToTruck.ItemsSource = driverCtrl.GetUnassignedDrivers();
 
             foreach (Truck t in truckCtrl.GetAvailableTrucks())
             {
@@ -156,8 +157,6 @@ namespace WPFLoadSimulation
             {
                 IApiCallResult result = await client.Delete("drivers", driver.Id.ToString());
                 driverCtrl.RemoveDriver(driver);
-                DriversDGV.DataContext = null;
-                DriversDGV.DataContext = driverCtrl.GetAllDrivers();
             }      
         }
 
@@ -169,8 +168,6 @@ namespace WPFLoadSimulation
             {
                 truckCtrl.RemoveTruck(t);
                 IApiCallResult result = await client.Delete("trucks", t.Id);
-                TrucksDGV.DataContext = null;
-                TrucksDGV.DataContext = truckCtrl.GetAllTrucks();
             }
         }
 
@@ -182,8 +179,6 @@ namespace WPFLoadSimulation
             {
                 clientCtrl.RemoveClient(c);
                 IApiCallResult result = await client.Delete("clients", c.Id);
-                ClientDGV.DataContext = null;
-                ClientDGV.DataContext = clientCtrl.GetAllClients();
             }
         }
 
@@ -191,8 +186,10 @@ namespace WPFLoadSimulation
         {
             foreach (Load load in LoadsAvailableDGW.SelectedItems)
             {
-                lb_selectedLoadsForRoute.Items.Add(new { start = load.StartLocationCity, end = load.EndLocationCity, deadline = load.MaxArrivalTime, content = load.Content, salary = load.FullSalaryEur });
-                //LoadsAvailableDGW.Items.Remove(load);
+                if (!lb_selectedLoadsForRoute.Items.Contains(load))
+                {
+                    lb_selectedLoadsForRoute.Items.Add(load);
+                }
             }
         }
 
@@ -369,6 +366,15 @@ namespace WPFLoadSimulation
             t.LocationCity = r.EndLocation;
             t.Location_id = (int)r.EndLocation;
             t.IsBusy = false;
+
+        }
+
+        private void cb_ssignDriverToTruck_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Truck t = (Truck)TrucksDGV.SelectedItem;
+            t.CurrentDriver = (Driver)cb_assignDriverToTruck.SelectedItem;
+            
+            
         }
     }
 }

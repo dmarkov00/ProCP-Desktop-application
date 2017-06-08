@@ -2,10 +2,11 @@
 using Common.Enumerations;
 using Newtonsoft.Json;
 using Common;
+using System.ComponentModel;
 
 namespace Models
 {
-    public class Truck:IApiCallResult
+    public class Truck:IApiCallResult, INotifyPropertyChanged
     {
         private string id;
         private string licencePlate;
@@ -24,6 +25,14 @@ namespace Models
         private bool isBusy;
         private bool isInCompany;
         private List<TruckMaintenance> maintenanceList;
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         public Truck(string licencePlate, int location_id, int payloadCapacityKg, int weightKg, double widthInMeters, double heightInMeters, double lengthInMeters)
         {
@@ -73,6 +82,9 @@ namespace Models
             set
             {
                 currentDriver = value;
+                Driver_id = currentDriver.Id;
+                OnPropertyChanged("CurrentDriver");
+
             }
         }
 
@@ -269,5 +281,7 @@ namespace Models
         {
             return this.LicencePlate + " - Location: " + this.LocationCity + " - Capacity Kg: " + this.PayloadCapacityKg;
         }
+
+       
     }
 }

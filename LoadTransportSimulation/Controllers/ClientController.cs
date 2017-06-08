@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using Models;
 using System;
+using System.Collections.ObjectModel;
 
 namespace Controllers
 {
     public class ClientController
     {
-        private List<Client> clients;
+        private ObservableCollection<Client> clients;
 
         /*Singleton implemented
          * -when you want to use the controller the first time, use ClientController.Create(list);
@@ -34,10 +35,10 @@ namespace Controllers
 
         private ClientController(List<Client> clients)
         {
-            this.clients = clients;
+            this.clients = new ObservableCollection<Client>(clients);
         }
 
-        public List<Client> GetAllClients()
+        public ObservableCollection<Client> GetAllClients()
         {
             return clients;
         }

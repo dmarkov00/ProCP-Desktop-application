@@ -1,12 +1,13 @@
 ﻿using Models;
 using System.Collections.Generic;
 using System;
+using System.Collections.ObjectModel;
 
 namespace Controllers
 {
     public class DriverController
     {
-        private List<Driver> drivers;
+        private ObservableCollection<Driver> drivers;
 
         /*Singleton implemented
          * -when you want to use the controller the first time, use DriverController.Create(list);
@@ -34,7 +35,7 @@ namespace Controllers
 
         private DriverController(List<Driver> drivers)
         {
-            this.drivers = drivers;
+            this.drivers = new ObservableCollection<Driver>(drivers);
         }
 
         public string AddDriver(Driver t)
@@ -48,21 +49,77 @@ namespace Controllers
             return "Truck removed";
         }
 
-        public List<Driver> GetAllDrivers()
+        public ObservableCollection<Driver> GetAllDrivers()
         {
             return drivers;
         }
 
         public List<Driver> GetBusyDrivers()
         {
-            return drivers;
+            List<Driver> busyDrivers = new List<Driver>();
+
+            foreach (Driver d in drivers)
+            {
+                if (d.IsBusy)
+                {
+                    busyDrivers.Add(d);
+                }
+            }
+            return busyDrivers;
         }
+
+        /// <summary>
+        /// Returns drivers who are not assigned to any truck yet
+        /// </summary>
+        /// <returns></returns>
+        /// 
+        
+        public ObservableCollection<Driver> GetUnassignedDrivers()
+        {
+            ObservableCollection<Driver> unassignedDrivers = GetAllDrivers();
+            TruckController truckCtrl = TruckController.GetInstance();
+            
+            int count = unassignedDrivers.Count;
+
+            for(int d=count-1; d>=0; d--)
+            {
+                for(int t=0; t<truckCtrl.GetAllTrucks().Count; t++ )
+                {
+                    if (truckCtrl.GetAllTrucks()[t].CurrentDriver == unassignedDrivers[d])
+                    {
+                        unassignedDrivers.RemoveAt(d);
+                    }
+                }
+            }
+
+            return unassignedDrivers;
+        }
+
+
+        /// <summary>
+        /// Returns drivers who are currently not on road
+        /// </summary>
+        /// <returns></returns>
         public List<Driver> GetAvailableDrivers()
         {
-            return drivers;
+            
+            List<Driver> availableDrivers = new List<Driver>();
+
+            foreach(Driver d in drivers)
+            {
+                if (!d.IsBusy)
+                {
+                    availableDrivers.Add(d);
+                    
+                }
+            }
+            return availableDrivers;
         }
+
         public Driver GetDriver(string id)
         {
+            
+
             return drivers[0];
         }
     }

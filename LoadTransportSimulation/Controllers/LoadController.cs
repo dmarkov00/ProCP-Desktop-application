@@ -102,7 +102,7 @@ namespace Controllers
         public void SetClientsForLoads()
         {
             ClientController clientctrl = ClientController.GetInstance();
-            List<Client> clients = clientctrl.GetAllClients();
+            List<Client> clients = new List<Client>(clientctrl.GetAllClients());
 
             for(int l=0; l<loads.Count; l++)
             {

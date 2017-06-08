@@ -1,13 +1,13 @@
 ﻿using Models;
 using System.Collections.Generic;
 using System;
+using System.Collections.ObjectModel;
 
 namespace Controllers
 {
     public class TruckController
     {
-        private List<Truck> trucks;
-
+        private ObservableCollection<Truck> trucks;
         /*Singleton implemented
         * -when you want to use the controller the first time, use DriverController.Create(list);
         * -afterwards, anywhere in the program, to get the instance, use DriverController.GetInstance();
@@ -36,7 +36,7 @@ namespace Controllers
 
         private TruckController(List<Truck> trucks)
         {
-            this.trucks = trucks;
+            this.trucks = new ObservableCollection<Truck>( trucks);
         }
 
 
@@ -49,17 +49,17 @@ namespace Controllers
             trucks.Remove(t);
             return "Truck added successfully";
         }
-        public List<Truck> GetAllTrucks()
+        public ObservableCollection<Truck> GetAllTrucks()
         {
             return trucks;
         }
         public List<Truck> GetBusyTrucks()
         {
-            return trucks;
+            return new List<Truck>(trucks);
         }
         public List<Truck> GetAvailableTrucks()
         {
-            return trucks;
+            return new List<Truck>(trucks);
         }
         public Truck GetTruck(string licencePlate)
         {
@@ -74,6 +74,11 @@ namespace Controllers
                 for (int d = 0; d < driverctrl.GetAllDrivers().Count; d++)
                     if (trucks[t].Driver_id == driverctrl.GetAllDrivers()[d].Id)
                         trucks[t].CurrentDriver = driverctrl.GetAllDrivers()[d];
+        }
+
+        public void AssignSingleDriverToTruck(Truck t, Driver d)
+        {
+            
         }
     }
 }
