@@ -22,6 +22,7 @@ using System.Threading;
 using System.IO;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
+using MaterialDesignThemes.Wpf;
 
 namespace WPFLoadSimulation
 {
@@ -44,8 +45,37 @@ namespace WPFLoadSimulation
             client = ApiHttpClient.Dispatcher.GetInstance();
             CreateDriverController();
             CreateLoadController();
+            SetTablePaddings();
         }
 
+        private void SetTablePaddings()
+        {
+            //Loads tab
+            DataGridAssist.SetCellPadding(LoadsAvailableDGW, new Thickness(2));
+            DataGridAssist.SetColumnHeaderPadding(LoadsAvailableDGW, new Thickness(3));
+            ListViewAssist.SetListViewItemPadding(lv_loadDetails, new Thickness(2));
+            ListViewAssist.SetListViewItemPadding(lv_loadClient, new Thickness(2));
+            ListViewAssist.SetListViewItemPadding(lv_selectedLoadsForRoute, new Thickness(2));
+            ListViewAssist.SetListViewItemPadding(lv_routeEstimation, new Thickness(2));
+
+            //Routes tab
+            DataGridAssist.SetCellPadding(routesDGV, new Thickness(2));
+            DataGridAssist.SetColumnHeaderPadding(routesDGV, new Thickness(3));
+            DataGridAssist.SetCellPadding(LoadsFromRouteDGV, new Thickness(2));
+            DataGridAssist.SetColumnHeaderPadding(LoadsFromRouteDGV, new Thickness(3));
+
+            //Trucks tab
+            DataGridAssist.SetCellPadding(TrucksDGV, new Thickness(2));
+            DataGridAssist.SetColumnHeaderPadding(TrucksDGV, new Thickness(3));
+
+            //Drivers tab
+            DataGridAssist.SetCellPadding(DriversDGV, new Thickness(2));
+            DataGridAssist.SetColumnHeaderPadding(DriversDGV, new Thickness(3));
+
+            //Clients tab
+            DataGridAssist.SetCellPadding(ClientDGV, new Thickness(2));
+            DataGridAssist.SetColumnHeaderPadding(ClientDGV, new Thickness(3));
+        }
 
         private void CreateRouteController()
         {
@@ -186,9 +216,9 @@ namespace WPFLoadSimulation
         {
             foreach (Load load in LoadsAvailableDGW.SelectedItems)
             {
-                if (!lb_selectedLoadsForRoute.Items.Contains(load))
+                if (!lv_selectedLoadsForRoute.Items.Contains(load))
                 {
-                    lb_selectedLoadsForRoute.Items.Add(load);
+                    lv_selectedLoadsForRoute.Items.Add(load);
                 }
             }
         }
@@ -202,9 +232,9 @@ namespace WPFLoadSimulation
             route = new Route(loads);
             bt_calculateEstimation.IsEnabled = false;
 
-            lb_routeEstimation.Items.Clear();
-            lb_routeEstimation.Items.Add(new { description = "Calculating" });
-            foreach (Load l in lb_selectedLoadsForRoute.Items)
+            lv_routeEstimation.Items.Clear();
+            lv_routeEstimation.Items.Add(new { description = "Calculating" });
+            foreach (Load l in lv_selectedLoadsForRoute.Items)
             {
                 loads.Add(l);
             }
@@ -220,13 +250,13 @@ namespace WPFLoadSimulation
             bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(
                 delegate (object o, RunWorkerCompletedEventArgs args)
                 {
-                    lb_routeEstimation.Items.Clear();
-                    lb_routeEstimation.Items.Add(new { description = "Estimated distance: ", result = route.EstDistanceKm, unit = "Km" });
-                    lb_routeEstimation.Items.Add(new { description = "Estimated time: ", result = route.EstTimeDrivingTimeSpan.ToString(@"d\d\:h\h\:m\m\:s\s", System.Globalization.CultureInfo.InvariantCulture), unit = "days:hours:min:sec" });
-                    lb_routeEstimation.Items.Add(new { description = "Estimated fuel consump: ", result = route.EstFuelConsumptionLiters, unit = "Liters" });
-                    lb_routeEstimation.Items.Add(new { description = "Estimated fuel cost: ", result = route.EstFuelCost, unit = "Eur" });
-                    lb_routeEstimation.Items.Add(new { description = "Estimated salary: ", result = route.TotalEstimatedSalary, unit = "Eur" });
-                    lb_routeEstimation.Items.Add(new { description = "Estimated revenue: ", result = (route.TotalEstimatedSalary - route.EstFuelCost).ToString(), unit = "Eur" });
+                    lv_routeEstimation.Items.Clear();
+                    lv_routeEstimation.Items.Add(new { description = "Estimated distance: ", result = route.EstDistanceKm, unit = "Km" });
+                    lv_routeEstimation.Items.Add(new { description = "Estimated time: ", result = route.EstTimeDrivingTimeSpan.ToString(@"d\d\:h\h\:m\m\:s\s", System.Globalization.CultureInfo.InvariantCulture), unit = "days:hours:min:sec" });
+                    lv_routeEstimation.Items.Add(new { description = "Estimated fuel consump: ", result = route.EstFuelConsumptionLiters, unit = "Liters" });
+                    lv_routeEstimation.Items.Add(new { description = "Estimated fuel cost: ", result = route.EstFuelCost, unit = "Eur" });
+                    lv_routeEstimation.Items.Add(new { description = "Estimated salary: ", result = route.TotalEstimatedSalary, unit = "Eur" });
+                    lv_routeEstimation.Items.Add(new { description = "Estimated revenue: ", result = (route.TotalEstimatedSalary - route.EstFuelCost).ToString(), unit = "Eur" });
                     bt_calculateEstimation.IsEnabled = true;
                     bt_submitRoute.IsEnabled = true;
                 }
@@ -239,8 +269,8 @@ namespace WPFLoadSimulation
         {
             
             routeCtrl.AddRouteToList(route);
-            lb_routeEstimation.Items.Clear();
-            lb_selectedLoadsForRoute.Items.Clear();
+            lv_routeEstimation.Items.Clear();
+            lv_selectedLoadsForRoute.Items.Clear();
             cb_assignTruckToRoute.SelectedItem = null;
             bt_submitRoute.IsEnabled = false;
             bt_calculateEstimation.IsEnabled = false;
@@ -249,16 +279,16 @@ namespace WPFLoadSimulation
         private void LoadsAvailableDGW_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             Load load = (Load)LoadsAvailableDGW.SelectedItem;
-            if (!lb_selectedLoadsForRoute.Items.Contains(load))
+            if (!lv_selectedLoadsForRoute.Items.Contains(load))
             {
-                lb_selectedLoadsForRoute.Items.Add(load);
+                lv_selectedLoadsForRoute.Items.Add(load);
             }
             bt_submitRoute.IsEnabled = false;
         }
 
-        private void lb_selectedLoadsForRoute_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void lv_selectedLoadsForRoute_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            lb_selectedLoadsForRoute.Items.Remove(lb_selectedLoadsForRoute.SelectedItem);
+            lv_selectedLoadsForRoute.Items.Remove(lv_selectedLoadsForRoute.SelectedItem);
         }
 
         private void LoadsAvailableDGW_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
