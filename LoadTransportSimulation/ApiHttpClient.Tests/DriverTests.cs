@@ -11,16 +11,27 @@ namespace ApiHttpClient.Tests
     [TestFixture]
     public class DriverTests
     {
-        private Dispatcher dispatcher = Dispatcher.GetInstance();
+        private Dispatcher dispatcher = Dispatcher.Create(GlobalConstants.testToken2);
+        [Test]
+        public async Task Update_Driver()
+        {
+            // The expected result is also used as a test model
+            Driver expectedResult = new Driver("2", "Daf", "Diesel", "39933", "diese@gmail.com");
+
+            // After update the api should return the updated entity
+            Driver actualResult = (Driver)await dispatcher.Put("drivers", "2", expectedResult);
+
+            Assert.AreEqual(expectedResult.FirstName, actualResult.FirstName);
+        }
         [Test]
         public async Task Getting_Driver_By_Id_Successfully()
         {
             //Ask the API to provide driver with id 2
             Driver driver = (Driver)await dispatcher.Get<Driver>("drivers", "2");
             //We make sure the driver id is 2
+            Assert.AreEqual(driver.Id, "2");
             Assert.AreEqual(driver.FirstName, "Daf");
         }
-
         [Test]
         public async Task Getting_All_Drivers()
         {
@@ -31,27 +42,13 @@ namespace ApiHttpClient.Tests
             Assert.IsTrue(targetList.Count > 0);
         }
         [Test]
-        public async Task Update_Driver()
-        {
-            // Also is used as test model
-            Driver expectedResult = new Driver("Daf", "Diesel", "39933", "diese@gmail.com");
-
-            // After update the api should return the updated entity
-            Driver actualResult = (Driver)await dispatcher.Put("drivers", "2", expectedResult);
-
-            Assert.AreEqual(expectedResult.FirstName, actualResult.FirstName);
-        }
-        [Test]
         public async Task Delete_Driver()
         {
-            string expectedResult = "200";
+            // On sucessfull delete the method returns null
+            //var actualResult = await dispatcher.Delete("drivers", "2");
 
-            //string actualResult = await dispatcher.Delete("drivers", "2");
+            //Assert.AreEqual(actualResult, null);
         }
-
-
-
-
         [Test]
         public async Task Getting_Driver_Assigned_To_Truck_Successfully()
         {

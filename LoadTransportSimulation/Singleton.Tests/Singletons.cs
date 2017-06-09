@@ -34,9 +34,9 @@ namespace Singleton.Tests
             List<Driver> drivers1 = new List<Driver>();
             List<Driver> drivers2 = new List<Driver>();
 
-            drivers1.Add(new Driver("Bob", "Dylan", "1234455", "email"));
-            drivers2.Add(new Driver("Gigi", "Olaa", "1234455", "email"));
-            drivers2.Add(new Driver("Eugen", "Dobre", "1234455", "email"));
+            drivers1.Add(new Driver("1","Bob", "Dylan", "1234455", "email"));
+            drivers2.Add(new Driver("2","Gigi", "Olaa", "1234455", "email"));
+            drivers2.Add(new Driver("3","Eugen", "Dobre", "1234455", "email"));
 
             DriverController driverCtrl1 = Controllers.DriverController.Create(drivers1);
             DriverController driverCtrl2 = Controllers.DriverController.Create(drivers2);

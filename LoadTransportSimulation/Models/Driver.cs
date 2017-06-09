@@ -13,8 +13,9 @@ namespace Models
         private string email;
         private bool isBusy;
 
-        public Driver(string firstName, string lastName, string phone, string email)
+        public Driver(string id, string firstName, string lastName, string phone, string email)
         {
+            this.id = id;
             this.firstName = firstName;
             this.lastName = lastName;
             this.phone = phone;

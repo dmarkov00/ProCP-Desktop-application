@@ -12,7 +12,8 @@ namespace ApiHttpClient.Tests
     [TestFixture]
     public class LoadTests
     {
-        private Dispatcher dispatcher = Dispatcher.GetInstance();
+        private Dispatcher dispatcher = Dispatcher.Create(GlobalConstants.testToken2);
+
 
         [Test]
         public async Task Getting_All_Loads_Succesfully()

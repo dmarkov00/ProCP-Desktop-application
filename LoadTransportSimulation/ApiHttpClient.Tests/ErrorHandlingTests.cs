@@ -10,7 +10,7 @@ namespace ApiHttpClient.Tests
     [TestFixture]
     public class ErrorHandlingTests
     {
-        private Dispatcher dispatcher = Dispatcher.GetInstance();
+        private Dispatcher dispatcher = Dispatcher.Create(GlobalConstants.testToken2);
 
         [Test]
         public async Task Getting_Unexisting_Resource_By_Id()
