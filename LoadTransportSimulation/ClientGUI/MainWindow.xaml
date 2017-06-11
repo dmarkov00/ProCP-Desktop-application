@@ -415,7 +415,7 @@
                                         <DataGridTextColumn Binding="{Binding EstDistanceKm}" ClipboardContentBinding="{x:Null}" Header="Estimated &#xA;km" IsReadOnly="True" Width="*"/>
                                         <DataGridTextColumn Binding="{Binding EstTimeDrivingTimeSpan}" ClipboardContentBinding="{x:Null}" Header="Estimated &#xA;time driving" IsReadOnly="True" Width="*"/>
                                         <DataGridTextColumn Binding="{Binding EstFuelConsumptionLiters}" ClipboardContentBinding="{x:Null}" Header="Estimated &#xA;fuel consump" IsReadOnly="True" Width="*"/>
-                                        <DataGridTextColumn Binding="{Binding EstCost}" ClipboardContentBinding="{x:Null}" Header="Estimated &#xA;cost" IsReadOnly="True" Width="*"/>
+                                        <DataGridTextColumn Binding="{Binding EstFuelCost}" ClipboardContentBinding="{x:Null}" Header="Estimated &#xA;cost" IsReadOnly="True" Width="*"/>
                                         <DataGridTextColumn Binding="{Binding TotalEstimatedSalary}" ClipboardContentBinding="{x:Null}" Header="Estimated &#xA;salary" IsReadOnly="True" Width="*"/>
                                         <DataGridTextColumn Binding="{Binding EndTime}" ClipboardContentBinding="{x:Null}" Header="End time" Width="*" FontWeight="Bold"/>
                                         <DataGridTextColumn Binding="{Binding ActDistanceKm}" ClipboardContentBinding="{x:Null}" Header="Actual &#xA;km" Width="*" FontWeight="Bold"/>

@@ -13,10 +13,16 @@ namespace Models
 {
     public class Route : IApiCallResult
     {
-
+        
+        public int DriverId { get; set; }
         public Driver Driver { get; set; }
+
+        [JsonProperty("truck_id")]
+        public string TruckId { get; set; }
         public Truck Truck { get; set; }
+
         public List<Load> Loads { get; set; }
+
         public int NrOfLoads { get; set; }
 
         [JsonProperty("sum_salaries")]
@@ -25,32 +31,53 @@ namespace Models
         public double TotalActualSalary { get; set; }
         [JsonProperty("revenue")]
         public double FinalRevenue { get; set; }
-        public TimeSpan TotalTimeUsed { get; set; }
+        
+        
+        [JsonProperty("est_time_driving")]
+        public double EstTimeDrivingMin { get; set; }
         public TimeSpan EstTimeDrivingTimeSpan { get; set; }
+        [JsonProperty("est_distance")]
         public int EstDistanceKm { get; set; }
         [JsonProperty("est_fuelConsumption")]
         public int EstFuelConsumptionLiters { get; set; }
+        [JsonProperty("est_cost")]
         public double EstFuelCost { get; set; }
+
+        [JsonProperty("act_time_used")]
+        public double ActTimeDrivingMin { get; set; }
         public TimeSpan ActTimeDrivingTimeSpan { get; set; }
-        public int ActTimeDrivingMinutes { get; set; }
+        [JsonProperty("act_distance")]
         public int ActDistanceKm { get; set; }
+        [JsonProperty("act_fuelConsumption")]
         public int ActFuelConsumptionLiters { get; set; }
+        [JsonProperty("act_cost")]
         public double ActFuelCost { get; set; }
+
+        [JsonProperty("start_time")]
         public DateTime StartTime { get; set; }
+        [JsonProperty("end_time")]
         public DateTime EndTime { get; set; }
+
+        [JsonProperty("start_location_id")]
+        public int StartLocationId { get; set; }
+        [JsonProperty("end_location_id")]
+        public int EndLocationId { get; set; }
         public City StartLocation { get; set; }
         public City EndLocation { get; set; }
 
-        public Route(List<Load> loads/*, Truck truck, Driver driver, Address startloc*/)
+        public Route(List<Load> loads)
         {
             this.Loads = loads;
+            this.EstTimeDrivingTimeSpan = TimeSpan.FromMinutes(EstTimeDrivingMin);
+            //this.NrOfLoads = Loads.Count;
         }
         
 
         public void GetTimeConsumedPerRoute()
         {
             TimeSpan time = this.EndTime - this.StartTime;
-            this.TotalTimeUsed = time;
+            this.ActTimeDrivingTimeSpan = time;
+            this.ActTimeDrivingMin = ActTimeDrivingTimeSpan.TotalMinutes;
         }
 
         /// <summary>

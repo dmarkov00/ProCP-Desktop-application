@@ -49,11 +49,21 @@ namespace Controllers
 
         public void AddRouteToList(Route r)
         {
-            routes.Add(r);
+            
             r.StartLocation = r.Truck.LocationCity;
+            r.StartLocationId = (int)r.StartLocation;
+
            r.EndLocation = r.Loads[r.Loads.Count - 1].EndLocationCity;
+            r.EndLocationId = (int)r.EndLocation;
+            
+
             r.StartTime = System.DateTime.Now;
             r.NrOfLoads = r.Loads.Count;
+
+            r.TruckId = r.Truck.Id;
+            routes.Add(r);
+
+            //await ApiHttpClient.Dispatcher.GetInstance().Post<Route>("routes", r);
         }
 
         public void SetEstimations(Route r)
