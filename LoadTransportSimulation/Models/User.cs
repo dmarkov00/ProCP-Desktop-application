@@ -1,6 +1,7 @@
 ﻿using Common;
 using System;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Collections.Generic;
 
@@ -18,6 +19,8 @@ namespace Models
 
         private static volatile User instance;
         private static object syncRoot = new Object();
+        private string companyname;
+        private string companyid;
 
         public static User GetInstance()
         {
@@ -32,7 +35,10 @@ namespace Models
             lock (syncRoot)
             {
                 if (instance == null)
+                {
                     instance = u;
+                }
+                    
             }
             return instance;
         }
@@ -66,7 +72,7 @@ namespace Models
         }
 
 
-        internal Company Company
+        public Company Company
         {
             get
             {
@@ -119,5 +125,35 @@ namespace Models
                 name = value;
             }
         }
+
+        [JsonProperty("companyName")]
+        public string CompanyName
+        {
+            get
+            {
+                return companyname;
+            }
+
+            set
+            {
+                companyname = value;
+            }
+        }
+
+        [JsonProperty("companyId")]
+        public string CompanyId
+        {
+            get
+            {
+                return companyid;
+            }
+
+            set
+            {
+                companyid = value;
+            }
+        }
+
+        
     }
 }

@@ -2,6 +2,7 @@
 using Models;
 using System;
 using System.Collections.ObjectModel;
+using Common;
 
 namespace Controllers
 {
@@ -49,10 +50,14 @@ namespace Controllers
             clients.Add(c);
         }
 
-        public void RemoveClient(Client c)
+        public async void RemoveClient(Client c)
         {
             if (clients.Contains(c))
+            {
                 clients.Remove(c);
+                IApiCallResult result = await ApiHttpClient.Dispatcher.GetInstance().Delete("clients", c.Id);
+            }
+                
         }
     }
 }

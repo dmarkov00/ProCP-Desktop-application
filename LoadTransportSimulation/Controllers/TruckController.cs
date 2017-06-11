@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System;
 using System.Collections.ObjectModel;
+using ApiHttpClient;
+using Common;
 
 namespace Controllers
 {
@@ -44,10 +46,10 @@ namespace Controllers
         {
             return "Truck added successfully";
         }
-        public string RemoveTruck(Truck t)
+        public async void RemoveTruck(Truck t)
         {
+            IApiCallResult result = await ApiHttpClient.Dispatcher.GetInstance().Delete("trucks", t.Id);
             trucks.Remove(t);
-            return "Truck added successfully";
         }
         public ObservableCollection<Truck> GetAllTrucks()
         {
@@ -78,7 +80,7 @@ namespace Controllers
 
         public void AssignSingleDriverToTruck(Truck t, Driver d)
         {
-            
+            ApiHttpClient.Dispatcher.GetInstance();
         }
     }
 }

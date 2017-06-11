@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientController.cs" />
+    <Compile Include="CompanyController.cs" />
     <Compile Include="DriverController.cs" />
     <Compile Include="LoadController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -50,6 +51,10 @@
     <Compile Include="TruckController.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ApiHttpClient\ApiHttpClient.csproj">
+      <Project>{1dfd4a9a-d2c1-40d6-bfaf-b9c1d88dc755}</Project>
+      <Name>ApiHttpClient</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{cd31907c-9b91-4af5-a576-1e75d2ec7a0f}</Project>
       <Name>Common</Name>

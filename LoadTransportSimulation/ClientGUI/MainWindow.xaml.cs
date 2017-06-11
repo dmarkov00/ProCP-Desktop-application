@@ -1,5 +1,6 @@
 ﻿using Common;
 using Models;
+using Controllers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Controllers;
 using GoogleApiIntegration;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
@@ -31,21 +31,35 @@ namespace WPFLoadSimulation
     /// </summary>
     public partial class MainWindow : Window
     {
-        ApiHttpClient.Dispatcher client;
-
-        private ClientController clientCtrl;
-        private DriverController driverCtrl;
-        private TruckController truckCtrl;
-        private LoadController loadCtrl;
-        private RouteController routeCtrl;
+        CompanyController companyCtrl;
 
         public MainWindow()
         {
             InitializeComponent();
-            client = ApiHttpClient.Dispatcher.GetInstance();
-            CreateDriverController();
-            CreateLoadController();
+            companyCtrl = CompanyController.GetInstance();
+            companyCtrl.OnControllersCreated += new ControllersCreated(companyCtrl_OnControllersCreated);
             SetTablePaddings();
+        }
+
+        public void companyCtrl_OnControllersCreated(object sender, ControllersEventArgs e)
+        {
+            FillUIWithData();
+        }
+
+        private void FillUIWithData()
+        {
+            routesDGV.ItemsSource = companyCtrl.RouteCtrl.GetAllRoutes();
+            LoadsAvailableDGW.DataContext = companyCtrl.LoadCtrl.GetAvailableLoads();
+            TrucksDGV.ItemsSource = companyCtrl.TruckCtrl.GetAllTrucks();
+            cb_assignDriverToTruck.ItemsSource = companyCtrl.DriverCtrl.GetUnassignedDrivers();
+
+            foreach (Truck t in companyCtrl.TruckCtrl.GetAvailableTrucks())
+            {
+                cb_assignTruckToRoute.Items.Add(t);
+            }
+
+            DriversDGV.DataContext = companyCtrl.DriverCtrl.GetAllDrivers();
+            ClientDGV.DataContext = companyCtrl.ClientCtrl.GetAllClients();
         }
 
         private void SetTablePaddings()
@@ -77,63 +91,7 @@ namespace WPFLoadSimulation
             DataGridAssist.SetColumnHeaderPadding(ClientDGV, new Thickness(3));
         }
 
-        private void CreateRouteController()
-        {
-            ObservableCollection<Route> routes = new ObservableCollection<Route>();
-            routeCtrl = RouteController.Create(routes);
-            routesDGV.ItemsSource = routeCtrl.GetAllRoutes();
-        }
-
-        private async void CreateLoadController()
-        {
-            IEnumerable<IApiCallResult> loads = await client.GetMany<Load>("loads");
-            List<Load> targetListLoads = new List<Load>(loads.Cast<Load>());
-            loadCtrl = LoadController.Create(targetListLoads);
-            LoadsAvailableDGW.DataContext = loadCtrl.GetAvailableLoads();
-            CreateClientController();
-            CreateRouteController();
-            return;
-        }
-
-
-        private async void CreateTruckController()
-        {
-
-            IEnumerable<IApiCallResult> trucks = await client.GetMany<Truck>("trucks");
-            List<Truck> targetListTrucks = new List<Truck>(trucks.Cast<Truck>());
-            truckCtrl = TruckController.Create(targetListTrucks);
-            TrucksDGV.ItemsSource = truckCtrl.GetAllTrucks();
-            truckCtrl.AssignDriversToTrucks();
-            cb_assignDriverToTruck.ItemsSource = driverCtrl.GetUnassignedDrivers();
-
-            foreach (Truck t in truckCtrl.GetAvailableTrucks())
-            {
-                cb_assignTruckToRoute.Items.Add(t);
-            }
-
-            return;
-        }
-
-        private async void CreateDriverController()
-        {
-            IEnumerable<IApiCallResult> drivers = await client.GetMany<Driver>("drivers");
-            List<Driver> targetListDrivers = new List<Driver>(drivers.Cast<Driver>());
-            driverCtrl = DriverController.Create(targetListDrivers);
-            DriversDGV.DataContext = driverCtrl.GetAllDrivers();
-            CreateTruckController();
-            return;
-        }
-
-        private async void CreateClientController()
-        {
-
-            IEnumerable<IApiCallResult> clients = await client.GetMany<Client>("clients");
-            List<Client> targetListClients = new List<Client>(clients.Cast<Client>());
-            clientCtrl = ClientController.Create(targetListClients);
-            ClientDGV.DataContext = clientCtrl.GetAllClients();
-            loadCtrl.SetClientsForLoads();
-            return;
-        }
+       
 
         private void ProfileChangeInfo_Click(object sender, RoutedEventArgs e)
         {
@@ -147,6 +105,7 @@ namespace WPFLoadSimulation
 
         private void ProfileSaveChanges_Click(object sender, RoutedEventArgs e)
         {
+            
             ProfileEditFName.Visibility = Visibility.Hidden;
             ProfileEditLName.Visibility = Visibility.Hidden;
             ProfileEditEmail.Visibility = Visibility.Hidden;
@@ -167,6 +126,7 @@ namespace WPFLoadSimulation
         {
             NewClientWindow newclient = new NewClientWindow();
             newclient.Show();
+            
         }
 
 
@@ -178,37 +138,37 @@ namespace WPFLoadSimulation
         }
 
 
-        private async void bt_DriverDeleteSelected_Click(object sender, RoutedEventArgs e)
+        private void bt_DriverDeleteSelected_Click(object sender, RoutedEventArgs e)
         {
 
             Driver driver = (Driver)DriversDGV.SelectedItem;
             MessageBoxResult answer=MessageBox.Show("Are you sure you want to delete driver "+driver.FirstName+" "+driver.LastName+" ?", "Driver deletion", MessageBoxButton.YesNo);
             if (answer==MessageBoxResult.Yes)
             {
-                IApiCallResult result = await client.Delete("drivers", driver.Id.ToString());
-                driverCtrl.RemoveDriver(driver);
+                
+               companyCtrl.DriverCtrl.RemoveDriver(driver);
             }      
         }
 
-        private async void bt_TrucksDeleteSelected_Click(object sender, RoutedEventArgs e)
+        private void bt_TrucksDeleteSelected_Click(object sender, RoutedEventArgs e)
         {
             Truck t = (Truck)TrucksDGV.SelectedItem;
             MessageBoxResult answer = MessageBox.Show("Are you sure you want to delete truck " + t.LicencePlate + " ?", "Truck deletion", MessageBoxButton.YesNo);
             if (answer == MessageBoxResult.Yes)
             {
-                truckCtrl.RemoveTruck(t);
-                IApiCallResult result = await client.Delete("trucks", t.Id);
+               companyCtrl.TruckCtrl.RemoveTruck(t);
+               
             }
         }
 
-        private async void bt_ClientsDeleteSelected_Click(object sender, RoutedEventArgs e)
+        private void bt_ClientsDeleteSelected_Click(object sender, RoutedEventArgs e)
         {
             Client c = (Client)ClientDGV.SelectedItem;
             MessageBoxResult answer = MessageBox.Show("Are you sure you want to delete client " + c.Name  + " ?", "Client deletion", MessageBoxButton.YesNo);
             if (answer == MessageBoxResult.Yes)
             {
-                clientCtrl.RemoveClient(c);
-                IApiCallResult result = await client.Delete("clients", c.Id);
+                companyCtrl.ClientCtrl.RemoveClient(c);
+                
             }
         }
 
@@ -244,19 +204,19 @@ namespace WPFLoadSimulation
                 delegate (object o, DoWorkEventArgs args)
                 {
                     BackgroundWorker b = o as BackgroundWorker;
-                    routeCtrl.SetEstimations(route);
+                    companyCtrl.RouteCtrl.SetEstimations(route);
                 });
 
             bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(
                 delegate (object o, RunWorkerCompletedEventArgs args)
                 {
                     lv_routeEstimation.Items.Clear();
-                    lv_routeEstimation.Items.Add(new { description = "Estimated distance: ", result = route.EstDistanceKm, unit = "Km" });
-                    lv_routeEstimation.Items.Add(new { description = "Estimated time: ", result = route.EstTimeDrivingTimeSpan.ToString(@"d\d\:h\h\:m\m\:s\s", System.Globalization.CultureInfo.InvariantCulture), unit = "days:hours:min:sec" });
-                    lv_routeEstimation.Items.Add(new { description = "Estimated fuel consump: ", result = route.EstFuelConsumptionLiters, unit = "Liters" });
-                    lv_routeEstimation.Items.Add(new { description = "Estimated fuel cost: ", result = route.EstFuelCost, unit = "Eur" });
-                    lv_routeEstimation.Items.Add(new { description = "Estimated salary: ", result = route.TotalEstimatedSalary, unit = "Eur" });
-                    lv_routeEstimation.Items.Add(new { description = "Estimated revenue: ", result = (route.TotalEstimatedSalary - route.EstFuelCost).ToString(), unit = "Eur" });
+                    lv_routeEstimation.Items.Add(new { description = "Distance ", result = route.EstDistanceKm, unit = "Km" });
+                    lv_routeEstimation.Items.Add(new { description = "Time ", result = route.EstTimeDrivingTimeSpan.ToString(@"d\d\a\y\s\ h\h\o\u\r\s\ m\m\i\n\ ", System.Globalization.CultureInfo.InvariantCulture)});
+                    lv_routeEstimation.Items.Add(new { description = "Fuel consumption ", result = route.EstFuelConsumptionLiters, unit = "Liters" });
+                    lv_routeEstimation.Items.Add(new { description = "Fuel Cost ", result = route.EstFuelCost, unit = "Eur" });
+                    lv_routeEstimation.Items.Add(new { description = "Salary ", result = route.TotalEstimatedSalary, unit = "Eur" });
+                    lv_routeEstimation.Items.Add(new { description = "Revenue ", result = (route.TotalEstimatedSalary - route.EstFuelCost).ToString(), unit = "Eur" });
                     bt_calculateEstimation.IsEnabled = true;
                     bt_submitRoute.IsEnabled = true;
                 }
@@ -268,7 +228,7 @@ namespace WPFLoadSimulation
         private void bt_submitRoute_Click(object sender, RoutedEventArgs e)
         {
             
-            routeCtrl.AddRouteToList(route);
+           companyCtrl.RouteCtrl.AddRouteToList(route);
             lv_routeEstimation.Items.Clear();
             lv_selectedLoadsForRoute.Items.Clear();
             cb_assignTruckToRoute.SelectedItem = null;
@@ -291,27 +251,7 @@ namespace WPFLoadSimulation
             lv_selectedLoadsForRoute.Items.Remove(lv_selectedLoadsForRoute.SelectedItem);
         }
 
-        private void LoadsAvailableDGW_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            lv_loadClient.Items.Clear();
-            lv_loadDetails.Items.Clear();
-
-            Load load = (Load)LoadsAvailableDGW.SelectedItem;
-            lv_loadDetails.Items.Add(new { description = "Start Location", value = load.StartLocationCity });
-            lv_loadDetails.Items.Add(new { description = "End Location", value = load.EndLocationCity });
-            lv_loadDetails.Items.Add(new { description = "Deadline", value = load.MaxArrivalTime });
-            lv_loadDetails.Items.Add(new { description = "Salary", value = load.FullSalaryEur });
-            lv_loadDetails.Items.Add(new { description = "Delay % per hour", value = load.DelayFeePercHour });
-            lv_loadDetails.Items.Add(new { description = "Content", value = load.Content });
-            lv_loadDetails.Items.Add(new { description = "Weight", value = load.WeightKg });
-
-            lv_loadClient.Items.Add(new { description = "Name", value = load.Client.Name });
-            lv_loadClient.Items.Add(new { description = "Phone", value = load.Client.Phone });
-            lv_loadClient.Items.Add(new { description = "Email", value = load.Client.Email });
-            lv_loadClient.Items.Add(new { description = "Address", value = load.Client.Address });
-
-            //web_load.Navigate("https://www.google.com/maps/dir/" + load.StartLocationCity + "/" + load.EndLocationCity);
-        }
+    
 
         private void routesDGV_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -323,7 +263,7 @@ namespace WPFLoadSimulation
         private void bt_generatereport_Click(object sender, RoutedEventArgs e)
         {
              sb = new StringBuilder();
-            foreach (Route r in routeCtrl.GetAllRoutes())
+            foreach (Route r in companyCtrl.RouteCtrl.GetAllRoutes())
             {
                 sb.Append(JsonConvert.SerializeObject(r, Formatting.Indented));
                 sb.Append("-");
@@ -380,7 +320,7 @@ namespace WPFLoadSimulation
 
             foreach(Route r in routesFromFile)
             {
-                routeCtrl.AddRouteToList(r);
+               companyCtrl.RouteCtrl.AddRouteToList(r);
             }
         }
 
@@ -405,6 +345,26 @@ namespace WPFLoadSimulation
             t.CurrentDriver = (Driver)cb_assignDriverToTruck.SelectedItem;
             
             
+        }
+
+        private void LoadsAvailableDGW_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            lv_loadClient.Items.Clear();
+            lv_loadDetails.Items.Clear();
+
+            Load load = (Load)LoadsAvailableDGW.SelectedItem;
+            lv_loadDetails.Items.Add(new { description = "Start Location", value = load.StartLocationCity });
+            lv_loadDetails.Items.Add(new { description = "End Location", value = load.EndLocationCity });
+            lv_loadDetails.Items.Add(new { description = "Deadline", value = load.MaxArrivalTime });
+            lv_loadDetails.Items.Add(new { description = "Salary", value = load.FullSalaryEur });
+            lv_loadDetails.Items.Add(new { description = "Delay % per hour", value = load.DelayFeePercHour });
+            lv_loadDetails.Items.Add(new { description = "Content", value = load.Content });
+            lv_loadDetails.Items.Add(new { description = "Weight", value = load.WeightKg });
+
+            lv_loadClient.Items.Add(new { description = "Name", value = load.Client.Name });
+            lv_loadClient.Items.Add(new { description = "Phone", value = load.Client.Phone });
+            lv_loadClient.Items.Add(new { description = "Email", value = load.Client.Email });
+            lv_loadClient.Items.Add(new { description = "Address", value = load.Client.Address });
         }
     }
 }

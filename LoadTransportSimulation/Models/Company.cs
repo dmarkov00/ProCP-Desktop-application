@@ -1,17 +1,21 @@
-﻿
+﻿using Common;
+using Newtonsoft.Json;
+
 namespace Models
 {
-    public class Company
+    public class Company : IApiCallResult
     {
+        private string id;
         private string companyName;
-        private Address address;
+        private string address;
 
-        public Company(string companyName, Address address)
+        public Company(string companyName, string address)
         {
             this.companyName = companyName;
             this.address = address;
         }
 
+        [JsonProperty("companyName")]
         public string CompanyName
         {
             get
@@ -25,7 +29,8 @@ namespace Models
             }
         }
 
-        public Address Address
+        [JsonProperty("address")]
+        public string Address
         {
             get
             {
@@ -37,5 +42,20 @@ namespace Models
                 address = value;
             }
         }
+
+        [JsonProperty("id")]
+        public string Id
+        {
+            get
+            {
+                return id;
+            }
+
+            set
+            {
+                id = value;
+            }
+        }
+
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System;
 using System.Collections.ObjectModel;
+using Common;
 
 namespace Controllers
 {
@@ -43,10 +44,10 @@ namespace Controllers
             return "Truck added successfully";
         }
 
-        public string RemoveDriver(Driver t)
+        public async void RemoveDriver(Driver d)
         {
-            this.drivers.Remove(t);
-            return "Truck removed";
+            this.drivers.Remove(d);
+            IApiCallResult result = await ApiHttpClient.Dispatcher.GetInstance().Delete("drivers", d.Id.ToString());
         }
 
         public ObservableCollection<Driver> GetAllDrivers()

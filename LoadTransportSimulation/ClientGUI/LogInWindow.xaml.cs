@@ -5,6 +5,7 @@ using Common;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Controllers;
 
 namespace WPFLoadSimulation
 {
@@ -19,6 +20,7 @@ namespace WPFLoadSimulation
  
             // Initial creation of dispacher on application start 
             ApiHttpClient.Dispatcher.Create("");
+
         }
 
         private void tb_KeyDown(object sender, KeyEventArgs e)
@@ -34,6 +36,7 @@ namespace WPFLoadSimulation
                 await Login();
                 User.GetInstance();
                 MainWindow main = new MainWindow();
+                
                 main.Show();
                 this.Close();    
         }
@@ -44,6 +47,15 @@ namespace WPFLoadSimulation
             User u = (User)await ApiHttpClient.Dispatcher.GetInstance().LoginUser(loginData);
             User.Create(u);
             ApiHttpClient.Dispatcher.Create(User.GetInstance().Token);
+            await GetCompany();
+        }
+
+        private async Task GetCompany()
+        {
+            Company c = (Company)await ApiHttpClient.Dispatcher.GetInstance().Get<Company>("companies", User.GetInstance().CompanyId);
+            User.GetInstance().Company = c;
+            CompanyController.Create(c);
+            
         }
     }
 }
