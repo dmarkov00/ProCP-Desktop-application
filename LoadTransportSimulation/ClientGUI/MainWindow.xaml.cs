@@ -32,11 +32,43 @@ namespace WPFLoadSimulation
     public partial class MainWindow : Window
     {
         CompanyController companyCtrl;
+        User u;
+
+        public string UserName
+        {
+            get { return ProfileEditName.Text; }
+            set
+            {
+                this.ProfileEditName.Text = value;
+                this.ProfileName.Content = value;
+            }
+        }
+            
+        public string UserEmail
+        {
+            get { return ProfileEditEmail.Text; }
+            set
+            {
+                this.ProfileEditEmail.Text = value;
+                this.ProfileEmail.Content = value;
+            }
+        }
+
+        public string UserPhone
+        {
+            get { return ProfileEditPhone.Text; }
+            set
+            {
+                this.ProfileEditPhone.Text = value;
+                this.ProfilePhone.Content = value;
+            }
+        }
 
         public MainWindow()
         {
             InitializeComponent();
             companyCtrl = CompanyController.GetInstance();
+            u = User.GetInstance();
             companyCtrl.OnControllersCreated += new ControllersCreated(companyCtrl_OnControllersCreated);
             SetTablePaddings();
         }
@@ -60,6 +92,10 @@ namespace WPFLoadSimulation
 
             DriversDGV.DataContext = companyCtrl.DriverCtrl.GetAllDrivers();
             ClientDGV.DataContext = companyCtrl.ClientCtrl.GetAllClients();
+
+            this.UserName = u.Name;
+            this.UserEmail = u.Email;
+            this.UserPhone = u.Phone;
         }
 
         private void SetTablePaddings()
@@ -91,23 +127,20 @@ namespace WPFLoadSimulation
             DataGridAssist.SetColumnHeaderPadding(ClientDGV, new Thickness(3));
         }
 
-       
-
         private void ProfileChangeInfo_Click(object sender, RoutedEventArgs e)
         {
-            ProfileEditFName.Visibility = Visibility.Visible;
-            ProfileEditLName.Visibility = Visibility.Visible;
+            ProfileEditName.Visibility = Visibility.Visible;
             ProfileEditEmail.Visibility = Visibility.Visible;
             ProfileEditPhone.Visibility = Visibility.Visible;
             ProfileSaveChanges.Visibility = Visibility.Visible;
             ProfileChangeInfo.Visibility = Visibility.Hidden;
         }
 
-        private void ProfileSaveChanges_Click(object sender, RoutedEventArgs e)
+        private async void ProfileSaveChanges_Click(object sender, RoutedEventArgs e)
         {
+            await companyCtrl.ChangeUser(ProfileEditName.Text,ProfileEditEmail.Text,ProfileEditPhone.Text);
             
-            ProfileEditFName.Visibility = Visibility.Hidden;
-            ProfileEditLName.Visibility = Visibility.Hidden;
+            ProfileEditName.Visibility = Visibility.Hidden;
             ProfileEditEmail.Visibility = Visibility.Hidden;
             ProfileEditPhone.Visibility = Visibility.Hidden;
             ProfileSaveChanges.Visibility = Visibility.Hidden;
@@ -185,6 +218,8 @@ namespace WPFLoadSimulation
 
 
         public Route route;
+
+        //a lot of logic in the GUI
         private void bt_calculateEstimation_Click(object sender, RoutedEventArgs e)
         {
             BackgroundWorker bw = new BackgroundWorker();

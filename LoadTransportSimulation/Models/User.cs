@@ -9,7 +9,7 @@ namespace Models
 {
     public class User: IApiCallResult
     {
-
+        private string id;
         private string name;
         private string email;
         private string phone;
@@ -41,6 +41,19 @@ namespace Models
                     
             }
             return instance;
+        }
+
+        [JsonProperty("id")]
+        public string Id
+        {
+            get
+            {
+                return id;
+            }
+            set
+            {
+                this.id = value;
+            }
         }
 
         [JsonProperty("email")]

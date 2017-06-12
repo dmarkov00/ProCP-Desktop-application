@@ -120,6 +120,15 @@ namespace Controllers
             return;
         }
 
+        public async Task ChangeUser(string name,string email,string phone)
+        {
+            User u = User.GetInstance();
+            u.Name = name;
+            u.Email = email;
+            u.Phone = phone;
+            await client.Put<User>("users",u.Id,u);
+        }
+
     }
 
     public delegate void ControllersCreated(object sender, ControllersEventArgs e);

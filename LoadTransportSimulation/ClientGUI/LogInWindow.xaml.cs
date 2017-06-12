@@ -33,10 +33,11 @@ namespace WPFLoadSimulation
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-                await Login();
+            btn_login.IsEnabled = false;
+            await Login();
                 User.GetInstance();
-                MainWindow main = new MainWindow();
                 
+                MainWindow main = new MainWindow();
                 main.Show();
                 this.Close();    
         }
