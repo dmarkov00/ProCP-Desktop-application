@@ -71,7 +71,7 @@ namespace Controllers
             await CreateRouteController();
 
             e.finished = true;
-
+            
             OnControllersCreated(this, e);
         }
 
@@ -99,6 +99,7 @@ namespace Controllers
             List<Truck> targetListTrucks = new List<Truck>(trucks.Cast<Truck>());
             truckCtrl = TruckController.Create(targetListTrucks);
             truckCtrl.AssignDriversToTrucks();
+            driverCtrl.SetUnassignedDrivers();
             return;
         }
 

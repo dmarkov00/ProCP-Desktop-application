@@ -80,19 +80,20 @@ namespace WPFLoadSimulation
 
         private void FillUIWithData()
         {
-            routesDGV.ItemsSource = companyCtrl.RouteCtrl.GetAllRoutes();
+            //loads tab
             LoadsAvailableDGW.DataContext = companyCtrl.LoadCtrl.GetAvailableLoads();
+            routesDGV.ItemsSource = companyCtrl.RouteCtrl.GetAllRoutes();
+            cb_assignTruckToRoute.ItemsSource = companyCtrl.TruckCtrl.GetAvailableTrucks();
+            
+            //trucks tab
             TrucksDGV.ItemsSource = companyCtrl.TruckCtrl.GetAllTrucks();
             cb_assignDriverToTruck.ItemsSource = companyCtrl.DriverCtrl.GetUnassignedDrivers();
-
-            foreach (Truck t in companyCtrl.TruckCtrl.GetAvailableTrucks())
-            {
-                cb_assignTruckToRoute.Items.Add(t);
-            }
-
+            
+            //driver and client tab
             DriversDGV.DataContext = companyCtrl.DriverCtrl.GetAllDrivers();
             ClientDGV.DataContext = companyCtrl.ClientCtrl.GetAllClients();
 
+            //user tab
             this.UserName = u.Name;
             this.UserEmail = u.Email;
             this.UserPhone = u.Phone;
@@ -262,7 +263,6 @@ namespace WPFLoadSimulation
 
         private void bt_submitRoute_Click(object sender, RoutedEventArgs e)
         {
-            
            companyCtrl.RouteCtrl.AddRouteToList(route);
             lv_routeEstimation.Items.Clear();
             lv_selectedLoadsForRoute.Items.Clear();
@@ -373,14 +373,7 @@ namespace WPFLoadSimulation
             t.IsBusy = false;
 
         }
-
-        private void cb_ssignDriverToTruck_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            Truck t = (Truck)TrucksDGV.SelectedItem;
-            t.CurrentDriver = (Driver)cb_assignDriverToTruck.SelectedItem;
-            
-            
-        }
+        
 
         private void LoadsAvailableDGW_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -400,6 +393,39 @@ namespace WPFLoadSimulation
             lv_loadClient.Items.Add(new { description = "Phone", value = load.Client.Phone });
             lv_loadClient.Items.Add(new { description = "Email", value = load.Client.Email });
             lv_loadClient.Items.Add(new { description = "Address", value = load.Client.Address });
+        }
+
+        private void TrucksDGV_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if ((Truck)TrucksDGV.SelectedItem != null)
+            {
+                Truck t = (Truck)TrucksDGV.SelectedItem;
+                if (t.CurrentDriver != null) { }
+                    //cb_assignDriverToTruck.Text = t.CurrentDriver.ToString();
+            }
+            
+        }
+
+
+        bool isUserInteraction = false;
+
+        private void cb_assignDriverToTruck_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if ((Truck)TrucksDGV.SelectedItem != null
+                && (Driver)cb_assignDriverToTruck.SelectedItem != null)
+            {
+                Truck t = (Truck)TrucksDGV.SelectedItem;
+                if (isUserInteraction)
+                {
+                    companyCtrl.TruckCtrl.AssignSingleDriverToTruck(t, (Driver)cb_assignDriverToTruck.SelectedItem);
+                    isUserInteraction = false;
+                }
+            }
+        }
+
+        private void cb_assignDriverToTruck_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            isUserInteraction = true;
         }
     }
 }

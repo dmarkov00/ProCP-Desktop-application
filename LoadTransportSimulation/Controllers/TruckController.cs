@@ -80,7 +80,9 @@ namespace Controllers
 
         public void AssignSingleDriverToTruck(Truck t, Driver d)
         {
-            ApiHttpClient.Dispatcher.GetInstance();
+            t.CurrentDriver = d;
+            DriverController.GetInstance().SetUnassignedDrivers();
+            //await Dispatcher.GetInstance().Put("trucks", t.Id, t);
         }
     }
 }

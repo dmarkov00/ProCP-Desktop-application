@@ -469,10 +469,10 @@
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0" HorizontalAlignment="Stretch" Orientation="Horizontal" Grid.ColumnSpan="3"/>
                     <Label Content="Click on a truck to see maintenance schedule below" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Row="0" Padding="0" Grid.ColumnSpan="2" Margin="5,5,5,0" />
-                    <DataGrid x:Name ="TrucksDGV" Margin="5,0,5,5" ItemsSource="{Binding Path., Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False" HorizontalAlignment="Stretch"  Grid.Row="1" Grid.ColumnSpan="3" VerticalAlignment="Stretch" SelectionMode="Single" CanUserDeleteRows="False" HorizontalContentAlignment="Stretch" >
+                    <DataGrid x:Name ="TrucksDGV" Margin="5,0,5,5" ItemsSource="{Binding Path., Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False" HorizontalAlignment="Stretch"  Grid.Row="1" Grid.ColumnSpan="3" VerticalAlignment="Stretch" SelectionMode="Single" CanUserDeleteRows="False" HorizontalContentAlignment="Stretch" SelectionChanged="TrucksDGV_SelectionChanged" >
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding LicencePlate}" ClipboardContentBinding="{x:Null}" Header="Licence &#xA;Plate" Width="*"/>
-                            <DataGridTextColumn Binding="{Binding CurrentDriver.LastName}" Header="Driver"  Width="*"/>
+                            <DataGridTextColumn Binding="{Binding CurrentDriver}" Header="Driver"  Width="*"/>
                             <DataGridTextColumn Binding="{Binding LocationCity}" ClipboardContentBinding="{x:Null}" Header="Location" Width="*"/>
                             <DataGridTextColumn Binding="{Binding IsBusy}" ClipboardContentBinding="{x:Null}" Header="Is Busy" Width="auto"/>
                             <DataGridTextColumn Binding="{Binding PayloadCapacityKg}" ClipboardContentBinding="{x:Null}" Header="Payload &#xA;Capacity" Width="*"/>
@@ -520,7 +520,7 @@
                         <Button Content="Add service maintenance" Grid.Column="1" HorizontalAlignment="Stretch"  Grid.Row="5" VerticalAlignment="Stretch" MaxHeight="30"/>
                     </Grid>
                     <Label Content="Assign new driver:" Grid.Column="2" Grid.Row="3" FontWeight="SemiBold" VerticalAlignment="Bottom" Padding="0"/>
-                    <ComboBox x:Name="cb_assignDriverToTruck"  Grid.Column="2" Grid.Row="5" HorizontalAlignment="Stretch" Height="30" Margin="10" VerticalAlignment="Top" SelectionChanged="cb_ssignDriverToTruck_SelectionChanged"/>
+                    <ComboBox x:Name="cb_assignDriverToTruck"  Grid.Column="2" Grid.Row="5" HorizontalAlignment="Stretch" Height="30" Margin="10" VerticalAlignment="Top" SelectionChanged="cb_assignDriverToTruck_SelectionChanged" PreviewMouseDown="cb_assignDriverToTruck_PreviewMouseDown"/>
                     <Button x:Name="bt_TrucksDeleteSelected" Content="Delete selected truck" Grid.Column="2" HorizontalAlignment="Right" Grid.Row="2" VerticalAlignment="Top" Margin="10" Width="200" Height="30" Click="bt_TrucksDeleteSelected_Click"/>
                     <Button x:Name="TrucksAddNew" Click="TrucksAddNew_Click" Content="Add new truck" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Top" Margin="10" Width="200" Height="30"/>
                 </Grid>
