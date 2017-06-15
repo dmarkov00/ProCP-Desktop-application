@@ -84,5 +84,15 @@ namespace Controllers
             DriverController.GetInstance().SetUnassignedDrivers();
             //await Dispatcher.GetInstance().Put("trucks", t.Id, t);
         }
+
+        public void AddMaintenance(Truck truck, Driver driver, string action, DateTime date, double cost)
+        {
+            truck.AddMaintenance(new TruckMaintenance(truck, driver, cost, date, action));
+        }
+
+        public ObservableCollection<TruckMaintenance> GetTruckMaintenanceList(Truck t)
+        {
+            return t.GetMaintenances();
+        }
     }
 }

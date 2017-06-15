@@ -3,6 +3,7 @@ using Common.Enumerations;
 using Newtonsoft.Json;
 using Common;
 using System.ComponentModel;
+using System.Collections.ObjectModel;
 
 namespace Models
 {
@@ -24,7 +25,7 @@ namespace Models
         private double lengthInMeters;
         private bool isBusy;
         private bool isInCompany;
-        private List<TruckMaintenance> maintenanceList;
+        private ObservableCollection<TruckMaintenance> maintenanceList;
 
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -44,6 +45,8 @@ namespace Models
             this.HeightInMeters = heightInMeters;
             this.LengthInMeters = lengthInMeters;
             this.LocationCity = (City)Location_id;
+
+            maintenanceList = new ObservableCollection<TruckMaintenance>();
         }
 
         public City LocationCity
@@ -273,7 +276,7 @@ namespace Models
             }
         }
 
-        public List<TruckMaintenance> GetMaintenances()
+        public ObservableCollection<TruckMaintenance> GetMaintenances()
         {
             return maintenanceList;
         }

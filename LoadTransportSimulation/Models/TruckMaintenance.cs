@@ -8,18 +8,18 @@ namespace Models
         private Driver driver;
         private double cost;
         private DateTime date;
-        private MaintenanceAction actionPerformed;
+        private string actionPerformed;
 
-        public TruckMaintenance(Truck truck, Driver driver, double cost, DateTime date, MaintenanceAction actionPerformed)
+        public TruckMaintenance(Truck truck, Driver driver, double cost, DateTime date, string action)
         {
-            this.truck = truck;
-            this.driver = driver;
-            this.cost = cost;
-            this.date = date;
-            this.actionPerformed = actionPerformed;
+            this.Truck = truck;
+            this.Driver = driver;
+            this.Cost = cost;
+            this.Date = date;
+            this.ActionPerformed = action;
         }
 
-        internal Truck Truck
+       public Truck Truck
         {
             get
             {
@@ -32,7 +32,7 @@ namespace Models
             }
         }
 
-        internal Driver Driver
+        public Driver Driver
         {
             get
             {
@@ -71,7 +71,7 @@ namespace Models
             }
         }
 
-        internal MaintenanceAction ActionPerformed
+        public string ActionPerformed
         {
             get
             {

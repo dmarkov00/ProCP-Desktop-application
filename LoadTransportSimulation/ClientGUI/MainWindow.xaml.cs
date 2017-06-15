@@ -88,6 +88,8 @@ namespace WPFLoadSimulation
             //trucks tab
             TrucksDGV.ItemsSource = companyCtrl.TruckCtrl.GetAllTrucks();
             cb_assignDriverToTruck.ItemsSource = companyCtrl.DriverCtrl.GetUnassignedDrivers();
+            cb_maintenanceDriver.ItemsSource = companyCtrl.DriverCtrl.GetAllDrivers();
+            
             
             //driver and client tab
             DriversDGV.DataContext = companyCtrl.DriverCtrl.GetAllDrivers();
@@ -400,6 +402,7 @@ namespace WPFLoadSimulation
             if ((Truck)TrucksDGV.SelectedItem != null)
             {
                 Truck t = (Truck)TrucksDGV.SelectedItem;
+                MaintenanceDGV.ItemsSource = t.GetMaintenances(); 
                 if (t.CurrentDriver != null) { }
                     //cb_assignDriverToTruck.Text = t.CurrentDriver.ToString();
             }
@@ -426,6 +429,14 @@ namespace WPFLoadSimulation
         private void cb_assignDriverToTruck_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             isUserInteraction = true;
+        }
+
+        private void bt_addMaintenance_Click(object sender, RoutedEventArgs e)
+        {
+            companyCtrl.TruckCtrl.AddMaintenance((Truck)TrucksDGV.SelectedItem,
+                (Driver)cb_maintenanceDriver.SelectedItem,
+                tb_maintenanceAction.ToString(), dp_maintenanceDate.SelectedDate.Value, Convert.ToDouble(tb_maintenanceCost.Text)
+                );
         }
     }
 }
