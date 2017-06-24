@@ -100,6 +100,7 @@ namespace Controllers
             truckCtrl = TruckController.Create(targetListTrucks);
             truckCtrl.AssignDriversToTrucks();
             driverCtrl.SetUnassignedDrivers();
+            truckCtrl.SetAvailableTrucks();
             return;
         }
 

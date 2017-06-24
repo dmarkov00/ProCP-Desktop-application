@@ -10,6 +10,7 @@ namespace Controllers
     public class TruckController
     {
         private ObservableCollection<Truck> trucks;
+        private ObservableCollection<Truck> availableTrucks;
         /*Singleton implemented
         * -when you want to use the controller the first time, use DriverController.Create(list);
         * -afterwards, anywhere in the program, to get the instance, use DriverController.GetInstance();
@@ -59,10 +60,21 @@ namespace Controllers
         {
             return new List<Truck>(trucks);
         }
-        public List<Truck> GetAvailableTrucks()
+        public ObservableCollection<Truck> GetAvailableTrucks()
         {
-            return new List<Truck>(trucks);
+            return availableTrucks;  
         }
+        
+        public void SetAvailableTrucks()
+        {
+            availableTrucks = new ObservableCollection<Truck>();
+            foreach (Truck t in trucks)
+            {
+                if (!t.IsBusy && t.CurrentDriver != null)
+                    availableTrucks.Add(t);
+            }
+        }
+
         public Truck GetTruck(string licencePlate)
         {
             return trucks[0];
@@ -72,10 +84,14 @@ namespace Controllers
         {
             DriverController driverctrl = DriverController.GetInstance();
             
-            for (int t = 0; t < trucks.Count; t++)
+
+                for (int t = 0; t < trucks.Count; t++)
                 for (int d = 0; d < driverctrl.GetAllDrivers().Count; d++)
                     if (trucks[t].Driver_id == driverctrl.GetAllDrivers()[d].Id)
+                    {
                         trucks[t].CurrentDriver = driverctrl.GetAllDrivers()[d];
+                    }
+                        
         }
 
         public void AssignSingleDriverToTruck(Truck t, Driver d)

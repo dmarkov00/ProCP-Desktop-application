@@ -61,6 +61,7 @@ namespace Controllers
             r.NrOfLoads = r.Loads.Count;
 
             r.TruckId = r.Truck.Id;
+            r.Truck.IsBusy = true;
             routes.Add(r);
 
             //await ApiHttpClient.Dispatcher.GetInstance().Post<Route>("routes", r);

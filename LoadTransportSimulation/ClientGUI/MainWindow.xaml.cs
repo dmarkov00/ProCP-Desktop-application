@@ -81,7 +81,7 @@ namespace WPFLoadSimulation
         private void FillUIWithData()
         {
             //loads tab
-            LoadsAvailableDGW.DataContext = companyCtrl.LoadCtrl.GetAvailableLoads();
+            LoadsAvailableDGW.ItemsSource = companyCtrl.LoadCtrl.GetAvailableLoads();
             routesDGV.ItemsSource = companyCtrl.RouteCtrl.GetAllRoutes();
             cb_assignTruckToRoute.ItemsSource = companyCtrl.TruckCtrl.GetAvailableTrucks();
             
@@ -230,13 +230,24 @@ namespace WPFLoadSimulation
             route = new Route(loads);
             bt_calculateEstimation.IsEnabled = false;
 
+            if (lv_selectedLoadsForRoute.Items.IsEmpty)
+            {
+                SnackbarLoads.MessageQueue.Enqueue("Can't calculate without some loads!");
+                return;
+            }
+
             lv_routeEstimation.Items.Clear();
-            lv_routeEstimation.Items.Add(new { description = "Calculating" });
             foreach (Load l in lv_selectedLoadsForRoute.Items)
             {
                 loads.Add(l);
             }
             route.Truck = (Truck)cb_assignTruckToRoute.SelectedItem;
+            route.Loads = loads;
+
+
+            SnackbarMessageQueue mq = new SnackbarMessageQueue(TimeSpan.FromSeconds(loads.Count / 1.5));
+            SnackbarEstimation.MessageQueue = mq;
+            SnackbarEstimation.MessageQueue.Enqueue("Please wait, I am calculating");
 
             bw.DoWork += new DoWorkEventHandler(
                 delegate (object o, DoWorkEventArgs args)
@@ -248,6 +259,7 @@ namespace WPFLoadSimulation
             bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(
                 delegate (object o, RunWorkerCompletedEventArgs args)
                 {
+                    SnackbarEstimation.MessageQueue.Enqueue("Finished");
                     lv_routeEstimation.Items.Clear();
                     lv_routeEstimation.Items.Add(new { description = "Distance ", result = route.EstDistanceKm, unit = "Km" });
                     lv_routeEstimation.Items.Add(new { description = "Time ", result = route.EstTimeDrivingTimeSpan.ToString(@"d\d\a\y\s\ h\h\o\u\r\s\ m\m\i\n\ ", System.Globalization.CultureInfo.InvariantCulture)});
@@ -257,6 +269,7 @@ namespace WPFLoadSimulation
                     lv_routeEstimation.Items.Add(new { description = "Revenue ", result = (route.TotalEstimatedSalary - route.EstFuelCost).ToString(), unit = "Eur" });
                     bt_calculateEstimation.IsEnabled = true;
                     bt_submitRoute.IsEnabled = true;
+                    
                 }
             );
             bw.RunWorkerAsync();
@@ -265,12 +278,22 @@ namespace WPFLoadSimulation
 
         private void bt_submitRoute_Click(object sender, RoutedEventArgs e)
         {
-           companyCtrl.RouteCtrl.AddRouteToList(route);
+            companyCtrl.RouteCtrl.AddRouteToList(route);
+
+            foreach (Load l in lv_selectedLoadsForRoute.Items)
+                  {
+                      companyCtrl.LoadCtrl.GetLoad(l.ID).LoadState = Common.Enumerations.LoadState.ONTRANSPORT;
+                  }
+
+            isUserInteractLoadsDGV = false;
             lv_routeEstimation.Items.Clear();
             lv_selectedLoadsForRoute.Items.Clear();
             cb_assignTruckToRoute.SelectedItem = null;
-            bt_submitRoute.IsEnabled = false;
+            LoadsAvailableDGW.ItemsSource = companyCtrl.LoadCtrl.GetAvailableLoads();
             bt_calculateEstimation.IsEnabled = false;
+            bt_submitRoute.IsEnabled = false;
+            
+
         }
 
         private void LoadsAvailableDGW_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -286,6 +309,7 @@ namespace WPFLoadSimulation
         private void lv_selectedLoadsForRoute_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             lv_selectedLoadsForRoute.Items.Remove(lv_selectedLoadsForRoute.SelectedItem);
+            bt_submitRoute.IsEnabled = false;
         }
 
     
@@ -379,6 +403,10 @@ namespace WPFLoadSimulation
 
         private void LoadsAvailableDGW_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (!isUserInteractLoadsDGV)
+                return;
+
+
             lv_loadClient.Items.Clear();
             lv_loadDetails.Items.Clear();
 
@@ -410,7 +438,7 @@ namespace WPFLoadSimulation
         }
 
 
-        bool isUserInteraction = false;
+        bool isUserInteractionDriverCb = false;
 
         private void cb_assignDriverToTruck_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -418,17 +446,17 @@ namespace WPFLoadSimulation
                 && (Driver)cb_assignDriverToTruck.SelectedItem != null)
             {
                 Truck t = (Truck)TrucksDGV.SelectedItem;
-                if (isUserInteraction)
+                if (isUserInteractionDriverCb)
                 {
                     companyCtrl.TruckCtrl.AssignSingleDriverToTruck(t, (Driver)cb_assignDriverToTruck.SelectedItem);
-                    isUserInteraction = false;
+                    isUserInteractionDriverCb = false;
                 }
             }
         }
 
         private void cb_assignDriverToTruck_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            isUserInteraction = true;
+            isUserInteractionDriverCb = true;
         }
 
         private void bt_addMaintenance_Click(object sender, RoutedEventArgs e)
@@ -437,6 +465,20 @@ namespace WPFLoadSimulation
                 (Driver)cb_maintenanceDriver.SelectedItem,
                 tb_maintenanceAction.ToString(), dp_maintenanceDate.SelectedDate.Value, Convert.ToDouble(tb_maintenanceCost.Text)
                 );
+        }
+
+        private void btn_emptySelectedLoadsLV_Click(object sender, RoutedEventArgs e)
+        {
+            lv_selectedLoadsForRoute.Items.Clear();
+            cb_assignTruckToRoute.SelectedItem = null;
+            bt_submitRoute.IsEnabled = false;
+            bt_calculateEstimation.IsEnabled = false;
+        }
+
+        bool isUserInteractLoadsDGV = false;
+        private void LoadsAvailableDGW_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            isUserInteractLoadsDGV = true;
         }
     }
 }
