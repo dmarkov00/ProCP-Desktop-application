@@ -303,7 +303,7 @@ namespace WPFLoadSimulation
 
         private void bt_downloadreport_Click(object sender, RoutedEventArgs e)
         {
-            ReportHandler.GenerateReport(routesText);
+            ReportHandler.GenerateReport();
         }
 
 

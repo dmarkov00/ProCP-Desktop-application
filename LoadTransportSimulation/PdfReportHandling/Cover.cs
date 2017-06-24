@@ -32,7 +32,13 @@ namespace PdfReportHandling
             paragraph.Format.SpaceBefore = "8cm";
             paragraph.Format.SpaceAfter = "3cm";
 
+            paragraph = section.AddParagraph("Company name: Google");
+            paragraph.Format.Font.Size = 14;
+            paragraph.Format.Font.Color = Colors.Black;
+            paragraph.Format.Font.Italic = true;
+            
             paragraph = section.AddParagraph("Time created: ");
+
             paragraph.AddDateField();
             paragraph.Format.Font.Size = 14;
             paragraph.Format.Font.Italic = true;

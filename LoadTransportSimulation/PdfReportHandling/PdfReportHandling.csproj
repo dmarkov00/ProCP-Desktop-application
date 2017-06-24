@@ -66,8 +66,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="ReportData.cs" />
     <Compile Include="ReportDocument.cs" />
     <Compile Include="ReportHandler.cs" />
+    <Compile Include="ReportTable.cs" />
     <Compile Include="Styles.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -79,6 +81,16 @@
   <ItemGroup>
     <Content Include="Images\LoadTransportQuality.png" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Controllers\Controllers.csproj">
+      <Project>{3c6b22e1-375b-41ad-ad94-060539256e9e}</Project>
+      <Name>Controllers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Models\Models.csproj">
+      <Project>{9cc65c70-5773-4836-b90c-70f9a7eac5e0}</Project>
+      <Name>Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

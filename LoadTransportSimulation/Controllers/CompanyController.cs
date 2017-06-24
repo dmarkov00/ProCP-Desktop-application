@@ -27,6 +27,7 @@ namespace Controllers
         private LoadController loadCtrl;
         private RouteController routeCtrl;
 
+        public User GetUser { get { return User.GetInstance(); } }
         public Company Company { get { return company; } set { company = value; } }
         public ClientController ClientCtrl { get { return clientCtrl; } set { clientCtrl = value; } }
         public DriverController DriverCtrl { get { return driverCtrl; } set { driverCtrl = value; } }

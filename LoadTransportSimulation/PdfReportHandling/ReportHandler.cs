@@ -8,7 +8,7 @@ namespace PdfReportHandling
     {
         private static Document document;
 
-        public static void GenerateReport(string routesString)
+        public static void GenerateReport()
         {
             document = ReportDocument.CreateDocument();
             //string ddl = MigraDoc.DocumentObjectModel.IO.DdlWriter.WriteToString(document);

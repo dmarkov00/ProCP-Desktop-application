@@ -16,12 +16,12 @@ namespace PdfReportHandling
 
             Cover.DefineCover(document);
 
-            DefineContentSection(document);
+
 
             //Paragraphs.DefineParagraphs(document);
             //Tables.DefineTables(document);
             //Charts.DefineCharts(document);
-
+            ReportTable.DefineTables(document);
             return document;
         }
 
