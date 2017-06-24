@@ -11,7 +11,7 @@ using System.IO;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
 using MaterialDesignThemes.Wpf;
-using Common;
+using PdfReportHandling;
 namespace WPFLoadSimulation
 {
     /// <summary>
@@ -303,7 +303,7 @@ namespace WPFLoadSimulation
 
         private void bt_downloadreport_Click(object sender, RoutedEventArgs e)
         {
-            ReportHandler.ConvertTextToReport(routesText);
+            ReportHandler.GenerateReport(routesText);
         }
 
 
