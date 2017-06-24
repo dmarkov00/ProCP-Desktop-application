@@ -20,6 +20,16 @@ namespace ApiHttpClient.Tests
             Truck t = (Truck)truck;
             Assert.AreEqual(expectedResult.LicencePlate, t.LicencePlate);
         }
+
+        [Test]
+        public async Task Create_Driver()
+        {
+            Driver expectedResult = new Driver("firstname", "lastname", "123123", "mymail@mail.mail", 3);
+            IApiCallResult driver = await dispatcher.Post("drivers", expectedResult);
+            Driver t = (Driver)driver;
+            Assert.AreEqual(expectedResult.CompanyId, t.CompanyId);
+        }
+
         [Test]
         public async Task Test_See_Trucks()
         {      

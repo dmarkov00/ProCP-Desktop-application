@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Models;
 using Common;
+using Controllers;
 
 namespace WPFLoadSimulation
 {
@@ -21,18 +22,24 @@ namespace WPFLoadSimulation
     /// </summary>
     public partial class NewTruckWindow : Window
     {
+        private TruckController tc;
         public NewTruckWindow()
         {
             InitializeComponent();
+            tc = TruckController.GetInstance();
         }
 
         private async void AddTruck_Click(object sender, RoutedEventArgs e)
         {
             try
             {
+                Truck t = new Truck(licencePlate.Text, 1, Convert.ToInt32(payloadCapacity.Text), Convert.ToInt32(weight.Text), Convert.ToDouble(width.Text), Convert.ToDouble(height.Text), Convert.ToDouble(length.Text));
+                tc.AddTruck(t);
+                /*
                 Truck expectedResult = new Truck(licencePlate.Text, 1, Convert.ToInt32(payloadCapacity.Text), Convert.ToInt32(weight.Text), Convert.ToDouble(width.Text), Convert.ToDouble(height.Text), Convert.ToDouble(length.Text));
                 IApiCallResult truck = await ApiHttpClient.Dispatcher.GetInstance().Post("trucks", expectedResult);
                 this.Close();
+                */
             }
             catch (Exception)
             {

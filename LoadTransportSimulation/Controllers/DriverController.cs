@@ -40,9 +40,16 @@ namespace Controllers
             this.drivers = new ObservableCollection<Driver>(drivers);
         }
 
-        public string AddDriver(Driver t)
+        public string AddDriver(Driver d)
         {
-            return "Truck added successfully";
+            this.addDriver(d);
+            return "Driver has been added successfully!";
+        }
+
+        private async void addDriver(Driver t)
+        {
+            IApiCallResult driver = await ApiHttpClient.Dispatcher.GetInstance().Post("drivers", t);
+            //return "Truck added successfully";
         }
 
         public async void RemoveDriver(Driver d)
