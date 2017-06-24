@@ -18,8 +18,8 @@
         <Label Content="Password:" Grid.Row="3" HorizontalAlignment="Center" FontSize="11" VerticalAlignment="Bottom" Padding="0" Margin="10,10,10,0"/>
         <Button Name="btn_login" Content="Log in" Grid.Row="5"  HorizontalAlignment="Stretch" Height="30" Click="Button_Click" Margin="15"/>
 
-        <TextBox Name="userName"  Grid.Row="2" Height="25" HorizontalContentAlignment="Center" Margin="10,0,10,0"/>
-        <PasswordBox Name="userPassword" Grid.Row="4" Height="25" HorizontalContentAlignment="Center" Margin="10,0,10,0"/>
+        <TextBox Name="userName"  Text="johngreen@gmail.com" Grid.Row="2" Height="25" HorizontalContentAlignment="Center" Margin="10,0,10,0"/>
+        <PasswordBox Name="userPassword"   Grid.Row="4" Height="25" HorizontalContentAlignment="Center" Margin="10,0,10,0" Password="secret"/>
 
     </Grid>
 </Window>

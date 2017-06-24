@@ -1,29 +1,17 @@
-﻿using Common;
-using Models;
+﻿using Models;
 using Controllers;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using GoogleApiIntegration;
 using System.ComponentModel;
-using System.Collections.ObjectModel;
-using System.Threading;
 using System.IO;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
 using MaterialDesignThemes.Wpf;
-
+using Common;
 namespace WPFLoadSimulation
 {
     /// <summary>
@@ -297,6 +285,7 @@ namespace WPFLoadSimulation
         }
 
         StringBuilder sb;
+        private string routesText;
         private void bt_generatereport_Click(object sender, RoutedEventArgs e)
         {
              sb = new StringBuilder();
@@ -308,25 +297,13 @@ namespace WPFLoadSimulation
 
             bt_downloadreport.IsEnabled = true;
             tb_report.Text =sb.ToString();
+
+            routesText = sb.ToString();
         }
 
         private void bt_downloadreport_Click(object sender, RoutedEventArgs e)
         {
-            Microsoft.Win32.SaveFileDialog savedialog = new Microsoft.Win32.SaveFileDialog();
-            Regex rgx = new Regex("[^0-9-]");
-            savedialog.FileName = "Report" + rgx.Replace(System.DateTime.Now.ToString(), "");
-            savedialog.DefaultExt = ".txxt"; 
-            savedialog.Filter = "Text file  | *.txt"; 
-
-            StreamWriter sw;
-            if (savedialog.ShowDialog() == true)
-            {
-                using (sw = new StreamWriter(savedialog.FileName))
-                {
-                    sw.Write(sb);
-                }
-            }
-            bt_downloadreport.IsEnabled = false;
+            ReportHandler.ConvertTextToReport(routesText);
         }
 
 

@@ -53,6 +53,7 @@
     <Compile Include="IApiCallResult.cs" />
     <Compile Include="Models\ApiErrorResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReportHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
