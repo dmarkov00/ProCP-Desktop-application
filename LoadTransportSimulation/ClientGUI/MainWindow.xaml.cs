@@ -280,6 +280,13 @@ namespace WPFLoadSimulation
             LoadsFromRouteDGV.DataContext = r.Loads;
         }
 
+
+
+        private void bt_downloadreport_Click(object sender, RoutedEventArgs e)
+        {
+            ReportHandler.GenerateReport();
+        }
+
         private void bt_MarkRouteDelivered_Click(object sender, RoutedEventArgs e)
         {
             Route r = (Route)routesDGV.SelectedItem;
@@ -419,10 +426,7 @@ namespace WPFLoadSimulation
             routesText = sb.ToString();
         }
 
-        private void bt_downloadreport_Click(object sender, RoutedEventArgs e)
-        {
-            ReportHandler.GenerateReport();
-        }
+   
 
         private void bt_loadreport_Click(object sender, RoutedEventArgs e)
         {
