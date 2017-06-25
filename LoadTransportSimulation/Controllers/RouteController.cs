@@ -121,7 +121,7 @@ namespace Controllers
             }
         }
 
-        public void SetEstimations(Route r)
+        public Route SetEstimations(Route r)
         {
             try
             {
@@ -130,10 +130,12 @@ namespace Controllers
                 r.CalculateEstFuelConsumption();
                 r.CalculateEstFuelCost();
                 r.CalculateEstimatedSalary();
+                return r;
             }
             catch (Exception)
             {
-                return;
+                // For testing 
+                return new Route();
             }
             
         }
