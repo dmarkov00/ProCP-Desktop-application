@@ -46,6 +46,7 @@ namespace ApiHttpClient.Tests
         public async Task Delete_Driver()
         {
             // On sucessfull delete the method returns null
+           // Commented out, not to break tests
             //var actualResult = await dispatcher.Delete("drivers", "2");
 
             //Assert.AreEqual(actualResult, null);

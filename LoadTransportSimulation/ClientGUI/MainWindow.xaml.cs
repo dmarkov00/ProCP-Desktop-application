@@ -12,6 +12,8 @@ using Newtonsoft.Json;
 using System.Text.RegularExpressions;
 using MaterialDesignThemes.Wpf;
 using PdfReportHandling;
+using System.Linq;
+
 namespace WPFLoadSimulation
 {
     /// <summary>
@@ -327,58 +329,11 @@ namespace WPFLoadSimulation
             LoadsFromRouteDGV.DataContext = r.Loads;
         }
 
-        StringBuilder sb;
-        private string routesText;
-        private void bt_generatereport_Click(object sender, RoutedEventArgs e)
-        {
-             sb = new StringBuilder();
-            foreach (Route r in companyCtrl.RouteCtrl.GetAllRoutes())
-            {
-                sb.Append(JsonConvert.SerializeObject(r, Formatting.Indented));
-                sb.Append("-");
-            }
 
-            bt_downloadreport.IsEnabled = true;
-            tb_report.Text =sb.ToString();
-
-            routesText = sb.ToString();
-        }
 
         private void bt_downloadreport_Click(object sender, RoutedEventArgs e)
         {
             ReportHandler.GenerateReport();
-        }
-
-
-        //not called for now, needs some care with deserializing timespan 
-        private void bt_loadreport_Click(object sender, RoutedEventArgs e)
-        {
-            string jsonOutput = "";
-            List<Route> routesFromFile = new List<Route>();
-
-            Microsoft.Win32.OpenFileDialog opendialog = new Microsoft.Win32.OpenFileDialog();
-            opendialog.Filter = "Text file  | *.txt";
-            
-            if (opendialog.ShowDialog() == true)
-            {
-                using (StreamReader sr = new StreamReader(opendialog.FileName))
-                {
-                    jsonOutput = sr.ReadToEnd();
-                }
-            }
-
-            string[] singleRoutes = Regex.Split(jsonOutput, "-");
-            foreach (string substring in singleRoutes)
-            {
-                
-                Route route = JsonConvert.DeserializeObject<Route>(substring);
-                routesFromFile.Add(route);
-            }
-
-            foreach(Route r in routesFromFile)
-            {
-               companyCtrl.RouteCtrl.AddRouteToList(r);
-            }
         }
 
         private void cb_assignTruckToRoute_SelectionChanged(object sender, SelectionChangedEventArgs e)
