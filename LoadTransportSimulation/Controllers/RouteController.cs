@@ -46,6 +46,8 @@ namespace Controllers
         public string MarkRouteDelivered(Route r)
         {
             this.markRouteDelivered(r.Id);
+            this.unsetDriverTaken(r.DriverId);
+            this.unsetTruckTaken(r.TruckId);
             return "route marked as delivered";
         }
 
