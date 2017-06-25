@@ -1,5 +1,7 @@
-﻿using MigraDoc.DocumentObjectModel;
+﻿using Microsoft.Win32;
+using MigraDoc.DocumentObjectModel;
 using MigraDoc.Rendering;
+using System;
 using System.Diagnostics;
 
 namespace PdfReportHandling
@@ -7,12 +9,10 @@ namespace PdfReportHandling
     public class ReportHandler
     {
         private static Document document;
-
+        private static string filename;
         public static void GenerateReport()
         {
             document = ReportDocument.CreateDocument();
-            //string ddl = MigraDoc.DocumentObjectModel.IO.DdlWriter.WriteToString(document);
-            MigraDoc.DocumentObjectModel.IO.DdlWriter.WriteToFile(document, "MigraDoc.mdddl");
 
             PdfDocumentRenderer renderer = new PdfDocumentRenderer(true, PdfSharp.Pdf.PdfFontEmbedding.Always);
             renderer.Document = document;
@@ -21,8 +21,20 @@ namespace PdfReportHandling
 
             // Save the document...
 
+            SaveFileDialog dlg = new SaveFileDialog();
+            dlg.FileName = "Transportation report"; // Default file name
+            dlg.DefaultExt = ".pdf"; // Default file extension
+            dlg.Filter = "PDF documents (.pdf)|*.pdf"; // Filter files by extension 
 
-            string filename = "HelloMigraDoc.pdf";
+            // Show save file dialog box
+            bool? result = dlg.ShowDialog();
+
+            // Process save file dialog box results 
+            if (result == true)
+            {
+                // Save document 
+                filename = dlg.FileName;
+            }
             renderer.PdfDocument.Save(filename);
             // ...and start a viewer.
             Process.Start(filename);

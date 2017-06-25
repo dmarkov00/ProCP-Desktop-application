@@ -18,7 +18,7 @@ namespace PdfReportHandling
             paragraph.Format.SpaceAfter = "3cm";
             paragraph.Format.Font.Bold = true;
 
-            GenerateReportTable(document);
+            GenerateReportTable(document);        
         }
 
         public static void GenerateReportTable(Document document)
@@ -144,8 +144,9 @@ namespace PdfReportHandling
 
                 document.LastSection.Add(table);
             }
-            
-        }   
-        
+          
+        }
+       
+
     }
 }

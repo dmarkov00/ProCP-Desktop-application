@@ -47,6 +47,7 @@
       <HintPath>..\packages\PDFsharp-MigraDoc-wpf.1.50.4000-beta3b\lib\net30\PdfSharp.Charting-wpf.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
