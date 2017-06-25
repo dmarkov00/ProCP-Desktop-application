@@ -181,6 +181,7 @@ namespace Models
             set
             {
                 isBusy = value;
+                OnPropertyChanged("IsBusy");
             }
         }
 

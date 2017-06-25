@@ -292,8 +292,6 @@ namespace WPFLoadSimulation
             LoadsAvailableDGW.ItemsSource = companyCtrl.LoadCtrl.GetAvailableLoads();
             bt_calculateEstimation.IsEnabled = false;
             bt_submitRoute.IsEnabled = false;
-            
-
         }
 
         private void LoadsAvailableDGW_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -439,7 +437,6 @@ namespace WPFLoadSimulation
 
 
         bool isUserInteractionDriverCb = false;
-
         private void cb_assignDriverToTruck_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if ((Truck)TrucksDGV.SelectedItem != null
