@@ -1,6 +1,7 @@
 ﻿using Common;
 using Models;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,9 +23,19 @@ namespace ApiHttpClient.Tests
         }
 
         [Test]
+        public async Task Create_Load()
+        {
+            Load expectedResult = new Load(1, 1, "content" , 234, 23, DateTime.Now, 5000, 200, DateTime.Now,
+                1, 1);
+            IApiCallResult truck = await dispatcher.Post("loads", expectedResult);
+            Load t = (Load)truck;
+            Assert.AreEqual(expectedResult.DelayFeePercHour, t.DelayFeePercHour);
+        }
+
+        [Test]
         public async Task Create_Client()
         {
-            Client expectedResult = new Client("firstname", "123123", "mymail@mail.mail", "myadddress");
+            Client expectedResult = new Client("firstname", "123123", "mymail@mail.mail", "myadddress", "1");
             IApiCallResult client = await dispatcher.Post("clients", expectedResult);
             Client t = (Client)client;
             Assert.AreEqual(expectedResult.Address, t.Address);

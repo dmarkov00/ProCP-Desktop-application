@@ -4,6 +4,7 @@ using Common.Enumerations;
 using System;
 using System.Net;
 using System.Collections.Specialized;
+using Common;
 
 namespace Controllers
 {
@@ -120,7 +121,13 @@ namespace Controllers
 
         public void AddNewLoad(Load l)
         {
-            this.loads.Add(l);
+            this.addNewLoad(l);
+            //this.loads.Add(l);
+        }
+
+        private async void addNewLoad(Load l)
+        {
+            IApiCallResult driver = await ApiHttpClient.Dispatcher.GetInstance().Post("loads", l);
         }
 
         public void SetClientsForLoads()
