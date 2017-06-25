@@ -81,8 +81,8 @@ namespace WPFLoadSimulation
             //user tab
             this.companyName.Content = companyCtrl.Company.CompanyName;
             this.companyAddress.Content = companyCtrl.Company.Address;
-            this.UserName = u.Name;
-            this.UserPhone = u.Phone;
+            UserName = u.Name;
+            UserPhone = u.Phone;
         }
 
         private void SetTablePaddings()
@@ -476,12 +476,10 @@ namespace WPFLoadSimulation
             ProfileEditPhone.Visibility = Visibility.Hidden;
             ProfileSaveChanges.Visibility = Visibility.Hidden;
             ProfileChangeInfo.Visibility = Visibility.Visible;
+
+            UserName = ProfileEditName.Text;
+            UserPhone = ProfileEditPhone.Text;
         }
-
-        
-
-        
-
-        
+               
     }
 }
