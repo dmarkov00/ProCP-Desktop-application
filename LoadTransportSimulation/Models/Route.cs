@@ -13,78 +13,125 @@ namespace Models
 {
     public class Route : IApiCallResult
     {
+        //id
+        private string id;
+        [JsonProperty("id")]
+        public string Id { get { return id;  } set { id = value; } }
+
+        //driver of the route
         private string driverId;
         [JsonProperty("driver_id")]
         public string DriverId { get { return driverId; } set { driverId = value; } }
 
         private Driver driver;
-        public Driver Driver { get { return driver;  } set { driver = value; if(driver!=null) DriverId = driver.Id; } }
+        public Driver Driver { get { return driver; } set { driver = value; if (driver != null) DriverId = driver.Id; } }
 
-        
+
+        //truck of route
+        private string truckId;
         [JsonProperty("truck_id")]
-        public string TruckId { get; set; }
+        public string TruckId { get { return truckId; } set { truckId = value; } }
 
         private Truck truck;
         public Truck Truck { get { return truck; } set { truck = value; TruckId = truck.Id; Driver = truck.CurrentDriver; } }
 
-        public List<Load> Loads { get; set; }
-        public int NrOfLoads { get; set; }
 
+        //finances
+        private double totalEstimatedSalary;
         [JsonProperty("sum_salaries")]
-        public double TotalEstimatedSalary { get; set; }
+        public double TotalEstimatedSalary { get { return totalEstimatedSalary; } set { totalEstimatedSalary = value; } }
+
+        private double totalActualSalary;
         [JsonProperty("sum_actual_salaries")]
-        public double TotalActualSalary { get; set; }
+        public double TotalActualSalary { get { return totalActualSalary; } set { totalActualSalary = value; } }
+
+        private double finalRevenue;
         [JsonProperty("revenue")]
-        public double FinalRevenue { get; set; }
-        
-        
+        public double FinalRevenue { get { return finalRevenue; } set { finalRevenue = value; } }
+
+
+        //estimations
+        private double estTimeDrivingMin;
         [JsonProperty("est_time_driving")]
-        public double EstTimeDrivingMin { get; set; }
-        public TimeSpan EstTimeDrivingTimeSpan { get; set; }
+        public double EstTimeDrivingMin { get { return estTimeDrivingMin; } set { estTimeDrivingMin = value; estTimeDrivingTimeSpan = TimeSpan.FromMinutes(EstTimeDrivingMin); } }
+
+        private TimeSpan estTimeDrivingTimeSpan;
+        public TimeSpan EstTimeDrivingTimeSpan
+        {
+            get { return estTimeDrivingTimeSpan; }
+            set { estTimeDrivingTimeSpan = value; if (estTimeDrivingTimeSpan != null) estTimeDrivingMin = estTimeDrivingTimeSpan.TotalMinutes; }
+        }
+
+        private int estDistanceKm;
         [JsonProperty("est_distance")]
-        public int EstDistanceKm { get; set; }
+        public int EstDistanceKm { get { return estDistanceKm; } set { estDistanceKm = value; } }
+
+        private int estFuelConsumption;
         [JsonProperty("est_fuelConsumption")]
-        public int EstFuelConsumptionLiters { get; set; }
+        public int EstFuelConsumptionLiters { get { return estFuelConsumption; } set { estFuelConsumption = value; } }
+
+        private double estFuelCost;
         [JsonProperty("est_cost")]
-        public double EstFuelCost { get; set; }
+        public double EstFuelCost { get { return estFuelCost; } set { estFuelCost = value; } }
 
+        //actual results after delivery
+        private double actTimeDrivingMin;
         [JsonProperty("act_time_used")]
-        public double ActTimeDrivingMin { get; set; }
-        public TimeSpan ActTimeDrivingTimeSpan { get; set; }
-        [JsonProperty("act_distance")]
-        public int ActDistanceKm { get; set; }
-        [JsonProperty("act_fuelConsumption")]
-        public int ActFuelConsumptionLiters { get; set; }
-        [JsonProperty("act_cost")]
-        public double ActFuelCost { get; set; }
+        public double ActTimeDrivingMin { get { return actTimeDrivingMin; } set { actTimeDrivingMin = value; if (actTimeDrivingMin != 0) actTimeDrivingTimeSpan = TimeSpan.FromMinutes(actTimeDrivingMin);  } }
 
+        private TimeSpan actTimeDrivingTimeSpan;
+        public TimeSpan ActTimeDrivingTimeSpan
+        {
+            get { return actTimeDrivingTimeSpan; }
+            set { actTimeDrivingTimeSpan = value; if (actTimeDrivingTimeSpan != null) actTimeDrivingMin = actTimeDrivingTimeSpan.TotalMinutes; }
+        }
+
+        private int actDistanceKm;
+        [JsonProperty("act_distance")]
+        public int ActDistanceKm { get { return actDistanceKm; } set { actDistanceKm = value; } }
+
+        private int actFuelConsumptionLiters;
+        [JsonProperty("act_fuelConsumption")]
+        public int ActFuelConsumptionLiters { get { return actFuelConsumptionLiters; } set { actFuelConsumptionLiters = value; } }
+
+        private double actFuelCost;
+        [JsonProperty("act_cost")]
+        public double ActFuelCost { get { return actFuelCost; } set { actFuelCost = value; } }
+
+        //time
         [JsonProperty("start_time")]
         public DateTime StartTime { get; set; }
-        [JsonProperty("id")]
-        public string Id { get; set; }
+        
         [JsonProperty("end_time")]
         public DateTime EndTime { get; set; }
 
+        //locations
+        private int startLocationid;
         [JsonProperty("start_location_id")]
-        public int StartLocationId { get; set; }
-        [JsonProperty("end_location_id")]
-        public int EndLocationId { get; set; }
-        public City StartLocation { get; set; }
-        public City EndLocation { get; set; }
+        public int StartLocationId { get { return startLocationid; } set { startLocationid = value; startLocation = (City)startLocationid; } }
 
-        public Route(List<Load> loads)
-        {
-            this.Loads = loads;
-            this.EstTimeDrivingTimeSpan = TimeSpan.FromMinutes(EstTimeDrivingMin);
-            //this.NrOfLoads = Loads.Count;
-        }
-        
+        private City startLocation;
+        public City StartLocation { get { return startLocation; } set { startLocation = value; startLocationid = (int)startLocation; } }
+
+        private int endLocationid;
+        [JsonProperty("end_location_id")]
+        public int EndLocationId { get { return endLocationid; } set { endLocationid = value; endLocation = (City)EndLocationId; } }
+
+        private City endLocation;
+        public City EndLocation { get { return endLocation; } set { endLocation = value; endLocationid = (int)endLocation; } }
+
+        //other properties not in database
+        private List<Load> loads;
+        public List<Load> Loads { get { return loads; } set { loads = value; NrOfLoads = loads.Count; } }
+
+        public int NrOfLoads { get; set; }
+
+       
 
         public void GetTimeConsumedPerRoute()
         {
             TimeSpan time = this.EndTime - this.StartTime;
             this.ActTimeDrivingTimeSpan = time;
-            this.ActTimeDrivingMin = ActTimeDrivingTimeSpan.TotalMinutes;
         }
 
         /// <summary>
@@ -121,7 +168,7 @@ namespace Models
             double final = TotalActualSalary - ActFuelCost;
             FinalRevenue = final;
         }
-        
+
         /// <summary>
         /// Calculates estimated fuel consumption per current route
         /// </summary>
@@ -161,7 +208,7 @@ namespace Models
             }
             catch (Exception)
             {
-                this.EstDistanceKm=0;
+                this.EstDistanceKm = 0;
             }
 
         }
@@ -189,7 +236,7 @@ namespace Models
                         this.EstTimeDrivingTimeSpan = TimeSpan.FromSeconds(seconds);
                         //this.EstTimeDrivingMinutes = Convert.ToInt32(EstTimeDrivingTimeSpan.TotalMinutes);
                     }
-                       
+
 
                     else
                         seconds += Convert.ToInt64(googleapi.calculatetime(Loads[i].EndLocationID, Loads[i + 1].StartLocationID));
@@ -216,7 +263,7 @@ namespace Models
         }
 
 
-        
+
 
     }
 }

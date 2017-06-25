@@ -218,7 +218,7 @@ namespace WPFLoadSimulation
         {
             BackgroundWorker bw = new BackgroundWorker();
             List<Load> loads = new List<Load>();
-            route = new Route(loads);
+            route = new Route();
             bt_calculateEstimation.IsEnabled = false;
 
             if (lv_selectedLoadsForRoute.Items.IsEmpty)
