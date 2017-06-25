@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Collections.ObjectModel;
 using System.Windows.Data;
 using System.Net;
+using System.Collections.Specialized;
 
 namespace Controllers
 {
@@ -73,28 +74,51 @@ namespace Controllers
 
         public void AddRouteToList(Route r)
         {
-            
             r.StartLocation = r.Truck.LocationCity;
             r.StartLocationId = (int)r.StartLocation;
 
-           r.EndLocation = r.Loads[r.Loads.Count - 1].EndLocationCity;
+            r.EndLocation = r.Loads[r.Loads.Count - 1].EndLocationCity;
             r.EndLocationId = (int)r.EndLocation;
             
-
             r.StartTime = System.DateTime.Now;
             r.NrOfLoads = r.Loads.Count;
-
-            r.TruckId = r.Truck.Id;
+            r.EstTimeDrivingMin = r.EstTimeDrivingTimeSpan.TotalMinutes;
+            
             r.Truck.IsBusy = true;
-            routes.Add(r);
+            
+            foreach(Load l in r.Loads)
+            {
+                this.SetDriverRouteTruck(l.ID.ToString(), r.DriverId, r.Id, r.TruckId);
+                l.LoadState = Common.Enumerations.LoadState.ONTRANSPORT;
+            }
+            
             this.addRoute(r);
-            //await ApiHttpClient.Dispatcher.GetInstance().Post<Route>("routes", r);
+
+
+            TruckController.GetInstance().SetAvailableTrucks();
         }
 
         private async void addRoute(Route r)
         {
-            IApiCallResult truck = await ApiHttpClient.Dispatcher.GetInstance().Post("routes", r);
-            //await ApiHttpClient.Dispatcher.GetInstance().Post<Route>("routes", r);
+            routes.Add(r);
+            IApiCallResult newroute = await ApiHttpClient.Dispatcher.GetInstance().Post("routes", r);
+           // IApiCallResult truck = await ApiHttpClient.Dispatcher.GetInstance().Put("trucks", r.TruckId, r.Truck);
+        }
+
+        private void SetDriverRouteTruck(String loadId, String driverId, String routeId, String truckId)
+        {
+            using (WebClient client = new WebClient())
+            {
+                client.Headers.Add("api_token", User.GetInstance().Token);
+                byte[] response =
+                client.UploadValues("http://127.0.0.1:8000/api/loads/" + loadId, new NameValueCollection()
+                {
+                    { "driver_id", driverId },
+                    { "route_id", truckId },
+                    { "truck_id", routeId },
+                    { "loadstatus", "2" }
+                });
+            }
         }
 
         public void SetEstimations(Route r)

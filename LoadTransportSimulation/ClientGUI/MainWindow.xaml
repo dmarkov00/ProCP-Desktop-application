@@ -335,7 +335,7 @@
                                                 </Grid>
                                             </Grid>
                                         </TabItem>
-                                        <TabItem Header="See load on map" Padding="13,3">
+                                        <TabItem Name="mapTab" Header="See load on map" Padding="13,3" TouchUp="TabItem_TouchUp">
                                             <Grid Background="#FFE5E5E5">
                                                 <WebBrowser x:Name="web_load" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" Source="http://maps.google.com" />
                                             </Grid>
@@ -374,7 +374,7 @@
                                             </ListView.View>
                                         </ListView>
                                         <Label Content="Assign a truck to the route:" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="2" Grid.RowSpan="1" VerticalAlignment="Bottom" Padding="0,0,0,0" Width="160" FontWeight="DemiBold" Margin="10,0,0,0"/>
-                                        <ComboBox x:Name="cb_assignTruckToRoute" FontSize="12" Background="WhiteSmoke" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="1"  HorizontalAlignment="Stretch" MaxHeight="30" VerticalAlignment="Bottom" SelectionChanged="cb_assignTruckToRoute_SelectionChanged" Margin="5,5,20,0" />
+                                        <ComboBox x:Name="cb_assignTruckToRoute" ItemsSource="{Binding Path=Truck, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}"  FontSize="12" Background="WhiteSmoke" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="1"  HorizontalAlignment="Stretch" MaxHeight="30" VerticalAlignment="Bottom" SelectionChanged="cb_assignTruckToRoute_SelectionChanged" Margin="5,5,20,0" />
                                         <Button x:Name="bt_calculateEstimation" Content="Calculate estimation" HorizontalAlignment="Stretch" Grid.Row="3" VerticalAlignment="Stretch" Margin="5,5,20,5" Height="30" Click="bt_calculateEstimation_Click" IsEnabled="False" Grid.ColumnSpan="2"/>
 
                                         <materialDesign:Snackbar 
@@ -542,7 +542,7 @@
                         <Button Name="bt_addMaintenance" Content="Add service maintenance" Grid.Column="1" HorizontalAlignment="Stretch"  Grid.Row="5" VerticalAlignment="Stretch" MaxHeight="30" Click="bt_addMaintenance_Click"/>
                     </Grid>
                     <Label Content="Assign new driver:" Grid.Column="2" Grid.Row="3" FontWeight="SemiBold" VerticalAlignment="Bottom" Padding="0"/>
-                    <ComboBox x:Name="cb_assignDriverToTruck"  Grid.Column="2" Grid.Row="5" HorizontalAlignment="Stretch" Height="30" Margin="10" VerticalAlignment="Top" SelectionChanged="cb_assignDriverToTruck_SelectionChanged" PreviewMouseDown="cb_assignDriverToTruck_PreviewMouseDown"/>
+                    <ComboBox x:Name="cb_assignDriverToTruck" ItemsSource="{Binding Path=Driver, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" Grid.Row="5" HorizontalAlignment="Stretch" Height="30" Margin="10" VerticalAlignment="Top" SelectionChanged="cb_assignDriverToTruck_SelectionChanged" PreviewMouseDown="cb_assignDriverToTruck_PreviewMouseDown"/>
                     <Button x:Name="bt_TrucksDeleteSelected" Content="Delete selected truck" Grid.Column="2" HorizontalAlignment="Right" Grid.Row="2" VerticalAlignment="Top" Margin="10" Width="200" Height="30" Click="bt_TrucksDeleteSelected_Click"/>
                     <Button x:Name="TrucksAddNew" Click="TrucksAddNew_Click" Content="Add new truck" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Top" Margin="10" Width="200" Height="30"/>
                 </Grid>

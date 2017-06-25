@@ -9,7 +9,7 @@ namespace Controllers
     public class DriverController
     {
         private ObservableCollection<Driver> drivers;
-        public ObservableCollection<Driver> unAssignedDrivers;
+        private ObservableCollection<Driver> unassignedDrivers;
 
         /*Singleton implemented
          * -when you want to use the controller the first time, use DriverController.Create(list);
@@ -65,7 +65,7 @@ namespace Controllers
 
         public ObservableCollection<Driver> GetUnassignedDrivers()
         {
-            return unAssignedDrivers;
+            return unassignedDrivers;
         }
 
         public List<Driver> GetBusyDrivers()
@@ -90,14 +90,14 @@ namespace Controllers
         
         public void SetUnassignedDrivers()
         {
-            unAssignedDrivers = new ObservableCollection<Driver>(GetAllDrivers());
+            unassignedDrivers = new ObservableCollection<Driver>(GetAllDrivers());
             TruckController truckCtrl = TruckController.GetInstance();
 
             for(int t=0; t<truckCtrl.GetAllTrucks().Count; t++ )
             {
-                if (unAssignedDrivers.Contains(truckCtrl.GetAllTrucks()[t].CurrentDriver))
+                if (unassignedDrivers.Contains(truckCtrl.GetAllTrucks()[t].CurrentDriver))
                 {
-                    unAssignedDrivers.Remove(truckCtrl.GetAllTrucks()[t].CurrentDriver);
+                    unassignedDrivers.Remove(truckCtrl.GetAllTrucks()[t].CurrentDriver);
                 }
             }
         }
