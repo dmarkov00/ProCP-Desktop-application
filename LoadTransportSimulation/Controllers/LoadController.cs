@@ -37,13 +37,14 @@ namespace Controllers
         {
             using (WebClient client = new WebClient())
             {
-
+                client.Headers.Add("api_token", User.GetInstance().Token);
                 byte[] response =
                 client.UploadValues("http://127.0.0.1:8000/api/loads/"+loadId, new NameValueCollection()
                 {
                     { "driver_id", driverId },
                     { "route_id", truckId },
-                    { "truck_id", routeId }
+                    { "truck_id", routeId },
+                    { "loadstatus", "2" }
                 });
             }
         }

@@ -33,7 +33,7 @@ namespace WPFLoadSimulation
     {
         CompanyController companyCtrl;
         User u;
-
+        
         public string UserName
         {
             get { return ProfileEditName.Text; }
@@ -41,6 +41,7 @@ namespace WPFLoadSimulation
             {
                 this.ProfileEditName.Text = value;
                 this.ProfileName.Content = value;
+                
             }
         }
             
@@ -281,12 +282,13 @@ namespace WPFLoadSimulation
             TruckController tc = TruckController.GetInstance();
             LoadController lc = LoadController.GetInstance();
             List<Truck> trucks = tc.GetAllTrucks().ToList();
-            Truck text = (Truck)cb_assignTruckToRoute.SelectedItem;
-            route.DriverId = Convert.ToInt32(trucks.Where(x => x.LicencePlate.Equals(text.LicencePlate)).First().Driver_id);
+            Truck truck = (Truck)cb_assignTruckToRoute.SelectedItem;
+            route.DriverId = Convert.ToInt32(trucks.Where(x => x.LicencePlate.Equals(truck.LicencePlate)).First().Driver_id);
             companyCtrl.RouteCtrl.AddRouteToList(route);
 
             foreach (Load l in lv_selectedLoadsForRoute.Items)
                   {
+                lc.SetDriverRouteTruck(l.ID.ToString(), route.DriverId.ToString(), route.Id, truck.Id);
                       companyCtrl.LoadCtrl.GetLoad(l.ID).LoadState = Common.Enumerations.LoadState.ONTRANSPORT;
                   }
 
