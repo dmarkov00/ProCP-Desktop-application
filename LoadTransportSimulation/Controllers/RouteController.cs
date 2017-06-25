@@ -102,7 +102,7 @@ namespace Controllers
         {
             routes.Add(r);
             IApiCallResult newroute = await ApiHttpClient.Dispatcher.GetInstance().Post("routes", r);
-           // IApiCallResult truck = await ApiHttpClient.Dispatcher.GetInstance().Put("trucks", r.TruckId, r.Truck);
+           //IApiCallResult truck = await ApiHttpClient.Dispatcher.GetInstance().Put("trucks", r.TruckId, r.Truck);
         }
 
         private void SetDriverRouteTruck(String loadId, String driverId, String routeId, String truckId)

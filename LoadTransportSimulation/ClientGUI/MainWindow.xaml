@@ -302,7 +302,21 @@
                                             <DataGridTextColumn Binding="{Binding MaxArrivalTime}" ClipboardContentBinding="{x:Null}" Header="Due" Width="*"/>
                                         </DataGrid.Columns>
                                     </DataGrid>
-                                    <Button x:Name="bt_LoadsAddToRoute" Click="bt_LoadsAddToRoute_Click" Content="Add selected loads to route" Grid.Row="2" VerticalAlignment="Bottom" Height="30" Margin="10,5,5,9"/>
+                                    <Grid Grid.Column="0" Grid.Row="1">
+                                        
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Button Style="{StaticResource MaterialDesignFloatingActionButton}" Width="40" Height="40" 
+                                        Name="bt_addNewLoad" Margin="10,5,15,10" HorizontalAlignment="Right" VerticalAlignment="Bottom"  Grid.Column="1" Grid.Row="0"
+                                        ToolTip="Add a new load" Click="bt_addNewLoad_Click"  >
+                                            <materialDesign:PackIcon Kind="Plus" Height="13" Width="13" />
+                                        </Button>
+                                        <Button x:Name="bt_LoadsAddToRoute" Click="bt_LoadsAddToRoute_Click" Content="Add selected loads to route" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Height="30" Margin="10,5,5,10" Grid.Row="1"/>
+
+                                    </Grid>
+
                                     <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1" Grid.Row="0" Margin="5,5,5,5">
                                         <TabItem Header="Selected Load" Padding="13,2">
                                             <Grid Background="WhiteSmoke" >
@@ -507,9 +521,9 @@
                     </DataGrid>
                     <StackPanel HorizontalAlignment="Stretch" Grid.Row="3" Grid.RowSpan="1" VerticalAlignment="Stretch" Orientation="Horizontal" Grid.ColumnSpan="1" Grid.Column="0" >
                         <Label Content="Maintenance schedule of truck: " HorizontalAlignment="Left" VerticalAlignment="Bottom" Padding="0" FontWeight="SemiBold" Margin="5,15,0,0"/>
-                        <Label Content="#licenceplate" HorizontalAlignment="Left" VerticalAlignment="Bottom"  Padding="10,0"/>
+                        <Label Name="lb_trucklicence" Content="#licenceplate" HorizontalAlignment="Left" VerticalAlignment="Bottom"  Padding="10,0"/>
                     </StackPanel>
-                    <DataGrid Name="MaintenanceDGV" AutoGenerateColumns="False" ItemsSource="{Binding Path=TruckMaintenance, Mode=TwoWay}" HorizontalAlignment="Stretch"  Grid.Row="5" VerticalAlignment="Stretch"  Grid.Column="0" Margin="5,0,20,0" CanUserDeleteRows="False">
+                    <DataGrid x:Name="MaintenanceDGV" OverridesDefaultStyle="True" AutoGenerateColumns="False" ItemsSource="{Binding Path=TruckMaintenance, Mode=TwoWay}" HorizontalAlignment="Stretch"  Grid.Row="5" VerticalAlignment="Stretch"  Grid.Column="0" Margin="5,0,20,0" CanUserDeleteRows="False">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding ActionPerformed}" ClipboardContentBinding="{x:Null}" Header="Action Performed" Width="*"/>
                             <DataGridTextColumn Binding="{Binding Driver}" ClipboardContentBinding="{x:Null}" Header="Driver" Width="*"/>
@@ -541,6 +555,12 @@
                         <TextBox Name="tb_maintenanceCost" Grid.Column="1" HorizontalAlignment="Stretch"  Grid.Row="3" VerticalAlignment="Stretch" MaxHeight="30" />
                         <Button Name="bt_addMaintenance" Content="Add service maintenance" Grid.Column="1" HorizontalAlignment="Stretch"  Grid.Row="5" VerticalAlignment="Stretch" MaxHeight="30" Click="bt_addMaintenance_Click"/>
                     </Grid>
+                    <materialDesign:Snackbar 
+                                        HorizontalAlignment="Stretch" VerticalAlignment="Bottom" 
+                                        MessageQueue="{materialDesign:MessageQueue}" 
+                                        x:Name="SnackbarTruckDrivers" 
+                                        Grid.Row="3" 
+                                        Grid.Column="2" />
                     <Label Content="Assign new driver:" Grid.Column="2" Grid.Row="3" FontWeight="SemiBold" VerticalAlignment="Bottom" Padding="0"/>
                     <ComboBox x:Name="cb_assignDriverToTruck" ItemsSource="{Binding Path=Driver, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" Grid.Row="5" HorizontalAlignment="Stretch" Height="30" Margin="10" VerticalAlignment="Top" SelectionChanged="cb_assignDriverToTruck_SelectionChanged" PreviewMouseDown="cb_assignDriverToTruck_PreviewMouseDown"/>
                     <Button x:Name="bt_TrucksDeleteSelected" Content="Delete selected truck" Grid.Column="2" HorizontalAlignment="Right" Grid.Row="2" VerticalAlignment="Top" Margin="10" Width="200" Height="30" Click="bt_TrucksDeleteSelected_Click"/>

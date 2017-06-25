@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using Common;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace Models
 {
@@ -265,15 +266,10 @@ namespace Models
         }
 
      
-        public string AddMaintenance(TruckMaintenance maintenance)
+        public void AddMaintenance(TruckMaintenance maintenance)
         {
             if (!maintenanceList.Contains(maintenance)) {
                 maintenanceList.Add(maintenance);
-                return "Maintenance has been added!";
-            }
-            else
-            {
-                return "Maintenance already existing!";
             }
         }
 

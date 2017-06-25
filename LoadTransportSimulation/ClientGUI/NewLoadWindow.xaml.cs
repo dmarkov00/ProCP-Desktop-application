@@ -11,6 +11,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Controllers;
+using Common.Enumerations;
+using Models;
 
 namespace WPFLoadSimulation
 {
@@ -19,9 +22,13 @@ namespace WPFLoadSimulation
     /// </summary>
     public partial class NewLoadWindow : Window
     {
+        
         public NewLoadWindow()
         {
             InitializeComponent();
+            client.ItemsSource = CompanyController.GetInstance().ClientCtrl.GetAllClients();
+            start.ItemsSource = Enum.GetNames(typeof(City));
+            end.ItemsSource = Enum.GetNames(typeof(City));
         }
 
 
@@ -30,21 +37,21 @@ namespace WPFLoadSimulation
             NewClientWindow newclient = new NewClientWindow();
             newclient.Show();
         }
-
-        private void LoadsAddStartAdd_Click(object sender, RoutedEventArgs e)
-        {
-            AddressWindow newstartaddress = new AddressWindow();
-            newstartaddress.Show();
-        }
-
-        private void LoadsAddEndAdd_Click(object sender, RoutedEventArgs e)
-        {
-            AddressWindow newendaddress = new AddressWindow();
-            newendaddress.Show();
-        }
+        
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            Load l = new Load(
+              (int)((City)start.SelectedItem),
+              (int)((City)end.SelectedItem),
+              content.Text,
+              Convert.ToDecimal( weight.Text),
+              Convert.ToDouble(salary.Text),
+              deadline,
+              null, 
+              5,
+
+                );
             this.Close();
         }
     }

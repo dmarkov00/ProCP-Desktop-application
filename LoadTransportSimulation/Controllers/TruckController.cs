@@ -6,6 +6,7 @@ using ApiHttpClient;
 using Common;
 using System.Net;
 using System.Collections.Specialized;
+using System.Threading.Tasks;
 
 namespace Controllers
 {
@@ -171,7 +172,10 @@ namespace Controllers
 
         public void AddMaintenance(Truck truck, Driver driver, string action, DateTime date, double cost)
         {
-            truck.AddMaintenance(new TruckMaintenance(truck, driver, cost, date, action));
+            TruckMaintenance tm = new TruckMaintenance(truck, driver, cost, date, action);
+            truck.AddMaintenance(tm);
+            //IApiCallResult maintenance = await Dispatcher.GetInstance().Post("truckmaintenances", tm);
+            
         }
 
         public ObservableCollection<TruckMaintenance> GetTruckMaintenanceList(Truck t)

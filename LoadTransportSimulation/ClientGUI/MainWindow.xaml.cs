@@ -104,6 +104,9 @@ namespace WPFLoadSimulation
             //Trucks tab
             DataGridAssist.SetCellPadding(TrucksDGV, new Thickness(2));
             DataGridAssist.SetColumnHeaderPadding(TrucksDGV, new Thickness(3));
+            DataGridAssist.SetCellPadding(MaintenanceDGV, new Thickness(2));
+            DataGridAssist.SetColumnHeaderPadding(MaintenanceDGV, new Thickness(3));
+
 
             //Drivers tab
             DataGridAssist.SetCellPadding(DriversDGV, new Thickness(2));
@@ -118,6 +121,12 @@ namespace WPFLoadSimulation
         //LOADS TAB
         public Route route;
         bool isUserInteractLoadsDGV = false; //defines if selection changed is by user or by itemsource change
+
+        private void bt_addNewLoad_Click(object sender, RoutedEventArgs e)
+        {
+            NewLoadWindow newload = new NewLoadWindow();
+            newload.Show();
+        }
 
         private void LoadsAvailableDGW_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -319,6 +328,7 @@ namespace WPFLoadSimulation
             {
                 Truck t = (Truck)TrucksDGV.SelectedItem;
                 MaintenanceDGV.ItemsSource = t.GetMaintenances();
+                lb_trucklicence.Content = t.LicencePlate;
                 if (t.CurrentDriver != null) { }
                 //cb_assignDriverToTruck.Text = t.CurrentDriver.ToString();
             }
@@ -336,7 +346,7 @@ namespace WPFLoadSimulation
                     isUserInteractionDriverCb = false;
                     if (!companyCtrl.TruckCtrl.AssignSingleDriverToTruck(t, (Driver)cb_assignDriverToTruck.SelectedItem))
                     {
-                        MessageBox.Show("cant change it while busy");
+                        SnackbarTruckDrivers.MessageQueue.Enqueue("Truck is busy, can't change the driver!");
                         return;
                     }
 
@@ -353,9 +363,9 @@ namespace WPFLoadSimulation
 
         private void bt_addMaintenance_Click(object sender, RoutedEventArgs e)
         {
-            companyCtrl.TruckCtrl.AddMaintenance((Truck)TrucksDGV.SelectedItem,
+           companyCtrl.TruckCtrl.AddMaintenance((Truck)TrucksDGV.SelectedItem,
                 (Driver)cb_maintenanceDriver.SelectedItem,
-                tb_maintenanceAction.ToString(), dp_maintenanceDate.SelectedDate.Value, Convert.ToDouble(tb_maintenanceCost.Text)
+                tb_maintenanceAction.Text.ToString(), dp_maintenanceDate.SelectedDate.Value, Convert.ToDouble(tb_maintenanceCost.Text)
                 );
         }
 
@@ -473,10 +483,6 @@ namespace WPFLoadSimulation
             ProfileSaveChanges.Visibility = Visibility.Hidden;
             ProfileChangeInfo.Visibility = Visibility.Visible;
         }
-
-        
-
-        
 
         
     }

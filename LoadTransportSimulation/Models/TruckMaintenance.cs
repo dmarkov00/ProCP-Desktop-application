@@ -1,9 +1,13 @@
 ﻿using System;
 using Common.Enumerations;
+using Newtonsoft.Json;
+
 namespace Models
 {
     public class TruckMaintenance
     {
+        private int truckid;
+        private int driverid;
         private Truck truck;
         private Driver driver;
         private double cost;
@@ -29,6 +33,21 @@ namespace Models
             set
             {
                 truck = value;
+                truckid =Convert.ToInt32(truck.Id);
+            }
+        }
+
+        [JsonProperty("truck_id")]
+        public int TruckID
+        {
+            get
+            {
+                return truckid;
+            }
+
+            set
+            {
+                truckid = value;
             }
         }
 
@@ -42,9 +61,25 @@ namespace Models
             set
             {
                 driver = value;
+                driverid = Convert.ToInt32(driver.Id);
             }
         }
 
+        [JsonProperty("driver_id")]
+        public int DriverID
+        {
+            get
+            {
+                return driverid;
+            }
+
+            set
+            {
+                driverid = value;
+            }
+        }
+
+        [JsonProperty("actionCost")]
         public double Cost
         {
             get
@@ -58,6 +93,7 @@ namespace Models
             }
         }
 
+        [JsonProperty("actionDate")]
         public DateTime Date
         {
             get
@@ -71,6 +107,7 @@ namespace Models
             }
         }
 
+        [JsonProperty("actionPerformed")]
         public string ActionPerformed
         {
             get
