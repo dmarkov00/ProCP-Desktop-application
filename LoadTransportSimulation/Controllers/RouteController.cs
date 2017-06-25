@@ -226,8 +226,14 @@ namespace Controllers
         {
             foreach(Load l in LoadController.GetInstance().GetAllLoads())
             {
-                if(l.RouteId!=null)
-                GetRoute(l.RouteId).Loads.Add(l);
+                if (l.RouteId != null)
+                {
+                    Route r = this.GetRoute(l.RouteId);
+                    if (r != null)
+                    {
+                        r.Loads.Add(l);
+                    }
+                }
 
             }
         }
