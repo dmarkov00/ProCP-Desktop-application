@@ -137,7 +137,25 @@ namespace Controllers
             }
             
         }
-        
-        
+
+        public Route GetRoute(string id)
+        {
+            foreach(Route r in routes)
+            {
+                if (r.Id == id)
+                    return r;
+            }
+            return null;
+        }
+
+        public void SetLoadsFromDatabase()
+        {
+            foreach(Load l in LoadController.GetInstance().GetAllLoads())
+            {
+                if(l.RouteId!=null)
+                GetRoute(l.RouteId).Loads.Add(l);
+
+            }
+        }
     }
 }

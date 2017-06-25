@@ -71,6 +71,8 @@ namespace Controllers
             await CreateClientController();
             await CreateRouteController();
 
+
+            routeCtrl.SetLoadsFromDatabase();
             e.finished = true;
             
             OnControllersCreated(this, e);
@@ -81,6 +83,7 @@ namespace Controllers
             IEnumerable<IApiCallResult> routes = await client.GetMany<Route>("routes");
             ObservableCollection<Route> targetListRoutes = new ObservableCollection<Route>(routes.Cast<Route>());
             routeCtrl = RouteController.Create(targetListRoutes);
+            
             return;
         }
 
