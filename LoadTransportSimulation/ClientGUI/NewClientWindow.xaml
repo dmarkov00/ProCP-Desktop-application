@@ -29,11 +29,11 @@
             <Label Content="Date of birth:" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Stretch" Grid.Column="1"/>
             <Label Content="Phone:" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Stretch" Grid.Column="1"/>
             <Label Content="Email:" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Stretch" Grid.Column="1"/>
-        <TextBox Grid.Row="0" Grid.Column="2" VerticalAlignment="Stretch" MaxHeight="30" HorizontalAlignment="Stretch" VerticalContentAlignment="Center"/>
-        <TextBox Grid.Row="1" Grid.Column="2" VerticalAlignment="Stretch" MaxHeight="30" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalContentAlignment="Center"/>
+        <TextBox Name="fname" Grid.Row="0" Grid.Column="2" VerticalAlignment="Stretch" MaxHeight="30" HorizontalAlignment="Stretch" VerticalContentAlignment="Center"/>
+        <TextBox Name="lname" Grid.Row="1" Grid.Column="2" VerticalAlignment="Stretch" MaxHeight="30" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalContentAlignment="Center"/>
         <DatePicker Grid.Row="2" Grid.Column="2" VerticalAlignment="Stretch" MaxHeight="30" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalContentAlignment="Center"/>
-        <TextBox Grid.Row="3" Grid.Column="2" VerticalAlignment="Stretch" MaxHeight="30" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalContentAlignment="Center"/>
-        <TextBox Grid.Row="4" Grid.Column="2" VerticalAlignment="Stretch" MaxHeight="30" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" />
+        <TextBox Name="phone" Grid.Row="3" Grid.Column="2" VerticalAlignment="Stretch" MaxHeight="30" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalContentAlignment="Center"/>
+        <TextBox Name="mail" Grid.Row="4" Grid.Column="2" VerticalAlignment="Stretch" MaxHeight="30" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" />
 
             <Label Content="Country:" Grid.Row="6" Grid.Column="1" VerticalAlignment="Center" />
             <Label Content="City:" Grid.Row="7" Grid.Column="1"  VerticalAlignment="Center" />
@@ -42,7 +42,7 @@
             <Label Content="ZIP code:" Grid.Row="10" Grid.Column="1"  VerticalAlignment="Center" />
             <TextBox Grid.Row="6" Grid.Column="3" VerticalAlignment="Stretch" MaxHeight="30" VerticalContentAlignment="Center"/>
         <TextBox Grid.Row="7" Grid.Column="3" VerticalAlignment="Stretch" MaxHeight="30" VerticalContentAlignment="Center" />
-        <TextBox Grid.Row="8" Grid.Column="3" VerticalAlignment="Stretch" MaxHeight="30" VerticalContentAlignment="Center"/>
+        <TextBox Name="address" Grid.Row="8" Grid.Column="3" VerticalAlignment="Stretch" MaxHeight="30" VerticalContentAlignment="Center"/>
         <TextBox Grid.Row="9" Grid.Column="3" VerticalAlignment="Stretch" MaxHeight="30" VerticalContentAlignment="Center"/>
         <TextBox Grid.Row="10" Grid.Column="3" VerticalAlignment="Stretch" MaxHeight="30" VerticalContentAlignment="Center"/>
 

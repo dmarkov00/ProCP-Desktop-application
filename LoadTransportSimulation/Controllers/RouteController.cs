@@ -6,6 +6,7 @@ using GoogleApiIntegration;
 using System.Text.RegularExpressions;
 using System.Collections.ObjectModel;
 using System.Windows.Data;
+using System.Net;
 
 namespace Controllers
 {
@@ -41,9 +42,32 @@ namespace Controllers
             BindingOperations.EnableCollectionSynchronization(routes, _lock);
         }
 
+        public string MarkRouteDelivered(string routeId)
+        {
+            this.markRouteDelivered(routeId);
+            return "route marked as delivered";
+        }
+
+        private void markRouteDelivered(string routeId)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest
+                .Create("http://127.0.0.1:8000/api/routes/delivered/" + routeId);
+            request.Method = "Get";
+            request.Headers.Add("api_token", User.GetInstance().Token);
+            request.KeepAlive = true;
+            request.ContentType = "appication/json";
+            //request.ContentType = "application/x-www-form-urlencoded";
+
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+        }
        
         public ObservableCollection<Route> GetAllRoutes()
         {
+            TruckController tc = TruckController.GetInstance();
+            foreach(Route r in routes)
+            {
+                r.Truck = tc.GetTruck(r.TruckId);
+            }
             return routes;
         }
 
@@ -61,8 +85,15 @@ namespace Controllers
             r.NrOfLoads = r.Loads.Count;
 
             r.TruckId = r.Truck.Id;
+            r.Truck.IsBusy = true;
             routes.Add(r);
+            this.addRoute(r);
+            //await ApiHttpClient.Dispatcher.GetInstance().Post<Route>("routes", r);
+        }
 
+        private async void addRoute(Route r)
+        {
+            IApiCallResult truck = await ApiHttpClient.Dispatcher.GetInstance().Post("routes", r);
             //await ApiHttpClient.Dispatcher.GetInstance().Post<Route>("routes", r);
         }
 

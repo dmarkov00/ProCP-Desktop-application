@@ -20,6 +20,8 @@ namespace WPFLoadSimulation
  
             // Initial creation of dispacher on application start 
             ApiHttpClient.Dispatcher.Create("");
+            userName.Text = "johngreen@gmail.com";
+            userPassword.Password = "secret";
 
         }
 

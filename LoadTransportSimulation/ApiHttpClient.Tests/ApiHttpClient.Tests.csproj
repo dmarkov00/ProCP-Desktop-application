@@ -72,6 +72,10 @@
       <Project>{cd31907c-9b91-4af5-a576-1e75d2ec7a0f}</Project>
       <Name>Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Controllers\Controllers.csproj">
+      <Project>{3C6B22E1-375B-41AD-AD94-060539256E9E}</Project>
+      <Name>Controllers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Models\Models.csproj">
       <Project>{9cc65c70-5773-4836-b90c-70f9a7eac5e0}</Project>
       <Name>Models</Name>

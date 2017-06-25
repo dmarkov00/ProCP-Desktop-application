@@ -12,7 +12,18 @@ namespace Models
         private string phone;
         private string email;
         private bool isBusy;
+        private int companyId;
 
+        public Driver(string firstName, string lastName, string phone, string email, int compId)
+        {
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.phone = phone;
+            this.email = email;
+            this.companyId = compId;
+        }
+
+        /* it should not have the id!!!
         public Driver(string id, string firstName, string lastName, string phone, string email)
         {
             this.id = id;
@@ -20,6 +31,20 @@ namespace Models
             this.lastName = lastName;
             this.phone = phone;
             this.email = email;
+        }*/
+
+        [JsonProperty("company_id")]
+        public int CompanyId
+        {
+            get
+            {
+                return this.companyId;
+            }
+
+            set
+            {
+                companyId = value;
+            }
         }
 
         [JsonProperty("fName")]

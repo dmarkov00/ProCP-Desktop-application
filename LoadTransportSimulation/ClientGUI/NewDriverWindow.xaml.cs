@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Controllers;
+using Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,14 +21,19 @@ namespace WPFLoadSimulation
     /// </summary>
     public partial class NewDriverWindow : Window
     {
+        DriverController dc;
         public NewDriverWindow()
         {
             InitializeComponent();
+            dc = DriverController.GetInstance();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            int compId =  Convert.ToInt32(User.GetInstance().CompanyId);
+            Driver d = new Driver(fname.Text, lname.Text, phone.Text, mail.Text, compId);
+            MessageBox.Show(dc.AddDriver(d));
+            //this.Close();
         }
     }
 }

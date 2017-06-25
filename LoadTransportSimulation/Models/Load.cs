@@ -8,7 +8,7 @@ namespace Models
     public class Load : IApiCallResult
     {
         public Load(int startLocationID, int endLocationID, string content,
-            decimal weight, double fullsalary, double finalsal, double delay, DateTime maxarrival, int clientID, int loadstatus)
+            decimal weight, double fullsalary, DateTime deadline, double finalsal, double delay, DateTime maxarrival, int clientID, int loadstatus)
         {
             this.StartLocationID = startLocationID;
             this.EndLocationID = endLocationID;
@@ -19,6 +19,7 @@ namespace Models
             this.DelayFeePercHour = delay;
             this.MaxArrivalTime = maxarrival;
             this.ClientID = clientID;
+            this.MaxArrivalTime = deadline;
             this.LoadStateID = loadstatus;
 
             this.StartLocationCity = (City)StartLocationID;
@@ -35,7 +36,7 @@ namespace Models
         [JsonProperty("endLocation_id")]
         public int EndLocationID { get; private set; }
         public City EndLocationCity { get;  set; }
-        [JsonProperty("content")]
+        [JsonProperty("load_content")]
         public string Content { get; private set; }
         [JsonProperty("weight")]
         public decimal WeightKg { get; private set; }

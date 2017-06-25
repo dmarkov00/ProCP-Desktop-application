@@ -1,6 +1,8 @@
 ﻿using Common;
+using Controllers;
 using Models;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,6 +22,35 @@ namespace ApiHttpClient.Tests
             Truck t = (Truck)truck;
             Assert.AreEqual(expectedResult.LicencePlate, t.LicencePlate);
         }
+
+        [Test]
+        public async Task Create_Load()
+        {
+            Load expectedResult = new Load(1, 1, "content" , 234, 23, DateTime.Now, 5000, 200, DateTime.Now,
+                1, 1);
+            IApiCallResult truck = await dispatcher.Post("loads", expectedResult);
+            Load t = (Load)truck;
+            Assert.AreEqual(expectedResult.DelayFeePercHour, t.DelayFeePercHour);
+        }
+
+        [Test]
+        public async Task Create_Client()
+        {
+            Client expectedResult = new Client("firstname", "123123", "mymail@mail.mail", "myadddress", "1");
+            IApiCallResult client = await dispatcher.Post("clients", expectedResult);
+            Client t = (Client)client;
+            Assert.AreEqual(expectedResult.Address, t.Address);
+        }
+
+        [Test]
+        public async Task Create_Driver()
+        {
+            Driver expectedResult = new Driver("firstname", "lastname", "123123", "mymail@mail.mail", 3);
+            IApiCallResult driver = await dispatcher.Post("drivers", expectedResult);
+            Driver t = (Driver)driver;
+            Assert.AreEqual(expectedResult.CompanyId, t.CompanyId);
+        }
+
         [Test]
         public async Task Test_See_Trucks()
         {      
