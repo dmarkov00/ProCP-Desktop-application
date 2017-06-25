@@ -34,16 +34,6 @@ namespace WPFLoadSimulation
                 
             }
         }
-            
-        public string UserEmail
-        {
-            get { return ProfileEditEmail.Text; }
-            set
-            {
-                this.ProfileEditEmail.Text = value;
-                this.ProfileEmail.Content = value;
-            }
-        }
 
         public string UserPhone
         {
@@ -89,8 +79,9 @@ namespace WPFLoadSimulation
             ClientDGV.DataContext = companyCtrl.ClientCtrl.GetAllClients();
 
             //user tab
+            this.companyName.Content = companyCtrl.Company.CompanyName;
+            this.companyAddress.Content = companyCtrl.Company.Address;
             this.UserName = u.Name;
-            this.UserEmail = u.Email;
             this.UserPhone = u.Phone;
         }
 
@@ -468,18 +459,16 @@ namespace WPFLoadSimulation
         private void ProfileChangeInfo_Click(object sender, RoutedEventArgs e)
         {
             ProfileEditName.Visibility = Visibility.Visible;
-            ProfileEditEmail.Visibility = Visibility.Visible;
             ProfileEditPhone.Visibility = Visibility.Visible;
             ProfileSaveChanges.Visibility = Visibility.Visible;
             ProfileChangeInfo.Visibility = Visibility.Hidden;
         }
 
-        private async void ProfileSaveChanges_Click(object sender, RoutedEventArgs e)
+        private void ProfileSaveChanges_Click(object sender, RoutedEventArgs e)
         {
-            await companyCtrl.ChangeUser(ProfileEditName.Text,ProfileEditEmail.Text,ProfileEditPhone.Text);
+            companyCtrl.ChangeUser(ProfileEditName.Text, ProfileEditPhone.Text);
             
             ProfileEditName.Visibility = Visibility.Hidden;
-            ProfileEditEmail.Visibility = Visibility.Hidden;
             ProfileEditPhone.Visibility = Visibility.Hidden;
             ProfileSaveChanges.Visibility = Visibility.Hidden;
             ProfileChangeInfo.Visibility = Visibility.Visible;
