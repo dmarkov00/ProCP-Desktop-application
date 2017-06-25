@@ -45,10 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Address.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="Company.cs" />
-    <Compile Include="Date.cs" />
     <Compile Include="Driver.cs" />
     <Compile Include="Load.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

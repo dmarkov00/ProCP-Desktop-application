@@ -130,6 +130,7 @@ namespace Controllers
 
         public void ChangeUser(string name, string phone)
         {
+            //To be modified!
             using (WebClient client = new WebClient())
             {
                 client.Headers.Add("api_token", User.GetInstance().Token);
