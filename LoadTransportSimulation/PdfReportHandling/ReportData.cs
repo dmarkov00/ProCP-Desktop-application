@@ -7,17 +7,21 @@ namespace PdfReportHandling
 {
     public class ReportData
     {
-        private CompanyController companyCtrl;
-        public List<Route> GetRoutesList()
+        private static CompanyController companyCtrl;
+
+        static ReportData()
         {
             companyCtrl = CompanyController.GetInstance();
+        }
+        public static List<Route> GetRoutesList()
+        {
             return companyCtrl.RouteCtrl.GetAllRoutes().ToList();
         }
-        public Company GetCompanyData()
+        public static Company GetCompanyData()
         {
            return companyCtrl.Company;
         }
-        public User GetUserData()
+        public static User GetUserData()
         {
             return companyCtrl.GetUser;
         }

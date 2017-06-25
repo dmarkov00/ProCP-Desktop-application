@@ -1,10 +1,13 @@
 ﻿using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Tables;
+using Models;
+using System.Collections.Generic;
 
 namespace PdfReportHandling
 {
     public class ReportTable
     {
+        private static List<Route> routesList;
         public static void DefineTables(Document document)
         {
             Paragraph paragraph = document.LastSection.AddParagraph("Report result");
@@ -13,7 +16,7 @@ namespace PdfReportHandling
             paragraph.Format.Font.Color = Colors.Black;
             paragraph.Format.Font.Italic = true;
             paragraph.Format.SpaceAfter = "3cm";
-
+            paragraph.Format.Font.Bold = true;
 
             GenerateReportTable(document);
         }
@@ -21,38 +24,42 @@ namespace PdfReportHandling
         public static void GenerateReportTable(Document document)
         {
             //document.LastSection.AddParagraph("Simple Tables", "Heading2");
+            routesList = ReportData.GetRoutesList();
+            foreach (Route route in routesList)
+            {
+                Table table = new Table();
+                table.Borders.Width = 0.75;
 
-            Table table = new Table();
-            table.Borders.Width = 0.75;
+                Column column = table.AddColumn(Unit.FromCentimeter(2));
+                column.Format.Alignment = ParagraphAlignment.Center;
 
-            Column column = table.AddColumn(Unit.FromCentimeter(2));
-            column.Format.Alignment = ParagraphAlignment.Center;
+                table.AddColumn(Unit.FromCentimeter(5));
 
-            table.AddColumn(Unit.FromCentimeter(5));
+                Row row = table.AddRow();
+                row.Shading.Color = Colors.PaleGoldenrod;
+                Cell cell = row.Cells[0];
+                cell.AddParagraph("Type of data");
+                cell = row.Cells[1];
+                cell.AddParagraph("Descriptum");
 
-            Row row = table.AddRow();
-            row.Shading.Color = Colors.PaleGoldenrod;
-            Cell cell = row.Cells[0];
-            cell.AddParagraph("Itemus");
-            cell = row.Cells[1];
-            cell.AddParagraph("Descriptum");
+                row = table.AddRow();
+                cell = row.Cells[0];
+                cell.AddParagraph("1");
+                cell = row.Cells[1];
+                cell.AddParagraph("Andigna cons nonsectem accummo diamet nis diat.");
 
-            row = table.AddRow();
-            cell = row.Cells[0];
-            cell.AddParagraph("1");
-            cell = row.Cells[1];
-            cell.AddParagraph("Andigna cons nonsectem accummo diamet nis diat.");
+                row = table.AddRow();
+                cell = row.Cells[0];
+                cell.AddParagraph("2");
+                cell = row.Cells[1];
+                cell.AddParagraph("Loboreet autpat, quis adigna conse dipit la consed exeril et utpatetuer autat, voloboreet, consequamet ilit nos aut in henit ullam, sim doloreratis dolobore tat, venim quissequat. " +
+              "Nisci tat laor ametumsan vulla feuisim ing eliquisi tatum autat, velenisit iustionsed tis dunt exerostrud dolore verae.");
 
-            row = table.AddRow();
-            cell = row.Cells[0];
-            cell.AddParagraph("2");
-            cell = row.Cells[1];
-            cell.AddParagraph("Loboreet autpat, quis adigna conse dipit la consed exeril et utpatetuer autat, voloboreet, consequamet ilit nos aut in henit ullam, sim doloreratis dolobore tat, venim quissequat. " +
-          "Nisci tat laor ametumsan vulla feuisim ing eliquisi tatum autat, velenisit iustionsed tis dunt exerostrud dolore verae.");
+                table.SetEdge(0, 0, 2, 3, Edge.Box, BorderStyle.Single, 1.5, Colors.Black);
 
-            table.SetEdge(0, 0, 2, 3, Edge.Box, BorderStyle.Single, 1.5, Colors.Black);
-
-            document.LastSection.Add(table);
+                document.LastSection.Add(table);
+            }
+            
         }   
         
     }
