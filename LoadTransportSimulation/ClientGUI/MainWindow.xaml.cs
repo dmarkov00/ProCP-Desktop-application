@@ -12,6 +12,8 @@ using Newtonsoft.Json;
 using System.Text.RegularExpressions;
 using MaterialDesignThemes.Wpf;
 using PdfReportHandling;
+using System.Linq;
+
 namespace WPFLoadSimulation
 {
     /// <summary>
@@ -267,40 +269,17 @@ namespace WPFLoadSimulation
 
         private void bt_submitRoute_Click(object sender, RoutedEventArgs e)
         {
-            TruckController tc = TruckController.GetInstance();
-            LoadController lc = LoadController.GetInstance();
-            List<Truck> trucks = tc.GetAllTrucks().ToList();
-            Truck truck = (Truck)cb_assignTruckToRoute.SelectedItem;
-            route.DriverId = Convert.ToInt32(trucks.Where(x => x.LicencePlate.Equals(truck.LicencePlate)).First().Driver_id);
             companyCtrl.RouteCtrl.AddRouteToList(route);
-
-            foreach (Load l in lv_selectedLoadsForRoute.Items)
-                  {
-                lc.SetDriverRouteTruck(l.ID.ToString(), route.DriverId.ToString(), route.Id, truck.Id);
-                      companyCtrl.LoadCtrl.GetLoad(l.ID).LoadState = Common.Enumerations.LoadState.ONTRANSPORT;
-                  }
 
             isUserInteractLoadsDGV = false;
             lv_routeEstimation.Items.Clear();
             lv_selectedLoadsForRoute.Items.Clear();
             cb_assignTruckToRoute.SelectedItem = null;
             LoadsAvailableDGW.ItemsSource = companyCtrl.LoadCtrl.GetAvailableLoads();
+            
             bt_calculateEstimation.IsEnabled = false;
             bt_submitRoute.IsEnabled = false;
-            //from here we set the route for each load
-            RouteController rc = RouteController.GetInstance();
-            foreach (Load l in lv_selectedLoadsForRoute.Items)
-            {
-                String truckId = trucks.Where(x => x.LicencePlate.Equals(cb_assignTruckToRoute.SelectedItem.ToString())).First().Id;
-                String load = l.ID.ToString();
-                String driverId = trucks.Where(x => x.LicencePlate.Equals(cb_assignTruckToRoute.SelectedItem.ToString())).First().Driver_id;
-                String routeId = rc.GetAllRoutes().Where(x => x.StartLocationId.Equals(route.StartLocationId))
-                    .Where(x => x.EndLocationId.Equals(route.EndLocationId)).First().Id;
-                lc.SetDriverRouteTruck(load, driverId, routeId, truckId);
-                //String truckId = cb_assignTruckToRoute.SelectedItem.ToString();
-                //companyCtrl.LoadCtrl.GetLoad(l.ID).LoadState = Common.Enumerations.LoadState.ONTRANSPORT;
-            }
-            //to here
+            cb_assignTruckToRoute.ItemsSource = companyCtrl.TruckCtrl.GetAvailableTrucks();
         }
 
         private void LoadsAvailableDGW_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -430,7 +409,7 @@ namespace WPFLoadSimulation
                 Truck t = (Truck)TrucksDGV.SelectedItem;
                 MaintenanceDGV.ItemsSource = t.GetMaintenances(); 
                 if (t.CurrentDriver != null) { }
-                    //cb_assignDriverToTruck.Text = t.CurrentDriver.ToString();
+                 //cb_assignDriverToTruck.Text = t.CurrentDriver.ToString();
             }
             
         }
@@ -445,8 +424,15 @@ namespace WPFLoadSimulation
                 Truck t = (Truck)TrucksDGV.SelectedItem;
                 if (isUserInteractionDriverCb)
                 {
-                    companyCtrl.TruckCtrl.AssignSingleDriverToTruck(t, (Driver)cb_assignDriverToTruck.SelectedItem);
                     isUserInteractionDriverCb = false;
+                    if(!companyCtrl.TruckCtrl.AssignSingleDriverToTruck(t, (Driver)cb_assignDriverToTruck.SelectedItem))
+                    {
+                        MessageBox.Show("cant change it while busy");
+                        return;
+                    }
+                    
+                    cb_assignDriverToTruck.ItemsSource = companyCtrl.DriverCtrl.GetUnassignedDrivers();
+                    cb_assignTruckToRoute.ItemsSource = companyCtrl.TruckCtrl.GetAvailableTrucks();
                 }
             }
         }
@@ -476,6 +462,11 @@ namespace WPFLoadSimulation
         private void LoadsAvailableDGW_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             isUserInteractLoadsDGV = true;
+        }
+
+        private void cb_assignTruckToRoute_SourceUpdated(object sender, System.Windows.Data.DataTransferEventArgs e)
+        {
+
         }
     }
 }

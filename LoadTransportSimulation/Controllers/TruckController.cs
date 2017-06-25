@@ -119,10 +119,15 @@ namespace Controllers
                         
         }
 
-        public void AssignSingleDriverToTruck(Truck t, Driver d)
+        public bool AssignSingleDriverToTruck(Truck t, Driver d)
         {
+            if (t.IsBusy)
+            {
+                return false;
+            }
+
             t.CurrentDriver = d;
-            DriverController.GetInstance().SetUnassignedDrivers();
+            
             using (WebClient client = new WebClient())
             {
                 client.Headers.Add("api_token", User.GetInstance().Token);
@@ -131,8 +136,10 @@ namespace Controllers
                 {
                     { "driver_id", d.Id }
                 });
-            }
-            //await Dispatcher.GetInstance().Put("trucks", t.Id, t);
+            };
+            DriverController.GetInstance().SetUnassignedDrivers();
+            SetAvailableTrucks();
+            return true;
         }
 
         public void AddMaintenance(Truck truck, Driver driver, string action, DateTime date, double cost)

@@ -13,15 +13,21 @@ namespace Models
 {
     public class Route : IApiCallResult
     {
-        public int DriverId { get; set; }
-        public Driver Driver { get; set; }
+        private string driverId;
+        [JsonProperty("driver_id")]
+        public string DriverId { get { return driverId; } set { driverId = value; } }
 
+        private Driver driver;
+        public Driver Driver { get { return driver;  } set { driver = value; if(driver!=null) DriverId = driver.Id; } }
+
+        
         [JsonProperty("truck_id")]
         public string TruckId { get; set; }
-        public Truck Truck { get; set; }
+
+        private Truck truck;
+        public Truck Truck { get { return truck; } set { truck = value; TruckId = truck.Id; Driver = truck.CurrentDriver; } }
 
         public List<Load> Loads { get; set; }
-
         public int NrOfLoads { get; set; }
 
         [JsonProperty("sum_salaries")]
@@ -208,6 +214,9 @@ namespace Models
             //average truck fuel price per liter in europe is around 1.40
             this.EstFuelCost = this.EstFuelConsumptionLiters * 1.40;
         }
+
+
+        
 
     }
 }
