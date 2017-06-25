@@ -17,7 +17,7 @@ namespace Singleton.Tests
             List<Client> clients1 = new List<Client>();
             List<Client> clients2 = new List<Client>();
 
-            clients1.Add(new Client("Bob Dylan", "1234455", "email",  "as"));
+            clients1.Add(new Client("Bob Dylan", "1234455", "email",  "as", "1"));
 
             ClientController clientCtrl1 = Controllers.ClientController.Create(clients1);
             ClientController clientCtrl2 = Controllers.ClientController.Create(clients1);

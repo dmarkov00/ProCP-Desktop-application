@@ -12,6 +12,8 @@ using Newtonsoft.Json;
 using System.Text.RegularExpressions;
 using MaterialDesignThemes.Wpf;
 using PdfReportHandling;
+using System.Linq;
+
 namespace WPFLoadSimulation
 {
     /// <summary>
