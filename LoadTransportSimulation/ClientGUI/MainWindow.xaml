@@ -426,7 +426,7 @@
                                 <RadioButton Content="Finished" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="220,10,0,0"/>-->
                                 <Label Content="Route information with estimation" Grid.ColumnSpan="2" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Bottom" FontWeight="SemiBold" Padding="0" Margin="5,10,0,0"/>
 
-                                <DataGrid x:Name="routesDGV" IsSynchronizedWithCurrentItem="True" Margin="5" HorizontalAlignment="Stretch"  Grid.Row="2" ItemsSource="{Binding}" VerticalAlignment="Stretch" AutoGenerateColumns="False" SelectionChanged="routesDGV_SelectionChanged" SelectionMode="Single" CanUserDeleteRows="False" >
+                                <DataGrid x:Name="routesDGV" IsSynchronizedWithCurrentItem="True" Margin="5" HorizontalAlignment="Stretch"  Grid.Row="2" ItemsSource="{Binding}" VerticalAlignment="Stretch" AutoGenerateColumns="False" SelectionChanged="routesDGV_SelectionChanged" SelectionMode="Single" CanUserDeleteRows="False" CanUserAddRows="False" >
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Binding="{Binding StartLocation}" ClipboardContentBinding="{x:Null}" Header="Started location" IsReadOnly="True" Width="*" />
                                         <DataGridTextColumn Binding="{Binding EndLocation}" ClipboardContentBinding="{x:Null}" Header="End location" IsReadOnly="True" Width="*"/>
@@ -652,19 +652,19 @@
                     <Label Content="Address:" Margin="10,0" Grid.Row="1"/>
                     <Label Content="Name:" Margin="10,0" Grid.Row="3"/>
                     <Label Content="Phone:" Margin="10,0" Grid.Row="4"/>
-                    <Label Content="Email:" Margin="10,0" Grid.Row="5"/>
-                    <Button x:Name ="ProfileChangeInfo" Content="Change user info" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Stretch" Click="ProfileChangeInfo_Click"/>
 
-                    <Label Content="Your company" Margin="10,10,0,5" Grid.Row="0" FontSize="14"  Grid.Column="1"/>
-                    <Label Content="Company address" Margin="10,0" Grid.Row="1" Grid.Column="1"/>
+                    <Button x:Name ="ProfileChangeInfo" Content="Change user info" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Stretch" Click="ProfileChangeInfo_Click"/>
+
+                    <Label Name="companyName" Content="Your company" Margin="10,10,0,5" Grid.Row="0" FontSize="14"  Grid.Column="1"/>
+                    <Label Name="companyAddress" Content="Company address" Margin="10,0" Grid.Row="1" Grid.Column="1"/>
                     <Label Name="ProfileName" Content="John" Margin="10,0" Grid.Row="3" Grid.Column="1"/>
                     <Label Name="ProfilePhone" Content="+00 00000000" Margin="10,0" Grid.Row="4" Grid.Column="1"/>
-                    <Label Name="ProfileEmail" Content="john@mail.com" Margin="10,0" Grid.Row="5" Grid.Column="1"/>
+
 
                     <TextBox x:Name="ProfileEditName" Grid.Row="3" Grid.Column="2" HorizontalAlignment="Stretch" Width="200" Visibility="Hidden" VerticalContentAlignment="Center" Text="John"/>
                     <TextBox x:Name="ProfileEditPhone" Grid.Row="4" Grid.Column="2" HorizontalAlignment="Stretch" Width="200" Visibility="Hidden" VerticalContentAlignment="Center" Text="+00 00000000"/>
-                    <TextBox x:Name="ProfileEditEmail" Grid.Row="5" Grid.Column="2" HorizontalAlignment="Stretch" Width="200" Visibility="Hidden" VerticalContentAlignment="Center" Text="john@mail.com"/>
-                    <Button x:Name="ProfileSaveChanges" Content="Save changes" Grid.Row="6" Grid.Column="2" HorizontalAlignment="Stretch" Width="200" Visibility="Hidden" Click="ProfileSaveChanges_Click"/>
+                  
+                    <Button x:Name="ProfileSaveChanges" Content="Save changes" Grid.Row="5" Grid.Column="2" HorizontalAlignment="Stretch" Width="200" Visibility="Hidden" Click="ProfileSaveChanges_Click"/>
                 </Grid>
             </TabItem>
         </TabControl>

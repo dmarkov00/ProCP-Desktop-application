@@ -7,6 +7,8 @@ using Models;
 using ApiHttpClient;
 using System.Collections.ObjectModel;
 using Common;
+using System.Net;
+using System.Collections.Specialized;
 
 namespace Controllers
 {
@@ -71,6 +73,8 @@ namespace Controllers
             await CreateClientController();
             await CreateRouteController();
 
+
+            routeCtrl.SetLoadsFromDatabase();
             e.finished = true;
             
             OnControllersCreated(this, e);
@@ -81,6 +85,7 @@ namespace Controllers
             IEnumerable<IApiCallResult> routes = await client.GetMany<Route>("routes");
             ObservableCollection<Route> targetListRoutes = new ObservableCollection<Route>(routes.Cast<Route>());
             routeCtrl = RouteController.Create(targetListRoutes);
+            
             return;
         }
 
@@ -123,13 +128,19 @@ namespace Controllers
             return;
         }
 
-        public async Task ChangeUser(string name,string email,string phone)
+        public void ChangeUser(string name, string phone)
         {
-            User u = User.GetInstance();
-            u.Name = name;
-            u.Email = email;
-            u.Phone = phone;
-            await client.Put<User>("users",u.Id,u);
+            //To be modified!
+            using (WebClient client = new WebClient())
+            {
+                client.Headers.Add("api_token", User.GetInstance().Token);
+                byte[] response =
+                client.UploadValues("http://127.0.0.1:8000/api/users/" + User.GetInstance().Id, new NameValueCollection()
+                {
+                    { "name", name },
+                    { "phone", phone },
+                });
+            }
         }
 
     }

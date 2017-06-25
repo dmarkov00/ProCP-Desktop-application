@@ -34,16 +34,6 @@ namespace WPFLoadSimulation
                 
             }
         }
-            
-        public string UserEmail
-        {
-            get { return ProfileEditEmail.Text; }
-            set
-            {
-                this.ProfileEditEmail.Text = value;
-                this.ProfileEmail.Content = value;
-            }
-        }
 
         public string UserPhone
         {
@@ -69,6 +59,8 @@ namespace WPFLoadSimulation
             FillUIWithData();
         }
 
+
+        //UI METHODS
         private void FillUIWithData()
         {
             //loads tab
@@ -87,8 +79,9 @@ namespace WPFLoadSimulation
             ClientDGV.DataContext = companyCtrl.ClientCtrl.GetAllClients();
 
             //user tab
+            this.companyName.Content = companyCtrl.Company.CompanyName;
+            this.companyAddress.Content = companyCtrl.Company.Address;
             this.UserName = u.Name;
-            this.UserEmail = u.Email;
             this.UserPhone = u.Phone;
         }
 
@@ -121,83 +114,50 @@ namespace WPFLoadSimulation
             DataGridAssist.SetColumnHeaderPadding(ClientDGV, new Thickness(3));
         }
 
-        private void ProfileChangeInfo_Click(object sender, RoutedEventArgs e)
+
+        //LOADS TAB
+        public Route route;
+        bool isUserInteractLoadsDGV = false; //defines if selection changed is by user or by itemsource change
+
+        private void LoadsAvailableDGW_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ProfileEditName.Visibility = Visibility.Visible;
-            ProfileEditEmail.Visibility = Visibility.Visible;
-            ProfileEditPhone.Visibility = Visibility.Visible;
-            ProfileSaveChanges.Visibility = Visibility.Visible;
-            ProfileChangeInfo.Visibility = Visibility.Hidden;
+            if (!isUserInteractLoadsDGV)
+                return;
+
+
+            lv_loadClient.Items.Clear();
+            lv_loadDetails.Items.Clear();
+
+            Load load = (Load)LoadsAvailableDGW.SelectedItem;
+            lv_loadDetails.Items.Add(new { description = "Start Location", value = load.StartLocationCity });
+            lv_loadDetails.Items.Add(new { description = "End Location", value = load.EndLocationCity });
+            lv_loadDetails.Items.Add(new { description = "Deadline", value = load.MaxArrivalTime });
+            lv_loadDetails.Items.Add(new { description = "Salary", value = load.FullSalaryEur });
+            lv_loadDetails.Items.Add(new { description = "Delay % per hour", value = load.DelayFeePercHour });
+            lv_loadDetails.Items.Add(new { description = "Content", value = load.Content });
+            lv_loadDetails.Items.Add(new { description = "Weight", value = load.WeightKg });
+            this.seeLoadOnMap(load);
+
+            lv_loadClient.Items.Add(new { description = "Name", value = load.Client.Name });
+            lv_loadClient.Items.Add(new { description = "Phone", value = load.Client.Phone });
+            lv_loadClient.Items.Add(new { description = "Email", value = load.Client.Email });
+            lv_loadClient.Items.Add(new { description = "Address", value = load.Client.Address });
         }
 
-        private async void ProfileSaveChanges_Click(object sender, RoutedEventArgs e)
+        private void seeLoadOnMap(Load l)
         {
-            await companyCtrl.ChangeUser(ProfileEditName.Text,ProfileEditEmail.Text,ProfileEditPhone.Text);
-            
-            ProfileEditName.Visibility = Visibility.Hidden;
-            ProfileEditEmail.Visibility = Visibility.Hidden;
-            ProfileEditPhone.Visibility = Visibility.Hidden;
-            ProfileSaveChanges.Visibility = Visibility.Hidden;
-            ProfileChangeInfo.Visibility = Visibility.Visible;
+            string origin = l.StartLocationCity.ToString();
+            string dest = l.EndLocationCity.ToString();
+            string loadRoute = String.Format("https://www.google.com/maps/dir/?api=1&origin="
+                + origin + "&destination=" + dest);
+            Uri source = new Uri(loadRoute);
+            web_load.Source = source;
         }
 
-
-
-        private void DriversAddNew_Click(object sender, RoutedEventArgs e)
+        private void TabItem_TouchUp(object sender, TouchEventArgs e)
         {
-            NewDriverWindow addnewdriver = new NewDriverWindow();
-            addnewdriver.Show();
         }
 
-        private void ClientsAddNew_Click(object sender, RoutedEventArgs e)
-        {
-            NewClientWindow newclient = new NewClientWindow();
-            newclient.Show();
-            
-        }
-
-
-
-        private void TrucksAddNew_Click(object sender, RoutedEventArgs e)
-        {
-            NewTruckWindow newtruck = new NewTruckWindow();
-            newtruck.Show();
-        }
-
-
-        private void bt_DriverDeleteSelected_Click(object sender, RoutedEventArgs e)
-        {
-
-            Driver driver = (Driver)DriversDGV.SelectedItem;
-            MessageBoxResult answer=MessageBox.Show("Are you sure you want to delete driver "+driver.FirstName+" "+driver.LastName+" ?", "Driver deletion", MessageBoxButton.YesNo);
-            if (answer==MessageBoxResult.Yes)
-            {
-                
-               companyCtrl.DriverCtrl.RemoveDriver(driver);
-            }      
-        }
-
-        private void bt_TrucksDeleteSelected_Click(object sender, RoutedEventArgs e)
-        {
-            Truck t = (Truck)TrucksDGV.SelectedItem;
-            MessageBoxResult answer = MessageBox.Show("Are you sure you want to delete truck " + t.LicencePlate + " ?", "Truck deletion", MessageBoxButton.YesNo);
-            if (answer == MessageBoxResult.Yes)
-            {
-               companyCtrl.TruckCtrl.RemoveTruck(t);
-               
-            }
-        }
-
-        private void bt_ClientsDeleteSelected_Click(object sender, RoutedEventArgs e)
-        {
-            Client c = (Client)ClientDGV.SelectedItem;
-            MessageBoxResult answer = MessageBox.Show("Are you sure you want to delete client " + c.Name  + " ?", "Client deletion", MessageBoxButton.YesNo);
-            if (answer == MessageBoxResult.Yes)
-            {
-                companyCtrl.ClientCtrl.RemoveClient(c);
-                
-            }
-        }
 
         private void bt_LoadsAddToRoute_Click(object sender, RoutedEventArgs e)
         {
@@ -210,10 +170,40 @@ namespace WPFLoadSimulation
             }
         }
 
+        private void LoadsAvailableDGW_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            Load load = (Load)LoadsAvailableDGW.SelectedItem;
+            if (!lv_selectedLoadsForRoute.Items.Contains(load))
+            {
+                lv_selectedLoadsForRoute.Items.Add(load);
+            }
+            bt_submitRoute.IsEnabled = false;
+        }
 
-        public Route route;
+        private void lv_selectedLoadsForRoute_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            lv_selectedLoadsForRoute.Items.Remove(lv_selectedLoadsForRoute.SelectedItem);
+            bt_submitRoute.IsEnabled = false;
+        }
 
-        //a lot of logic in the GUI
+        private void btn_emptySelectedLoadsLV_Click(object sender, RoutedEventArgs e)
+        {
+            lv_selectedLoadsForRoute.Items.Clear();
+            cb_assignTruckToRoute.SelectedItem = null;
+            bt_submitRoute.IsEnabled = false;
+            bt_calculateEstimation.IsEnabled = false;
+        }
+        
+        private void LoadsAvailableDGW_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            isUserInteractLoadsDGV = true;
+        }
+
+        private void cb_assignTruckToRoute_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            bt_calculateEstimation.IsEnabled = true;
+        }
+
         private void bt_calculateEstimation_Click(object sender, RoutedEventArgs e)
         {
             BackgroundWorker bw = new BackgroundWorker();
@@ -253,14 +243,14 @@ namespace WPFLoadSimulation
                     SnackbarEstimation.MessageQueue.Enqueue("Finished");
                     lv_routeEstimation.Items.Clear();
                     lv_routeEstimation.Items.Add(new { description = "Distance ", result = route.EstDistanceKm, unit = "Km" });
-                    lv_routeEstimation.Items.Add(new { description = "Time ", result = route.EstTimeDrivingTimeSpan.ToString(@"d\d\a\y\s\ h\h\o\u\r\s\ m\m\i\n\ ", System.Globalization.CultureInfo.InvariantCulture)});
+                    lv_routeEstimation.Items.Add(new { description = "Time ", result = route.EstTimeDrivingTimeSpan.ToString(@"d\d\a\y\s\ h\h\o\u\r\s\ m\m\i\n\ ", System.Globalization.CultureInfo.InvariantCulture) });
                     lv_routeEstimation.Items.Add(new { description = "Fuel consumption ", result = route.EstFuelConsumptionLiters, unit = "Liters" });
                     lv_routeEstimation.Items.Add(new { description = "Fuel Cost ", result = route.EstFuelCost, unit = "Eur" });
                     lv_routeEstimation.Items.Add(new { description = "Salary ", result = route.TotalEstimatedSalary, unit = "Eur" });
                     lv_routeEstimation.Items.Add(new { description = "Revenue ", result = (route.TotalEstimatedSalary - route.EstFuelCost).ToString(), unit = "Eur" });
                     bt_calculateEstimation.IsEnabled = true;
                     bt_submitRoute.IsEnabled = true;
-                    
+
                 }
             );
             bw.RunWorkerAsync();
@@ -276,30 +266,14 @@ namespace WPFLoadSimulation
             lv_selectedLoadsForRoute.Items.Clear();
             cb_assignTruckToRoute.SelectedItem = null;
             LoadsAvailableDGW.ItemsSource = companyCtrl.LoadCtrl.GetAvailableLoads();
-            
+
             bt_calculateEstimation.IsEnabled = false;
             bt_submitRoute.IsEnabled = false;
             cb_assignTruckToRoute.ItemsSource = companyCtrl.TruckCtrl.GetAvailableTrucks();
         }
 
-        private void LoadsAvailableDGW_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            Load load = (Load)LoadsAvailableDGW.SelectedItem;
-            if (!lv_selectedLoadsForRoute.Items.Contains(load))
-            {
-                lv_selectedLoadsForRoute.Items.Add(load);
-            }
-            bt_submitRoute.IsEnabled = false;
-        }
 
-        private void lv_selectedLoadsForRoute_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            lv_selectedLoadsForRoute.Items.Remove(lv_selectedLoadsForRoute.SelectedItem);
-            bt_submitRoute.IsEnabled = false;
-        }
-
-    
-
+        //ROUTE TAB
         private void routesDGV_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Route r = (Route)routesDGV.SelectedItem;
@@ -313,14 +287,9 @@ namespace WPFLoadSimulation
             ReportHandler.GenerateReport();
         }
 
-        private void cb_assignTruckToRoute_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            bt_calculateEstimation.IsEnabled = true;
-        }
-
         private void bt_MarkRouteDelivered_Click(object sender, RoutedEventArgs e)
         {
-            Route r=(Route)routesDGV.SelectedItem;
+            Route r = (Route)routesDGV.SelectedItem;
             Truck t = TruckController.GetInstance().GetTruckByLicensePlate(r.Truck.LicencePlate);
             t.LocationCity = r.EndLocation;
             t.Location_id = (int)r.EndLocation;
@@ -329,31 +298,26 @@ namespace WPFLoadSimulation
             TruckController.GetInstance().ChangeTruckLocation(t, ((int)r.EndLocation).ToString());
             MessageBox.Show(rc.MarkRouteDelivered(r.Id));
         }
-        
 
-        private void LoadsAvailableDGW_SelectionChanged(object sender, SelectionChangedEventArgs e)
+
+        //TRUCKS TAB
+        bool isUserInteractionDriverCb = false;  //defines user interaction for drivers combobox
+
+        private void TrucksAddNew_Click(object sender, RoutedEventArgs e)
         {
-            if (!isUserInteractLoadsDGV)
-                return;
+            NewTruckWindow newtruck = new NewTruckWindow();
+            newtruck.Show();
+        }
 
+        private void bt_TrucksDeleteSelected_Click(object sender, RoutedEventArgs e)
+        {
+            Truck t = (Truck)TrucksDGV.SelectedItem;
+            MessageBoxResult answer = MessageBox.Show("Are you sure you want to delete truck " + t.LicencePlate + " ?", "Truck deletion", MessageBoxButton.YesNo);
+            if (answer == MessageBoxResult.Yes)
+            {
+                companyCtrl.TruckCtrl.RemoveTruck(t);
 
-            lv_loadClient.Items.Clear();
-            lv_loadDetails.Items.Clear();
-
-            Load load = (Load)LoadsAvailableDGW.SelectedItem;
-            lv_loadDetails.Items.Add(new { description = "Start Location", value = load.StartLocationCity });
-            lv_loadDetails.Items.Add(new { description = "End Location", value = load.EndLocationCity });
-            lv_loadDetails.Items.Add(new { description = "Deadline", value = load.MaxArrivalTime });
-            lv_loadDetails.Items.Add(new { description = "Salary", value = load.FullSalaryEur });
-            lv_loadDetails.Items.Add(new { description = "Delay % per hour", value = load.DelayFeePercHour });
-            lv_loadDetails.Items.Add(new { description = "Content", value = load.Content });
-            lv_loadDetails.Items.Add(new { description = "Weight", value = load.WeightKg });
-            this.seeLoadOnMap(load);
-
-            lv_loadClient.Items.Add(new { description = "Name", value = load.Client.Name });
-            lv_loadClient.Items.Add(new { description = "Phone", value = load.Client.Phone });
-            lv_loadClient.Items.Add(new { description = "Email", value = load.Client.Email });
-            lv_loadClient.Items.Add(new { description = "Address", value = load.Client.Address });
+            }
         }
 
         private void TrucksDGV_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -361,15 +325,13 @@ namespace WPFLoadSimulation
             if ((Truck)TrucksDGV.SelectedItem != null)
             {
                 Truck t = (Truck)TrucksDGV.SelectedItem;
-                MaintenanceDGV.ItemsSource = t.GetMaintenances(); 
+                MaintenanceDGV.ItemsSource = t.GetMaintenances();
                 if (t.CurrentDriver != null) { }
-                 //cb_assignDriverToTruck.Text = t.CurrentDriver.ToString();
+                //cb_assignDriverToTruck.Text = t.CurrentDriver.ToString();
             }
-            
+
         }
-
-
-        bool isUserInteractionDriverCb = false;
+        
         private void cb_assignDriverToTruck_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if ((Truck)TrucksDGV.SelectedItem != null
@@ -379,12 +341,12 @@ namespace WPFLoadSimulation
                 if (isUserInteractionDriverCb)
                 {
                     isUserInteractionDriverCb = false;
-                    if(!companyCtrl.TruckCtrl.AssignSingleDriverToTruck(t, (Driver)cb_assignDriverToTruck.SelectedItem))
+                    if (!companyCtrl.TruckCtrl.AssignSingleDriverToTruck(t, (Driver)cb_assignDriverToTruck.SelectedItem))
                     {
                         MessageBox.Show("cant change it while busy");
                         return;
                     }
-                    
+
                     cb_assignDriverToTruck.ItemsSource = companyCtrl.DriverCtrl.GetUnassignedDrivers();
                     cb_assignTruckToRoute.ItemsSource = companyCtrl.TruckCtrl.GetAvailableTrucks();
                 }
@@ -404,32 +366,122 @@ namespace WPFLoadSimulation
                 );
         }
 
-        private void btn_emptySelectedLoadsLV_Click(object sender, RoutedEventArgs e)
+        
+        //DRIVERS TAB
+        private void DriversAddNew_Click(object sender, RoutedEventArgs e)
         {
-            lv_selectedLoadsForRoute.Items.Clear();
-            cb_assignTruckToRoute.SelectedItem = null;
-            bt_submitRoute.IsEnabled = false;
-            bt_calculateEstimation.IsEnabled = false;
+            NewDriverWindow addnewdriver = new NewDriverWindow();
+            addnewdriver.Show();
         }
 
-        bool isUserInteractLoadsDGV = false;
-        private void LoadsAvailableDGW_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private void bt_DriverDeleteSelected_Click(object sender, RoutedEventArgs e)
         {
-            isUserInteractLoadsDGV = true;
+
+            Driver driver = (Driver)DriversDGV.SelectedItem;
+            MessageBoxResult answer = MessageBox.Show("Are you sure you want to delete driver " + driver.FirstName + " " + driver.LastName + " ?", "Driver deletion", MessageBoxButton.YesNo);
+            if (answer == MessageBoxResult.Yes)
+            {
+
+                companyCtrl.DriverCtrl.RemoveDriver(driver);
+            }
         }
 
-        private void seeLoadOnMap(Load l)
+
+        //CLIENTS TAB
+        private void ClientsAddNew_Click(object sender, RoutedEventArgs e)
         {
-            string origin = l.StartLocationCity.ToString();
-            string dest = l.EndLocationCity.ToString();
-            string loadRoute = String.Format("https://www.google.com/maps/dir/?api=1&origin=" 
-                + origin + "&destination=" + dest);
-            Uri source = new Uri(loadRoute);
-            web_load.Source = source;
+            NewClientWindow newclient = new NewClientWindow();
+            newclient.Show();
+
         }
 
-        private void TabItem_TouchUp(object sender, TouchEventArgs e)
+        private void bt_ClientsDeleteSelected_Click(object sender, RoutedEventArgs e)
         {
+            Client c = (Client)ClientDGV.SelectedItem;
+            MessageBoxResult answer = MessageBox.Show("Are you sure you want to delete client " + c.Name + " ?", "Client deletion", MessageBoxButton.YesNo);
+            if (answer == MessageBoxResult.Yes)
+            {
+                companyCtrl.ClientCtrl.RemoveClient(c);
+
+            }
         }
+
+
+        //REPORT TAB
+        StringBuilder sb;
+        private string routesText;
+
+        private void bt_generatereport_Click(object sender, RoutedEventArgs e)
+        {
+            sb = new StringBuilder();
+            foreach (Route r in companyCtrl.RouteCtrl.GetAllRoutes())
+            {
+                sb.Append(JsonConvert.SerializeObject(r, Formatting.Indented));
+                sb.Append("-");
+            }
+
+            bt_downloadreport.IsEnabled = true;
+            tb_report.Text = sb.ToString();
+
+            routesText = sb.ToString();
+        }
+
+   
+
+        private void bt_loadreport_Click(object sender, RoutedEventArgs e)
+        {
+            string jsonOutput = "";
+            List<Route> routesFromFile = new List<Route>();
+
+            Microsoft.Win32.OpenFileDialog opendialog = new Microsoft.Win32.OpenFileDialog();
+            opendialog.Filter = "Text file  | *.txt";
+
+            if (opendialog.ShowDialog() == true)
+            {
+                using (StreamReader sr = new StreamReader(opendialog.FileName))
+                {
+                    jsonOutput = sr.ReadToEnd();
+                }
+            }
+
+            string[] singleRoutes = Regex.Split(jsonOutput, "-");
+            foreach (string substring in singleRoutes)
+            {
+
+                Route route = JsonConvert.DeserializeObject<Route>(substring);
+                routesFromFile.Add(route);
+            }
+
+            foreach (Route r in routesFromFile)
+            {
+                companyCtrl.RouteCtrl.AddRouteToList(r);
+            }
+        }
+
+
+        //PROFILE TAB
+        private void ProfileChangeInfo_Click(object sender, RoutedEventArgs e)
+        {
+            ProfileEditName.Visibility = Visibility.Visible;
+            ProfileEditPhone.Visibility = Visibility.Visible;
+            ProfileSaveChanges.Visibility = Visibility.Visible;
+            ProfileChangeInfo.Visibility = Visibility.Hidden;
+        }
+
+        private void ProfileSaveChanges_Click(object sender, RoutedEventArgs e)
+        {
+            companyCtrl.ChangeUser(ProfileEditName.Text, ProfileEditPhone.Text);
+            
+            ProfileEditName.Visibility = Visibility.Hidden;
+            ProfileEditPhone.Visibility = Visibility.Hidden;
+            ProfileSaveChanges.Visibility = Visibility.Hidden;
+            ProfileChangeInfo.Visibility = Visibility.Visible;
+        }
+
+        
+
+        
+
+        
     }
 }
