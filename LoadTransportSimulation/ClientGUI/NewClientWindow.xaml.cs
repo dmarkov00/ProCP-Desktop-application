@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Controllers;
+using Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,13 +21,18 @@ namespace WPFLoadSimulation
     /// </summary>
     public partial class NewClientWindow : Window
     {
+        ClientController cc;
         public NewClientWindow()
         {
             InitializeComponent();
+            cc = ClientController.GetInstance();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            //TODO - make it take the values from GUI :(
+            Client c = new Client("Dimitar", "123123", "mail@mail.testmail", "notFound", User.GetInstance().CompanyId);
+            MessageBox.Show(cc.AddClient(c));
             this.Close();
         }
     }

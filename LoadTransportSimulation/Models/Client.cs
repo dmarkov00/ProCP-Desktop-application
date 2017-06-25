@@ -16,15 +16,30 @@ namespace Models
         private string address;
         private List<Load> loads;
         private string id;
+        private string company;
 
         
-        public Client(string name, string phone, string email, string address)
+        public Client(string name, string phone, string email, string address, string company)
         {
             this.Name = name;
             this.Phone = phone;
             this.Email = email;
             this.Address = address;
+            this.company = company;
             loads = new List<Load>();
+        }
+
+        [JsonProperty("company")]
+        public string Company
+        {
+            get
+            {
+                return company;
+            }
+            set
+            {
+                company = value;
+            }
         }
 
         [JsonProperty("id")]
