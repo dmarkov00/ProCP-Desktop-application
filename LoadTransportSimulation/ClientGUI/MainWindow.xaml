@@ -335,7 +335,7 @@
                                                 </Grid>
                                             </Grid>
                                         </TabItem>
-                                        <TabItem Header="See load on map" Padding="13,3">
+                                        <TabItem Name="mapTab" Header="See load on map" Padding="13,3" TouchUp="TabItem_TouchUp">
                                             <Grid Background="#FFE5E5E5">
                                                 <WebBrowser x:Name="web_load" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" Source="http://maps.google.com" />
                                             </Grid>
