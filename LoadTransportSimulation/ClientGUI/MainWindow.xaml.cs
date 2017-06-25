@@ -368,13 +368,13 @@ namespace WPFLoadSimulation
         private void bt_MarkRouteDelivered_Click(object sender, RoutedEventArgs e)
         {
             Route r=(Route)routesDGV.SelectedItem;
-            Truck t = TruckController.GetInstance().GetTruck(r.Truck.LicencePlate);
+            Truck t = TruckController.GetInstance().GetTruckByLicensePlate(r.Truck.LicencePlate);
             t.LocationCity = r.EndLocation;
             t.Location_id = (int)r.EndLocation;
             t.IsBusy = false;
             RouteController rc = RouteController.GetInstance();
+            TruckController.GetInstance().ChangeTruckLocation(t, ((int)r.EndLocation).ToString());
             MessageBox.Show(rc.MarkRouteDelivered(r.Id));
-
         }
         
 
@@ -395,6 +395,7 @@ namespace WPFLoadSimulation
             lv_loadDetails.Items.Add(new { description = "Delay % per hour", value = load.DelayFeePercHour });
             lv_loadDetails.Items.Add(new { description = "Content", value = load.Content });
             lv_loadDetails.Items.Add(new { description = "Weight", value = load.WeightKg });
+            this.seeLoadOnMap(load);
 
             lv_loadClient.Items.Add(new { description = "Name", value = load.Client.Name });
             lv_loadClient.Items.Add(new { description = "Phone", value = load.Client.Phone });
@@ -464,9 +465,18 @@ namespace WPFLoadSimulation
             isUserInteractLoadsDGV = true;
         }
 
-        private void cb_assignTruckToRoute_SourceUpdated(object sender, System.Windows.Data.DataTransferEventArgs e)
+        private void seeLoadOnMap(Load l)
         {
+            string origin = l.StartLocationCity.ToString();
+            string dest = l.EndLocationCity.ToString();
+            string loadRoute = String.Format("https://www.google.com/maps/dir/?api=1&origin=" 
+                + origin + "&destination=" + dest);
+            Uri source = new Uri(loadRoute);
+            web_load.Source = source;
+        }
 
+        private void TabItem_TouchUp(object sender, TouchEventArgs e)
+        {
         }
     }
 }
