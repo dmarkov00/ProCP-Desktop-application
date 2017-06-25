@@ -278,6 +278,11 @@ namespace WPFLoadSimulation
 
         private void bt_submitRoute_Click(object sender, RoutedEventArgs e)
         {
+            TruckController tc = TruckController.GetInstance();
+            LoadController lc = LoadController.GetInstance();
+            List<Truck> trucks = tc.GetAllTrucks().ToList();
+            Truck text = (Truck)cb_assignTruckToRoute.SelectedItem;
+            route.DriverId = Convert.ToInt32(trucks.Where(x => x.LicencePlate.Equals(text.LicencePlate)).First().Driver_id);
             companyCtrl.RouteCtrl.AddRouteToList(route);
 
             foreach (Load l in lv_selectedLoadsForRoute.Items)
@@ -292,6 +297,20 @@ namespace WPFLoadSimulation
             LoadsAvailableDGW.ItemsSource = companyCtrl.LoadCtrl.GetAvailableLoads();
             bt_calculateEstimation.IsEnabled = false;
             bt_submitRoute.IsEnabled = false;
+            //from here we set the route for each load
+            RouteController rc = RouteController.GetInstance();
+            foreach (Load l in lv_selectedLoadsForRoute.Items)
+            {
+                String truckId = trucks.Where(x => x.LicencePlate.Equals(cb_assignTruckToRoute.SelectedItem.ToString())).First().Id;
+                String load = l.ID.ToString();
+                String driverId = trucks.Where(x => x.LicencePlate.Equals(cb_assignTruckToRoute.SelectedItem.ToString())).First().Driver_id;
+                String routeId = rc.GetAllRoutes().Where(x => x.StartLocationId.Equals(route.StartLocationId))
+                    .Where(x => x.EndLocationId.Equals(route.EndLocationId)).First().Id;
+                lc.SetDriverRouteTruck(load, driverId, routeId, truckId);
+                //String truckId = cb_assignTruckToRoute.SelectedItem.ToString();
+                //companyCtrl.LoadCtrl.GetLoad(l.ID).LoadState = Common.Enumerations.LoadState.ONTRANSPORT;
+            }
+            //to here
         }
 
         private void LoadsAvailableDGW_MouseDoubleClick(object sender, MouseButtonEventArgs e)

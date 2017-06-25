@@ -63,7 +63,13 @@ namespace Controllers
             r.TruckId = r.Truck.Id;
             r.Truck.IsBusy = true;
             routes.Add(r);
+            this.addRoute(r);
+            //await ApiHttpClient.Dispatcher.GetInstance().Post<Route>("routes", r);
+        }
 
+        private async void addRoute(Route r)
+        {
+            IApiCallResult truck = await ApiHttpClient.Dispatcher.GetInstance().Post("routes", r);
             //await ApiHttpClient.Dispatcher.GetInstance().Post<Route>("routes", r);
         }
 

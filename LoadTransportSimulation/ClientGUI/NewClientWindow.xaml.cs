@@ -31,7 +31,8 @@ namespace WPFLoadSimulation
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             //TODO - make it take the values from GUI :(
-            Client c = new Client("Dimitar", "123123", "mail@mail.testmail", "notFound", User.GetInstance().CompanyId);
+            Client c = new Client(fname.Text, phone.Text, mail.Text, address.Text, User.GetInstance().CompanyId);
+            //Client c = new Client("Dimitar", "123123", "mail@mail.testmail", "notFound", User.GetInstance().CompanyId);
             MessageBox.Show(cc.AddClient(c));
             this.Close();
         }
