@@ -43,9 +43,9 @@ namespace Controllers
             BindingOperations.EnableCollectionSynchronization(routes, _lock);
         }
 
-        public string MarkRouteDelivered(string routeId)
+        public string MarkRouteDelivered(Route r)
         {
-            this.markRouteDelivered(routeId);
+            this.markRouteDelivered(r.Id);
             return "route marked as delivered";
         }
 

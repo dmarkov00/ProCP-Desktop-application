@@ -296,7 +296,7 @@ namespace WPFLoadSimulation
             t.IsBusy = false;
             RouteController rc = RouteController.GetInstance();
             TruckController.GetInstance().ChangeTruckLocation(t, ((int)r.EndLocation).ToString());
-            MessageBox.Show(rc.MarkRouteDelivered(r.Id));
+            MessageBox.Show(rc.MarkRouteDelivered(r));
         }
 
 
