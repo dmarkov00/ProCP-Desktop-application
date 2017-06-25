@@ -61,7 +61,26 @@ namespace Controllers
 
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
         }
-       
+
+        private void markRouteAsDelivered(string routeId, string actualTime, string actDistance,
+            string actFuel, string actCost, string actSalaries, string rev)
+        {
+            using (WebClient client = new WebClient())
+            {
+                client.Headers.Add("api_token", User.GetInstance().Token);
+                byte[] response =
+                client.UploadValues("http://127.0.0.1:8000/api/routes/delivered/" + routeId, new NameValueCollection()
+                {
+                    { "act_time_used", actualTime },
+                    { "act_distance", actDistance },
+                    { "act_fuelConsumption", actFuel },
+                    { "act_cost", actCost },
+                    { "sum_actual_salaries", actSalaries },
+                    { "revenue", rev }
+                });
+            };
+        }
+
         public ObservableCollection<Route> GetAllRoutes()
         {
             TruckController tc = TruckController.GetInstance();
