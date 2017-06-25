@@ -22,6 +22,15 @@ namespace ApiHttpClient.Tests
         }
 
         [Test]
+        public async Task Create_Client()
+        {
+            Client expectedResult = new Client("firstname", "123123", "mymail@mail.mail", "myadddress");
+            IApiCallResult client = await dispatcher.Post("clients", expectedResult);
+            Client t = (Client)client;
+            Assert.AreEqual(expectedResult.Address, t.Address);
+        }
+
+        [Test]
         public async Task Create_Driver()
         {
             Driver expectedResult = new Driver("firstname", "lastname", "123123", "mymail@mail.mail", 3);

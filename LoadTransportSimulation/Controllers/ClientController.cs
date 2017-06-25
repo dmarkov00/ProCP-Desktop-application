@@ -44,10 +44,15 @@ namespace Controllers
             return clients;
         }
 
-        public void AddClient(Client c)
+        public string AddClient(Client c)
         {
-            if(!clients.Contains(c))
-            clients.Add(c);
+            this.addClient(c);
+            return "Client added successfully";
+        }
+
+        private async void addClient(Client c)
+        {
+            IApiCallResult result = await ApiHttpClient.Dispatcher.GetInstance().Post("clients", c);
         }
 
         public async void RemoveClient(Client c)
