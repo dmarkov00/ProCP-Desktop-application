@@ -100,6 +100,20 @@ namespace Controllers
             return null;
         }
 
+        public Truck GetTruckByLicensePlate(string license)
+        {
+            IEnumerable<Truck> obsCollection = (IEnumerable<Truck>)trucks;
+            var list = new List<Truck>(obsCollection);
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i].LicencePlate == license)
+                {
+                    return list[i];
+                }
+            }
+            return null;
+        }
+
         private async void getTruck(string truckId)
         {
             IApiCallResult truck = await ApiHttpClient.Dispatcher.GetInstance().Get<Truck>("trucks", truckId);
@@ -130,6 +144,19 @@ namespace Controllers
                 client.UploadValues("http://127.0.0.1:8000/api/companies/"+t.Id+"/assignTruck", new NameValueCollection()
                 {
                     { "driver_id", d.Id }
+                });
+            }
+            //await Dispatcher.GetInstance().Put("trucks", t.Id, t);
+        }
+
+        public void ChangeTruckLocation(Truck t, String LocationId)
+        {
+            using (WebClient client = new WebClient())
+            {
+                client.Headers.Add("api_token", User.GetInstance().Token);
+                byte[] response =
+                client.UploadValues("http://127.0.0.1:8000/api/trucks/setLocation/" + t.Id + "/" + LocationId, new NameValueCollection()
+                {
                 });
             }
             //await Dispatcher.GetInstance().Put("trucks", t.Id, t);

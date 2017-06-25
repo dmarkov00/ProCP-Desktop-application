@@ -391,13 +391,13 @@ namespace WPFLoadSimulation
         private void bt_MarkRouteDelivered_Click(object sender, RoutedEventArgs e)
         {
             Route r=(Route)routesDGV.SelectedItem;
-            Truck t = TruckController.GetInstance().GetTruck(r.Truck.LicencePlate);
+            Truck t = TruckController.GetInstance().GetTruckByLicensePlate(r.Truck.LicencePlate);
             t.LocationCity = r.EndLocation;
             t.Location_id = (int)r.EndLocation;
             t.IsBusy = false;
             RouteController rc = RouteController.GetInstance();
+            TruckController.GetInstance().ChangeTruckLocation(t, ((int)r.EndLocation).ToString());
             MessageBox.Show(rc.MarkRouteDelivered(r.Id));
-
         }
         
 
