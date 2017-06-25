@@ -35,7 +35,15 @@ namespace PdfReportHandling
                 // Save document 
                 filename = dlg.FileName;
             }
-            renderer.PdfDocument.Save(filename);
+            try
+            {
+                renderer.PdfDocument.Save(filename);
+
+            }
+            catch (Exception)
+            {
+                
+            }
             // ...and start a viewer.
             Process.Start(filename);
         }

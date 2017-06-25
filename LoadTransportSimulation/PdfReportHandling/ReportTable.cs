@@ -1,4 +1,5 @@
-﻿using MigraDoc.DocumentObjectModel;
+﻿using Common.Enumerations;
+using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Tables;
 using Models;
 using System.Collections.Generic;
@@ -29,7 +30,7 @@ namespace PdfReportHandling
 
             for (int i = 0; i < routesList.Count; i++)
             {
-                Paragraph paragraph = document.LastSection.AddParagraph("Route from: " + routesList[i].StartLocation + " to: " + routesList[i].EndLocation);
+                Paragraph paragraph = document.LastSection.AddParagraph("Route from: " + (City)routesList[i].StartLocationId + " to: " + (City)routesList[i].EndLocationId);
                 paragraph.Format.Font.Size = 11;
                 paragraph.Format.Font.Color = Colors.Black;
                 paragraph.Format.Font.Italic = true;
