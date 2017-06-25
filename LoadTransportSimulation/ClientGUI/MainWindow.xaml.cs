@@ -416,6 +416,8 @@ namespace WPFLoadSimulation
             t.LocationCity = r.EndLocation;
             t.Location_id = (int)r.EndLocation;
             t.IsBusy = false;
+            RouteController rc = RouteController.GetInstance();
+            MessageBox.Show(rc.MarkRouteDelivered(r.Id));
 
         }
         

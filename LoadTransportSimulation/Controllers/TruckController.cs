@@ -84,9 +84,23 @@ namespace Controllers
             }
         }
 
-        public Truck GetTruck(string licencePlate)
+        public Truck GetTruck(string truckId)
         {
-            return trucks[0];
+            IEnumerable<Truck> obsCollection = (IEnumerable<Truck>)trucks;
+            var list = new List<Truck>(obsCollection);
+            for(int i=0; i<list.Count; i++)
+            {
+                if (list[i].Id == truckId)
+                {
+                    return list[i];
+                }
+            }
+            return null;
+        }
+
+        private async void getTruck(string truckId)
+        {
+            IApiCallResult truck = await ApiHttpClient.Dispatcher.GetInstance().Get<Truck>("trucks", truckId);
         }
 
         public void AssignDriversToTrucks()

@@ -385,7 +385,7 @@
                                         Grid.ColumnSpan="2" />
 
                                         <Button x:Name="bt_submitRoute" Content="Submit Route" Grid.Column="2" HorizontalAlignment="Stretch"  Grid.Row="3" VerticalAlignment="Stretch" Height="30" Margin="5,5,5,5" FontWeight="Medium" Click="bt_submitRoute_Click" IsEnabled="False" />
-                                        
+
                                         <ListView x:Name="lv_routeEstimation" Grid.Column="2"  HorizontalAlignment="Stretch"  Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Stretch" Margin="10,0,0,0"  OverridesDefaultStyle="True" Background="White" >
                                             <ListView.View>
                                                 <GridView>
@@ -406,7 +406,7 @@
                                 </Grid>
                             </Grid>
                         </TabItem>
-                        <TabItem x:Name="tab_routes" Header="Active or Delivered" Padding="15,2" >
+                        <TabItem x:Name="tab_routes" Header="Active or Delivered" Padding="15,2" Margin="-2.4,0,-2,0.4" >
                             <Grid Background="#FFE5E5E5" Margin="3">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/>
