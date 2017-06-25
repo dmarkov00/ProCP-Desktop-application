@@ -126,7 +126,10 @@ namespace Models
 
         public int NrOfLoads { get; set; }
 
-       
+       public Route()
+        {
+            Loads = new List<Load>();
+        }
 
         public void GetTimeConsumedPerRoute()
         {

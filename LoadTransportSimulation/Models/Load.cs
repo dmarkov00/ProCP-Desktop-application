@@ -59,6 +59,9 @@ namespace Models
         public int ID { get; private set; }
         public Client Client { get; set; }
 
+        [JsonProperty("route_id")]
+        public string RouteId { get; set; }
+
         public double CalculateFinalSalary()
         {
             double finalsalary = 0;
