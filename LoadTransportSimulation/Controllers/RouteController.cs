@@ -62,6 +62,58 @@ namespace Controllers
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
         }
 
+        private void setDriverTaken(string driverId)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest
+            .Create("http://127.0.0.1:8000/api/drivers/taken/" + driverId);
+            request.Method = "Get";
+            request.Headers.Add("api_token", User.GetInstance().Token);
+            request.KeepAlive = true;
+            request.ContentType = "appication/json";
+            //request.ContentType = "application/x-www-form-urlencoded";
+
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+        }
+
+        private void setTruckTaken(string truckId)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest
+            .Create("http://127.0.0.1:8000/api/trucks/taken/" + truckId);
+            request.Method = "Get";
+            request.Headers.Add("api_token", User.GetInstance().Token);
+            request.KeepAlive = true;
+            request.ContentType = "appication/json";
+            //request.ContentType = "application/x-www-form-urlencoded";
+
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+        }
+
+        private void unsetDriverTaken(string driverId)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest
+            .Create("http://127.0.0.1:8000/api/drivers/untaken/" + driverId);
+            request.Method = "Get";
+            request.Headers.Add("api_token", User.GetInstance().Token);
+            request.KeepAlive = true;
+            request.ContentType = "appication/json";
+            //request.ContentType = "application/x-www-form-urlencoded";
+
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+        }
+
+        private void unsetTruckTaken(string truckId)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest
+            .Create("http://127.0.0.1:8000/api/trucks/untaken/" + truckId);
+            request.Method = "Get";
+            request.Headers.Add("api_token", User.GetInstance().Token);
+            request.KeepAlive = true;
+            request.ContentType = "appication/json";
+            //request.ContentType = "application/x-www-form-urlencoded";
+
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+        }
+
         private void markRouteAsDelivered(string routeId, string actualTime, string actDistance,
             string actFuel, string actCost, string actSalaries, string rev)
         {
@@ -112,7 +164,8 @@ namespace Controllers
             }
             
             this.addRoute(r);
-
+            this.setDriverTaken(r.DriverId);
+            this.setTruckTaken(r.TruckId);
 
             TruckController.GetInstance().SetAvailableTrucks();
         }
