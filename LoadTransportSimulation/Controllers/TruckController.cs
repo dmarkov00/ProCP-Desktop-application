@@ -4,6 +4,8 @@ using System;
 using System.Collections.ObjectModel;
 using ApiHttpClient;
 using Common;
+using System.Net;
+using System.Collections.Specialized;
 
 namespace Controllers
 {
@@ -121,6 +123,15 @@ namespace Controllers
         {
             t.CurrentDriver = d;
             DriverController.GetInstance().SetUnassignedDrivers();
+            using (WebClient client = new WebClient())
+            {
+                client.Headers.Add("api_token", User.GetInstance().Token);
+                byte[] response =
+                client.UploadValues("http://127.0.0.1:8000/api/companies/"+t.Id+"/assignTruck", new NameValueCollection()
+                {
+                    { "driver_id", d.Id }
+                });
+            }
             //await Dispatcher.GetInstance().Put("trucks", t.Id, t);
         }
 
