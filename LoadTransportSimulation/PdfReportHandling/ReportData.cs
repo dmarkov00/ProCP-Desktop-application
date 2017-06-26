@@ -8,7 +8,7 @@ namespace PdfReportHandling
     public class ReportData
     {
         private static CompanyController companyCtrl;
-
+        private static List<Route> routesList;
         static ReportData()
         {
             companyCtrl = CompanyController.GetInstance();

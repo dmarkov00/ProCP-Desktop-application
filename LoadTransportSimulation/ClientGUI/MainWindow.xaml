@@ -647,7 +647,6 @@
                         <DatePicker Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" FirstDayOfWeek="Monday"  Width="auto" Margin="10,4,10,0" IsEnabled="False" />
                         <Button x:Name="bt_generatereport" Content="Generate report" HorizontalAlignment="Stretch"  VerticalAlignment="Bottom" Margin="30,0,10,0" Padding="10,3" Width="120" Click="bt_generatereport_Click"/>
                         <Button x:Name="bt_downloadreport" Content="Download" HorizontalAlignment="Stretch" Margin="30,4,5,0" Padding="10,3" Click="bt_downloadreport_Click" IsEnabled="False"/>
-                        <Button x:Name="bt_loadreport" Content="Load" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Margin="5,4,10,0" Padding="10,3" IsEnabled="False" />
                     </StackPanel>
                     <TextBox x:Name="tb_report" Grid.Row="1" Text="Your report displayed" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="20,20,19.8,20" Grid.ColumnSpan="3"/>
 
