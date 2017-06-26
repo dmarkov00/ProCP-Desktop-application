@@ -16,10 +16,11 @@ namespace ApiHttpClient.Tests
     {
         private Dispatcher dispatcher = Dispatcher.Create(GlobalConstants.testToken2);
 
+        // for each truck created, please change the license plate which is unique
         [Test]
         public async Task Create_Truck()
         {
-            Truck expectedResult = new Truck("td-aa", 1, 234, 23, 5000, 200, 14);
+            Truck expectedResult = new Truck("td-aa1", 1, 234, 23, 5000, 200, 14);
             IApiCallResult truck = await dispatcher.Post("trucks", expectedResult);
             Truck t = (Truck)truck;
             Assert.AreEqual(expectedResult.LicencePlate, t.LicencePlate);
@@ -66,15 +67,6 @@ namespace ApiHttpClient.Tests
             IApiCallResult client = await dispatcher.Post("clients", expectedResult);
             Client t = (Client)client;
             Assert.AreEqual(expectedResult.Address, t.Address);
-        }
-
-        [Test]
-        public async Task Create_Driver()
-        {
-            Driver expectedResult = new Driver("firstname", "lastname", "123123", "mymail@mail.mail");
-            IApiCallResult driver = await dispatcher.Post("drivers", expectedResult);
-            Driver t = (Driver)driver;
-            Assert.AreEqual(expectedResult.Email, t.Email);
         }
 
         [Test]

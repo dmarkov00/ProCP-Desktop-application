@@ -45,22 +45,13 @@ namespace ApiHttpClient.Tests
         [Test]
         public async Task Delete_Driver()
         {
-            // On sucessfull delete the method returns null
-           // Commented out, not to break tests
-            //var actualResult = await dispatcher.Delete("drivers", "2");
-
-            //Assert.AreEqual(actualResult, null);
-        }
-        [Test]
-        public async Task Getting_Driver_Assigned_To_Truck_Successfully()
-        {
-            //We try to assign a truck to a driver
-            string token = "6UhcQUtcEuE2HXdUM1crQtV9RQQDI6t5IvWVkWcTTFxbc7rtjXz5Od77cqba";
-            String driver = await dispatcher.AssignTruckToDriver(2, token);
-            string expected = @"""success""";
-            //We assert the assignment is done correctly
-            Assert.AreEqual(driver, expected);
-
+            List<IApiCallResult> drivers = await dispatcher.GetMany<Driver>("drivers");
+            List<Driver> targetList = new List<Driver>(drivers.Cast<Driver>());
+            await dispatcher.Delete("drivers", (targetList.Count-1).ToString());
+            List<IApiCallResult> drivers2 = await dispatcher.GetMany<Driver>("drivers");
+            List<Driver> targetList2 = new List<Driver>(drivers2.Cast<Driver>());
+            //We make sure it has provided a non-empty list of trucks
+            Assert.IsTrue(targetList.Count > targetList2.Count);
         }
     }
 }

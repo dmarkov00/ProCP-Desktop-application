@@ -22,7 +22,9 @@ namespace Models
             this.lastName = lastName;
             this.phone = phone;
             this.email = email;
-            this.companyId =Convert.ToInt32( User.GetInstance().CompanyId);
+            this.companyId = Convert.ToInt32(User.GetInstance().CompanyId);
+
+            
         }
 
         /* it should not have the id!!!
