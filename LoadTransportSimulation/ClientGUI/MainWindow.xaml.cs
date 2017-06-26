@@ -81,8 +81,8 @@ namespace WPFLoadSimulation
             //user tab
             this.companyName.Content = companyCtrl.Company.CompanyName;
             this.companyAddress.Content = companyCtrl.Company.Address;
-            this.UserName = u.Name;
-            this.UserPhone = u.Phone;
+            UserName = u.Name;
+            UserPhone = u.Phone;
         }
 
         private void SetTablePaddings()
@@ -289,6 +289,13 @@ namespace WPFLoadSimulation
             LoadsFromRouteDGV.DataContext = r.Loads;
         }
 
+
+
+        private void bt_downloadreport_Click(object sender, RoutedEventArgs e)
+        {
+            ReportHandler.GenerateReport();
+        }
+
         private void bt_MarkRouteDelivered_Click(object sender, RoutedEventArgs e)
         {
             Route r = (Route)routesDGV.SelectedItem;
@@ -298,7 +305,7 @@ namespace WPFLoadSimulation
             t.IsBusy = false;
             RouteController rc = RouteController.GetInstance();
             TruckController.GetInstance().ChangeTruckLocation(t, ((int)r.EndLocation).ToString());
-            MessageBox.Show(rc.MarkRouteDelivered(r.Id));
+            MessageBox.Show(rc.MarkRouteDelivered(r));
         }
 
 
@@ -429,10 +436,7 @@ namespace WPFLoadSimulation
             routesText = sb.ToString();
         }
 
-        private void bt_downloadreport_Click(object sender, RoutedEventArgs e)
-        {
-            ReportHandler.GenerateReport();
-        }
+   
 
         private void bt_loadreport_Click(object sender, RoutedEventArgs e)
         {
@@ -482,8 +486,10 @@ namespace WPFLoadSimulation
             ProfileEditPhone.Visibility = Visibility.Hidden;
             ProfileSaveChanges.Visibility = Visibility.Hidden;
             ProfileChangeInfo.Visibility = Visibility.Visible;
+            
+            UserName = ProfileEditName.Text;
+            UserPhone = ProfileEditPhone.Text;
         }
-
-        
+               
     }
 }

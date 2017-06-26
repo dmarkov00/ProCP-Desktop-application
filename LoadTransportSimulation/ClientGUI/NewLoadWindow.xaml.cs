@@ -47,10 +47,9 @@ namespace WPFLoadSimulation
               content.Text,
               Convert.ToDecimal( weight.Text),
               Convert.ToDouble(salary.Text),
-              deadline,
-              null, 
-              5,
-
+              Convert.ToDateTime(deadline.SelectedDate),
+              0, 
+              5,Convert.ToDateTime(deadline.SelectedDate),Convert.ToInt32(((Client)client.SelectedItem).Id), 1
                 );
             this.Close();
         }

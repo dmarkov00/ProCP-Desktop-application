@@ -130,17 +130,21 @@ namespace Controllers
 
         public void ChangeUser(string name, string phone)
         {
-            //To be modified!
+            User u = User.GetInstance();
+            u.Name = name;
+            u.Phone = phone;
+            //await client.Put<User>("users",u.Id,u);
             using (WebClient client = new WebClient())
             {
                 client.Headers.Add("api_token", User.GetInstance().Token);
                 byte[] response =
-                client.UploadValues("http://127.0.0.1:8000/api/users/" + User.GetInstance().Id, new NameValueCollection()
+                client.UploadValues("http://127.0.0.1:8000/api/users/update/" + u.Id, new NameValueCollection()
                 {
                     { "name", name },
-                    { "phone", phone },
+                    { "phone", phone }
                 });
-            }
+            };
+
         }
 
     }
