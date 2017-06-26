@@ -102,6 +102,25 @@ namespace Controllers
             return null;
         }
 
+        public string MakeTruckMaintenance(string truckId,
+            string driverId, string action, string cost, string date)
+        {
+            using (WebClient client = new WebClient())
+            {
+                client.Headers.Add("api_token", "6UhcQUtcEuE2HXdUM1crQtV9RQQDI6t5IvWVkWcTTFxbc7rtjXz5Od77cqba");
+                byte[] response =
+                client.UploadValues("http://127.0.0.1:8000/api/maintenances", new NameValueCollection()
+                {
+                    { "truck_id", truckId },
+                    { "driver_id", driverId },
+                    { "actionPerformed", action },
+                    { "actionDate", date },
+                    { "actionCost", cost }
+                });
+            };
+            return "maintenance added successfully";
+        }
+
         public Truck GetTruckByLicensePlate(string license)
         {
             IEnumerable<Truck> obsCollection = (IEnumerable<Truck>)trucks;
