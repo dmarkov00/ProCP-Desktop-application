@@ -126,9 +126,12 @@ namespace Controllers
 
         public Driver GetDriver(string id)
         {
-            
-
-            return drivers[0];
+            foreach(Driver d in drivers)
+            {
+                if (d.Id == id)
+                    return d;
+            }
+            return null;
         }
     }
 }

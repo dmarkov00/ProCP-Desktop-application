@@ -46,6 +46,7 @@
     <Compile Include="CompanyController.cs" />
     <Compile Include="DriverController.cs" />
     <Compile Include="LoadController.cs" />
+    <Compile Include="MaintenanceController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RouteController.cs" />
     <Compile Include="TruckController.cs" />

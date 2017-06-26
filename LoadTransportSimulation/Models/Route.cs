@@ -12,7 +12,7 @@ using System.ComponentModel;
 
 namespace Models
 {
-    public class Route : IApiCallResult
+    public class Route : IApiCallResult, INotifyPropertyChanged
     {
         //id
         private string id;
@@ -25,7 +25,7 @@ namespace Models
         public string DriverId { get { return driverId; } set { driverId = value; } }
 
         private Driver driver;
-        public Driver Driver { get { return driver; } set { driver = value; if (driver != null) DriverId = driver.Id; } }
+        public Driver Driver { get { return driver; } set { driver = value; if (driver != null) driverId = driver.Id; } }
 
 
         //truck of route
@@ -34,7 +34,7 @@ namespace Models
         public string TruckId { get { return truckId; } set { truckId = value; } }
 
         private Truck truck;
-        public Truck Truck { get { return truck; } set { truck = value; TruckId = truck.Id; Driver = truck.CurrentDriver; } }
+        public Truck Truck { get { return truck; } set { truck = value; TruckId = truck.Id; Driver = truck.CurrentDriver; OnPropertyChanged("Truck"); } }
 
 
         //finances
@@ -88,7 +88,7 @@ namespace Models
             {
                 actTimeDrivingTimeSpan = value;
                 if (actTimeDrivingTimeSpan != null) actTimeDrivingMin = actTimeDrivingTimeSpan.TotalMinutes;
-                OnPropertyChanged("ActTimeDrivingSpanSalary");
+                OnPropertyChanged("ActTimeDrivingTimeSpan");
             }
         }
 

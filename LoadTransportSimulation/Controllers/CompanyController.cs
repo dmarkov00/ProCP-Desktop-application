@@ -28,6 +28,7 @@ namespace Controllers
         private TruckController truckCtrl;
         private LoadController loadCtrl;
         private RouteController routeCtrl;
+        private MaintenanceController maintenanceCtrl;
 
         public User GetUser { get { return User.GetInstance(); } }
         public Company Company { get { return company; } set { company = value; } }
@@ -36,6 +37,7 @@ namespace Controllers
         public TruckController TruckCtrl { get { return truckCtrl; } set { truckCtrl = value; } }
         public LoadController LoadCtrl { get { return loadCtrl; } set { loadCtrl = value; } }
         public RouteController RouteCtrl { get { return routeCtrl; } set { routeCtrl = value; } }
+        public MaintenanceController MaintenanceCtrl { get { return maintenanceCtrl; } set { maintenanceCtrl = value; } }
 
         public static CompanyController GetInstance()
         {
@@ -72,6 +74,7 @@ namespace Controllers
             await CreateLoadController();
             await CreateClientController();
             await CreateRouteController();
+            await CreateMaintenanceController();
 
 
             routeCtrl.SetLoadsFromDatabase();
@@ -126,6 +129,16 @@ namespace Controllers
             List<Client> targetListClients = new List<Client>(clients.Cast<Client>());
             clientCtrl = ClientController.Create(targetListClients);
             loadCtrl.SetClientsForLoads();
+            return;
+        }
+
+        private async Task CreateMaintenanceController()
+        {
+
+            IEnumerable<IApiCallResult> maintenances = await client.GetMany<TruckMaintenance>("maintenances");
+            ObservableCollection<TruckMaintenance> targetListMaintenances = new ObservableCollection<TruckMaintenance>(maintenances.Cast<TruckMaintenance>());
+            maintenanceCtrl = MaintenanceController.Create(targetListMaintenances);
+            maintenanceCtrl.SetMaintenancesToTrucks();
             return;
         }
 

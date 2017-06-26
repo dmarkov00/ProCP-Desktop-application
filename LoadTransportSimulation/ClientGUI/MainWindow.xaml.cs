@@ -216,7 +216,7 @@ namespace WPFLoadSimulation
 
         private void cb_assignTruckToRoute_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (cb_assignDriverToTruck.Items.IsEmpty)
+            if (cb_assignTruckToRoute.Items.IsEmpty)
                 SnackbarLoads.MessageQueue.Enqueue("Your trucks are all busy or need a driver");
         }
 

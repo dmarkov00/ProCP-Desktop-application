@@ -107,7 +107,7 @@ namespace ClientGUI
                 CompanyController.GetInstance().RouteCtrl.MarkRouteDelivered(route);
                 SnackbarException.MessageQueue.Enqueue("Delivery saved!");
                 bt_markdelivered.IsEnabled = false;
-                //Thread.Sleep(2000);
+                //Thread.Sleep(1000);
                 //this.Close();
             }
             catch (FormatException)

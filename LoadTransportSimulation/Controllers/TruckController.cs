@@ -192,7 +192,7 @@ namespace Controllers
 
         public void AddMaintenance(Truck truck, Driver driver, string action, DateTime date, double cost)
         {
-            TruckMaintenance tm = new TruckMaintenance(truck, driver, cost, date, action);
+            TruckMaintenance tm = new TruckMaintenance(truck, driver, cost, date.ToString(), action);
             truck.AddMaintenance(tm);
             //IApiCallResult maintenance = await Dispatcher.GetInstance().Post("truckmaintenances", tm);
             

@@ -1,20 +1,21 @@
 ﻿using System;
 using Common.Enumerations;
 using Newtonsoft.Json;
+using Common;
 
 namespace Models
 {
-    public class TruckMaintenance
+    public class TruckMaintenance :IApiCallResult
     {
         private int truckid;
         private int driverid;
         private Truck truck;
         private Driver driver;
         private double cost;
-        private DateTime date;
+        private string date;
         private string actionPerformed;
 
-        public TruckMaintenance(Truck truck, Driver driver, double cost, DateTime date, string action)
+        public TruckMaintenance(Truck truck, Driver driver, double cost, string date, string action)
         {
             this.Truck = truck;
             this.Driver = driver;
@@ -32,8 +33,12 @@ namespace Models
 
             set
             {
-                truck = value;
-                truckid =Convert.ToInt32(truck.Id);
+                if (value != null)
+                {
+                    truck = value;
+                    truckid = Convert.ToInt32(truck.Id);
+                }
+                
             }
         }
 
@@ -60,8 +65,12 @@ namespace Models
 
             set
             {
-                driver = value;
-                driverid = Convert.ToInt32(driver.Id);
+                if (value != null)
+                {
+                    driver = value;
+                    driverid = Convert.ToInt32(driver.Id);
+                }
+                
             }
         }
 
@@ -76,6 +85,7 @@ namespace Models
             set
             {
                 driverid = value;
+                
             }
         }
 
@@ -94,7 +104,7 @@ namespace Models
         }
 
         [JsonProperty("actionDate")]
-        public DateTime Date
+        public string Date
         {
             get
             {

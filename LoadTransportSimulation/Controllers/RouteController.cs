@@ -176,15 +176,6 @@ namespace Controllers
             
             await this.addRoute(r);
             await CompanyController.GetInstance().UpdateRouteController();
-            this.setDriverTaken(r.DriverId);
-            this.setTruckTaken(r.TruckId);
-
-            foreach (Load l in r.Loads)
-            {
-                l.LoadState = Common.Enumerations.LoadState.ONTRANSPORT;
-               this.SetDriverRouteTruck(l.ID.ToString(), r.DriverId, r.Id, r.TruckId);
-            }
-
             TruckController.GetInstance().SetAvailableTrucks();
             LoadController.GetInstance().SetAvailableLoads();
             
@@ -194,7 +185,16 @@ namespace Controllers
         {
             routes.Add(r);
             IApiCallResult newroute = await ApiHttpClient.Dispatcher.GetInstance().Post("routes", r);
-           //IApiCallResult truck = await ApiHttpClient.Dispatcher.GetInstance().Put("trucks", r.TruckId, r.Truck);
+
+            r.Id = ((Route)newroute).Id;
+
+            this.setDriverTaken(r.DriverId);
+            this.setTruckTaken(r.TruckId);
+            foreach (Load l in r.Loads)
+            {
+                l.LoadState = Common.Enumerations.LoadState.ONTRANSPORT;
+                this.SetDriverRouteTruck(l.ID.ToString(), r.DriverId, r.Id, r.TruckId);
+            }
         }
 
         private void SetDriverRouteTruck(String loadId, String driverId, String routeId, String truckId)
@@ -206,8 +206,8 @@ namespace Controllers
                 client.UploadValues("http://127.0.0.1:8000/api/loads/" + loadId, new NameValueCollection()
                 {
                     { "driver_id", driverId },
-                    { "route_id", truckId },
-                    { "truck_id", routeId },
+                    { "route_id", routeId },
+                    { "truck_id", truckId },
                     { "loadstatus", "2" }
                 });
             }
