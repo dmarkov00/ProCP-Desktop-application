@@ -66,6 +66,14 @@ namespace ApiHttpClient.Tests
             Assert.AreEqual(t.MaxArrivalTime, expectedResult.MaxArrivalTime);
         }
 
-
+        [Test]
+        public async Task Create_Load()
+        {
+            Load expectedResult = new Load(1, 1, "content", 234, 23, DateTime.Now,
+                1, 1);
+            IApiCallResult truck = await dispatcher.Post("loads", expectedResult);
+            Load t = (Load)truck;
+            Assert.AreEqual(expectedResult.DelayFeePercHour, t.DelayFeePercHour);
+        }
     }
 }
