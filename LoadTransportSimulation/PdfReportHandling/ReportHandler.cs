@@ -22,7 +22,7 @@ namespace PdfReportHandling
             // Save the document...
 
             SaveFileDialog dlg = new SaveFileDialog();
-            dlg.FileName = "Transportation report"; // Default file name
+            dlg.FileName = "Transportation report - " + DateTime.Now.ToShortDateString(); // Default file name
             dlg.DefaultExt = ".pdf"; // Default file extension
             dlg.Filter = "PDF documents (.pdf)|*.pdf"; // Filter files by extension 
 
@@ -38,6 +38,7 @@ namespace PdfReportHandling
             try
             {
                 renderer.PdfDocument.Save(filename);
+                Process.Start(filename);
 
             }
             catch (Exception)
@@ -45,7 +46,6 @@ namespace PdfReportHandling
                 
             }
             // ...and start a viewer.
-            Process.Start(filename);
         }
     }
 }

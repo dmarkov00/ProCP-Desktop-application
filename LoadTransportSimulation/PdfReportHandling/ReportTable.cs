@@ -19,7 +19,7 @@ namespace PdfReportHandling
             paragraph.Format.SpaceAfter = "3cm";
             paragraph.Format.Font.Bold = true;
 
-            GenerateReportTable(document);        
+            GenerateReportTable(document);
         }
 
         public static void GenerateReportTable(Document document)
@@ -42,44 +42,51 @@ namespace PdfReportHandling
                 table.Rows.Height = 15;
 
                 Column column = table.AddColumn(Unit.FromCentimeter(8));
-     
+
                 table.AddColumn(Unit.FromCentimeter(8));
 
                 Row row = table.AddRow();
                 row.Shading.Color = Colors.Green;
                 Cell cell = row.Cells[0];
                 cell.AddParagraph("Type of data");
-  
+
                 cell = row.Cells[1];
                 cell.AddParagraph("Result");
-               //////////////////////////
+                //////////////////////////
+
+
+                row = table.AddRow();
+                cell = row.Cells[0];
+                cell.AddParagraph("Driver name");
+                cell = row.Cells[1];
+                cell.AddParagraph(routesList[i].Driver.FirstName + " " + routesList[i].Driver.LastName);
+
+                row = table.AddRow();
+                cell = row.Cells[0];
+                cell.AddParagraph("Truck licence plate");
+                cell = row.Cells[1];
+                cell.AddParagraph(routesList[i].Truck.LicencePlate);
+
                 row = table.AddRow();
                 cell = row.Cells[0];
                 cell.AddParagraph("Start time");
                 cell = row.Cells[1];
                 cell.AddParagraph(routesList[i].StartTime.ToString());
-      
+
 
                 row = table.AddRow();
                 cell = row.Cells[0];
                 cell.AddParagraph("End time");
                 cell = row.Cells[1];
                 cell.AddParagraph(routesList[i].EndTime.ToString());
-           
-
-                row = table.AddRow();
-                cell = row.Cells[0];
-                cell.AddParagraph("Start time");
-                cell = row.Cells[1];
-                cell.AddParagraph(routesList[i].StartTime.ToString());
-       
+              
 
                 row = table.AddRow();
                 cell = row.Cells[0];
                 cell.AddParagraph("Estimation driving time");
                 cell = row.Cells[1];
                 cell.AddParagraph(routesList[i].EstTimeDrivingMin + " MIN");
- 
+
 
                 row = table.AddRow();
                 cell = row.Cells[0];
@@ -93,20 +100,20 @@ namespace PdfReportHandling
                 cell.AddParagraph("Estimation fuel consumption");
                 cell = row.Cells[1];
                 cell.AddParagraph(routesList[i].EstFuelConsumptionLiters + " L");
- 
+
 
                 row = table.AddRow();
                 cell = row.Cells[0];
                 cell.AddParagraph("Estimation fuel cost");
                 cell = row.Cells[1];
-                cell.AddParagraph(routesList[i].EstFuelCost + " $");
+                cell.AddParagraph(routesList[i].EstFuelCost + " €");
 
 
                 row = table.AddRow();
                 cell = row.Cells[0];
                 cell.AddParagraph("Total estimated salary");
                 cell = row.Cells[1];
-                cell.AddParagraph(routesList[i].TotalEstimatedSalary + " $");
+                cell.AddParagraph(routesList[i].TotalEstimatedSalary + " €");
 
                 ////////////////////////////////////////////////////
                 row = table.AddRow();
@@ -132,22 +139,23 @@ namespace PdfReportHandling
                 cell = row.Cells[0];
                 cell.AddParagraph("Actual fuel cost");
                 cell = row.Cells[1];
-                cell.AddParagraph(routesList[i].ActFuelCost + " $");
+                cell.AddParagraph(routesList[i].ActFuelCost + " €");
 
                 row = table.AddRow();
                 cell = row.Cells[0];
                 cell.AddParagraph("Total actual salary");
                 cell = row.Cells[1];
-                cell.AddParagraph(routesList[i].TotalActualSalary + " $");
+                cell.AddParagraph(routesList[i].TotalActualSalary + " €");
 
 
                 table.SetEdge(0, 0, 0, 0, Edge.Box, BorderStyle.Single, 1.5, Colors.Black);
 
                 document.LastSection.Add(table);
+                
             }
-          
+
         }
-       
+
 
     }
 }
