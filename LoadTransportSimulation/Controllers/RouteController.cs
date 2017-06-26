@@ -51,12 +51,33 @@ namespace Controllers
             this.unsetDriverTaken(r.DriverId);
             this.unsetTruckTaken(r.TruckId);
             TruckController.GetInstance().ChangeTruckLocation(r.Truck, ((int)r.EndLocation).ToString());
+            this.markAllLoadsDelivered(r);
 
             //app
             r.Truck.LocationCity = r.EndLocation;
             r.Truck.IsBusy = false;
             r.Truck.CurrentDriver.IsBusy = false;
             return "route marked as delivered";
+        }
+
+        private void markAllLoadsDelivered(Route r)
+        {
+            using (WebClient client = new WebClient())
+            {
+                client.Headers.Add("api_token", User.GetInstance().Token);
+                foreach (Load l in r.Loads)
+                {
+                    l.LoadState = Common.Enumerations.LoadState.DELIVERED;
+                    l.LoadStateID = 3;
+
+                    byte[] response =
+                    client.UploadValues("http://127.0.0.1:8000/api/loads/finalize/" + l.ID, new NameValueCollection()
+                    {
+                        { "arrivaldate", l.ActArrivalTime.ToString() },
+                        { "finalsalary", l.FinalSalaryEur.ToString()}
+                    });
+                }
+            };
         }
 
         private void markRouteDelivered(string routeId)

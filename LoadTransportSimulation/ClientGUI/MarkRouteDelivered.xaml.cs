@@ -56,12 +56,19 @@ namespace ClientGUI
                 }
         }
 
+        bool userinteraction = false;
+        private void tb_load_timearrived_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            userinteraction = true;
+        }
+
         private void tb_load_timearrived_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (tb_loadsalary.Text != "" && tb_load_timearrived.Text != null)
+            if (userinteraction)
                 try
                 {
                     currentload.ActArrivalTime = tb_load_timearrived.SelectedDate;
+                    userinteraction = false;
                 }
                 catch (FormatException)
                 {
@@ -96,13 +103,7 @@ namespace ClientGUI
         {
             try
             {
-                route.ActDistanceKm = Convert.ToInt32(tb_distance.Text);
-                route.ActTimeDrivingTimeSpan = GetTimeDriving();
-                route.ActFuelConsumptionLiters = Convert.ToInt32(tb_fuelconsump.Text);
-                route.ActFuelCost = Convert.ToInt32(tb_cost.Text);
-                route.TotalActualSalary = Convert.ToInt32(tb_salary.Text);
-                route.FinalRevenue = Convert.ToInt32(tb_revenue.Text);
-                route.EndTime = Convert.ToDateTime(tb_date.SelectedDate);
+                UpdateRoute();
 
                 CompanyController.GetInstance().RouteCtrl.MarkRouteDelivered(route);
                 SnackbarException.MessageQueue.Enqueue("Delivery saved!");
@@ -119,6 +120,17 @@ namespace ClientGUI
                 SnackbarException.MessageQueue.Enqueue("Request failed, please try again.");
                 return;
             }
+        }
+        
+        private void UpdateRoute()
+        {
+            route.ActDistanceKm = Convert.ToInt32(tb_distance.Text);
+            route.ActTimeDrivingTimeSpan = GetTimeDriving();
+            route.ActFuelConsumptionLiters = Convert.ToInt32(tb_fuelconsump.Text);
+            route.ActFuelCost = Convert.ToInt32(tb_cost.Text);
+            route.TotalActualSalary = Convert.ToInt32(tb_salary.Text);
+            route.FinalRevenue = Convert.ToInt32(tb_revenue.Text);
+            route.EndTime = Convert.ToDateTime(tb_date.SelectedDate);
         }
 
         private void tb_cost_TextChanged(object sender, TextChangedEventArgs e)
@@ -175,5 +187,7 @@ namespace ClientGUI
             return timespan;
             
         }
+
+        
     }
 }

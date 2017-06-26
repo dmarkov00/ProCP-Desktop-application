@@ -274,19 +274,7 @@ namespace Models
         {
             if (!maintenanceList.Contains(maintenance)) {
                 maintenanceList.Add(maintenance);
-                using (WebClient client = new WebClient())
-                {
-                    client.Headers.Add("api_token", User.GetInstance().Token);
-                    byte[] response =
-                    client.UploadValues("http://127.0.0.1:8000/api/maintenances", new NameValueCollection()
-                    {
-                    { "truck_id", Id },
-                    { "driver_id", maintenance.DriverID.ToString()},
-                    { "actionPerformed", maintenance.ActionPerformed.ToString() },
-                    { "actionDate", maintenance.Date.ToString() },
-                    { "actionCost", maintenance.Cost.ToString() }
-                    });
-                };
+                
             }
         }
 

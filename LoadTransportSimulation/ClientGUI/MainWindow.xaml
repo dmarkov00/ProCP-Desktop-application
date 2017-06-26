@@ -477,7 +477,7 @@
                                         <DataGridTextColumn Binding="{Binding DelayFeePercHour}" ClipboardContentBinding="{x:Null}" Header="Delay fee &#xA;%per h" Width="*"/>
                                         <DataGridTextColumn Binding="{Binding FinalSalaryEur}" ClipboardContentBinding="{x:Null}" Header="Final &#xA;Salary" Width="*"/>
                                         <DataGridTextColumn Binding="{Binding ActArrivalTime}" ClipboardContentBinding="{x:Null}" Header="Time &#xA;arrived" Width="*"/>
-                                        <DataGridTextColumn Header="Comment"/>
+                                        
                                     </DataGrid.Columns>
                                 </DataGrid>
                                 <StackPanel Grid.Row="6">
@@ -619,7 +619,7 @@
                             <DataGridTextColumn Binding="{Binding Phone}" ClipboardContentBinding="{x:Null}" Header="Phone" Width="*"/>
                             <DataGridTextColumn Binding="{Binding Email}" ClipboardContentBinding="{x:Null}" Header="Email" Width="*"/>
                             <DataGridTextColumn Binding="{Binding Address}" ClipboardContentBinding="{x:Null}" Header="Address" Width="*"/>
-                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Company" />
+                           
                         </DataGrid.Columns>
                     </DataGrid>
                     <Button x:Name ="ClientsAddNew" Click="ClientsAddNew_Click" Content="Add new client" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Stretch" MaxHeight="30" Width="250" />

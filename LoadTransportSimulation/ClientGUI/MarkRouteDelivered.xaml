@@ -81,7 +81,7 @@
             <ComboBox Name="cb_selectedload" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" SelectionChanged="cb_selectedload_SelectionChanged"/>
 
             <Label Content="Time arrived:" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right"/>
-            <DatePicker Name="tb_load_timearrived" Grid.Column="1" Grid.Row="2" SelectedDateChanged="tb_load_timearrived_SelectedDateChanged"/>
+            <DatePicker Name="tb_load_timearrived" Grid.Column="1" Grid.Row="2" SelectedDateChanged="tb_load_timearrived_SelectedDateChanged" PreviewMouseDown="tb_load_timearrived_PreviewMouseDown"/>
             <Label Content="Final Salary:" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right"/>
             <TextBox Name="tb_loadsalary" Grid.Column="1" Grid.Row="3" TextChanged="tb_loadsalary_TextChanged"/>
         </Grid>

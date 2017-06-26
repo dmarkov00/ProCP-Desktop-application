@@ -192,10 +192,23 @@ namespace Controllers
 
         public void AddMaintenance(Truck truck, Driver driver, string action, DateTime date, double cost)
         {
-            TruckMaintenance tm = new TruckMaintenance(truck, driver, cost, date.ToString(), action);
-            truck.AddMaintenance(tm);
-            //IApiCallResult maintenance = await Dispatcher.GetInstance().Post("truckmaintenances", tm);
-            
+            TruckMaintenance maintenance = new TruckMaintenance(truck, driver, cost, date.ToString(), action);
+            truck.AddMaintenance(maintenance);
+
+            using (WebClient client = new WebClient())
+            {
+                client.Headers.Add("api_token", User.GetInstance().Token);
+                byte[] response =
+                client.UploadValues("http://127.0.0.1:8000/api/maintenances", new NameValueCollection()
+                {
+                    { "truck_id", truck.Id},
+                    { "driver_id", maintenance.DriverID.ToString()},
+                    { "actionPerformed", maintenance.ActionPerformed.ToString() },
+                    { "actionDate", maintenance.Date.ToString() },
+                    { "actionCost", maintenance.Cost.ToString() }
+                });
+            };
+
         }
 
         public ObservableCollection<TruckMaintenance> GetTruckMaintenanceList(Truck t)
