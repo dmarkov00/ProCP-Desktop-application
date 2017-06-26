@@ -153,7 +153,12 @@ namespace Controllers
             return routes;
         }
 
-        public async void AddRouteToList(Route r)
+        public void SetRoutes(ObservableCollection<Route> r)
+        {
+            routes = r;
+        }
+
+        public async Task AddRouteToList(Route r)
         {
             r.StartLocation = r.Truck.LocationCity;
             r.StartLocationId = (int)r.StartLocation;
@@ -170,17 +175,19 @@ namespace Controllers
             
             
             await this.addRoute(r);
+            await CompanyController.GetInstance().UpdateRouteController();
             this.setDriverTaken(r.DriverId);
             this.setTruckTaken(r.TruckId);
 
             foreach (Load l in r.Loads)
             {
-                this.SetDriverRouteTruck(l.ID.ToString(), r.DriverId, r.Id, r.TruckId);
                 l.LoadState = Common.Enumerations.LoadState.ONTRANSPORT;
+               this.SetDriverRouteTruck(l.ID.ToString(), r.DriverId, r.Id, r.TruckId);
             }
 
             TruckController.GetInstance().SetAvailableTrucks();
             LoadController.GetInstance().SetAvailableLoads();
+            
         }
 
         private async Task addRoute(Route r)

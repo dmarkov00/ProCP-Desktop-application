@@ -148,6 +148,13 @@ namespace Controllers
 
         }
 
+        public async Task UpdateRouteController()
+        {
+            IEnumerable<IApiCallResult> routes = await client.GetMany<Route>("routes");
+            ObservableCollection<Route> targetListRoutes = new ObservableCollection<Route>(routes.Cast<Route>());
+            routeCtrl.SetRoutes(targetListRoutes);
+        }
+
     }
 
     public delegate void ControllersCreated(object sender, ControllersEventArgs e);

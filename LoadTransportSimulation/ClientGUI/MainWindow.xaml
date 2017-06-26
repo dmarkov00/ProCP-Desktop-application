@@ -388,7 +388,7 @@
                                             </ListView.View>
                                         </ListView>
                                         <Label Content="Assign a truck to the route:" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="2" Grid.RowSpan="1" VerticalAlignment="Bottom" Padding="0,0,0,0" Width="160" FontWeight="DemiBold" Margin="10,0,0,0"/>
-                                        <ComboBox x:Name="cb_assignTruckToRoute" ItemsSource="{Binding Path=Truck, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}"  FontSize="12" Background="WhiteSmoke" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="1"  HorizontalAlignment="Stretch" MaxHeight="30" VerticalAlignment="Bottom" SelectionChanged="cb_assignTruckToRoute_SelectionChanged" Margin="5,5,20,0" />
+                                        <ComboBox x:Name="cb_assignTruckToRoute" ItemsSource="{Binding Path=Truck, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}"  FontSize="12" Background="WhiteSmoke" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="1"  HorizontalAlignment="Stretch" MaxHeight="30" VerticalAlignment="Bottom" SelectionChanged="cb_assignTruckToRoute_SelectionChanged" Margin="5,5,20,0" PreviewMouseDown="cb_assignTruckToRoute_PreviewMouseDown" />
                                         <Button x:Name="bt_calculateEstimation" Content="Calculate estimation" HorizontalAlignment="Stretch" Grid.Row="3" VerticalAlignment="Stretch" Margin="5,5,20,5" Height="30" Click="bt_calculateEstimation_Click" IsEnabled="False" Grid.ColumnSpan="2"/>
 
                                         <materialDesign:Snackbar 
@@ -480,9 +480,13 @@
                                         <DataGridTextColumn Header="Comment"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
-                                <Button Content="Mark route as delivered" HorizontalAlignment="Left"  Grid.Row="6" VerticalAlignment="Bottom" Height="30" Width="200" Margin="5,0,0,-0.333" Grid.RowSpan="2" Click="bt_MarkRouteDelivered_Click" />
-
-
+                                <StackPanel Grid.Row="6">
+                                <Button Content="Mark route as delivered" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="30" Width="200" Margin="5,0,0,-0.333" Grid.RowSpan="2" Click="bt_MarkRouteDelivered_Click" />
+                                <materialDesign:Snackbar 
+                                        VerticalAlignment="Bottom"
+                                        MessageQueue="{materialDesign:MessageQueue}" 
+                                        x:Name="SnackbarMarkRoute" HorizontalAlignment="Stretch" />
+                                </StackPanel>
                             </Grid>
                         </TabItem>
                     </TabControl>

@@ -211,7 +211,13 @@ namespace WPFLoadSimulation
 
         private void cb_assignTruckToRoute_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            bt_calculateEstimation.IsEnabled = true;
+                bt_calculateEstimation.IsEnabled = true;
+        }
+
+        private void cb_assignTruckToRoute_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (cb_assignDriverToTruck.Items.IsEmpty)
+                SnackbarLoads.MessageQueue.Enqueue("Your trucks are all busy or need a driver");
         }
 
         private void bt_calculateEstimation_Click(object sender, RoutedEventArgs e)
@@ -267,9 +273,9 @@ namespace WPFLoadSimulation
 
         }
 
-        private void bt_submitRoute_Click(object sender, RoutedEventArgs e)
+        private async void bt_submitRoute_Click(object sender, RoutedEventArgs e)
         {
-            companyCtrl.RouteCtrl.AddRouteToList(route);
+           await companyCtrl.RouteCtrl.AddRouteToList(route);
 
             isUserInteractLoadsDGV = false;
             lv_routeEstimation.Items.Clear();
@@ -300,10 +306,16 @@ namespace WPFLoadSimulation
         private void bt_MarkRouteDelivered_Click(object sender, RoutedEventArgs e)
         {
             Route r = (Route)routesDGV.SelectedItem;
-            MarkRouteDelivered markdeliveredwindow = new MarkRouteDelivered(r);
-            markdeliveredwindow.Show();
 
-            //MessageBox.Show(companyCtrl.RouteCtrl.MarkRouteDelivered(r));
+            if (r.FinalRevenue == 0)
+            {
+                MarkRouteDelivered markdeliveredwindow = new MarkRouteDelivered(r);
+                markdeliveredwindow.Show();
+            }
+            else
+            {
+                SnackbarMarkRoute.MessageQueue.Enqueue("This route is already delivered");
+            }
         }
 
 
@@ -487,6 +499,7 @@ namespace WPFLoadSimulation
             UserName = ProfileEditName.Text;
             UserPhone = ProfileEditPhone.Text;
         }
-               
+
+       
     }
 }
