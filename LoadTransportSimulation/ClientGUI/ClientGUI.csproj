@@ -83,6 +83,9 @@
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MarkRouteDelivered.xaml.cs">
+      <DependentUpon>MarkRouteDelivered.xaml</DependentUpon>
+    </Compile>
     <Compile Include="NewClientWindow.xaml.cs">
       <DependentUpon>NewClientWindow.xaml</DependentUpon>
     </Compile>
@@ -133,6 +136,10 @@
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MarkRouteDelivered.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="NewClientWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

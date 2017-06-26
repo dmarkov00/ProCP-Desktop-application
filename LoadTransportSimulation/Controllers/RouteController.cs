@@ -45,9 +45,16 @@ namespace Controllers
 
         public string MarkRouteDelivered(Route r)
         {
+            //api
             this.markRouteDelivered(r.Id);
             this.unsetDriverTaken(r.DriverId);
             this.unsetTruckTaken(r.TruckId);
+            TruckController.GetInstance().ChangeTruckLocation(r.Truck, ((int)r.EndLocation).ToString());
+
+            //app
+            r.Truck.LocationCity = r.EndLocation;
+            r.Truck.IsBusy = false;
+            r.Truck.CurrentDriver.IsBusy = false;
             return "route marked as delivered";
         }
 
@@ -158,6 +165,7 @@ namespace Controllers
             r.EstTimeDrivingMin = r.EstTimeDrivingTimeSpan.TotalMinutes;
             
             r.Truck.IsBusy = true;
+            r.Truck.CurrentDriver.IsBusy = true;
             
             foreach(Load l in r.Loads)
             {
@@ -170,6 +178,7 @@ namespace Controllers
             this.setTruckTaken(r.TruckId);
 
             TruckController.GetInstance().SetAvailableTrucks();
+            LoadController.GetInstance().SetAvailableLoads();
         }
 
         private async void addRoute(Route r)
@@ -237,6 +246,11 @@ namespace Controllers
                     }
                 }
 
+            }
+
+            foreach(Route r in routes)
+            {
+                r.NrOfLoads = r.Loads.Count;
             }
         }
     }

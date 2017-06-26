@@ -582,7 +582,7 @@
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0" HorizontalAlignment="Stretch" Orientation="Horizontal"/>
 
-                    <DataGrid x:Name="DriversDGV" AutoGenerateColumns="false" ItemsSource="{Binding}" HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Stretch" Grid.ColumnSpan="2" Grid.RowSpan="1" Margin="5,5,5,25" SelectionMode="Single" CanUserDeleteRows="False">
+                    <DataGrid x:Name="DriversDGV" Margin="5,0,5,5" ItemsSource="{Binding Path=Driver, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False" HorizontalAlignment="Stretch"  Grid.Row="1" Grid.ColumnSpan="3" VerticalAlignment="Stretch" SelectionMode="Single" CanUserDeleteRows="False" HorizontalContentAlignment="Stretch">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding FirstName}" ClipboardContentBinding="{x:Null}" Header="First Name" Width="*"/>
                             <DataGridTextColumn Binding="{Binding LastName}" ClipboardContentBinding="{x:Null}" Header="Last Name" Width="*"/>

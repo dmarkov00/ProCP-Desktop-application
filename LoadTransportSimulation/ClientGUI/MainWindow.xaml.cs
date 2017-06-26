@@ -13,6 +13,7 @@ using System.Text.RegularExpressions;
 using MaterialDesignThemes.Wpf;
 using PdfReportHandling;
 using System.Linq;
+using ClientGUI;
 
 namespace WPFLoadSimulation
 {
@@ -75,8 +76,8 @@ namespace WPFLoadSimulation
             
             
             //driver and client tab
-            DriversDGV.DataContext = companyCtrl.DriverCtrl.GetAllDrivers();
-            ClientDGV.DataContext = companyCtrl.ClientCtrl.GetAllClients();
+            DriversDGV.ItemsSource = companyCtrl.DriverCtrl.GetAllDrivers();
+            ClientDGV.ItemsSource = companyCtrl.ClientCtrl.GetAllClients();
 
             //user tab
             this.companyName.Content = companyCtrl.Company.CompanyName;
@@ -299,13 +300,10 @@ namespace WPFLoadSimulation
         private void bt_MarkRouteDelivered_Click(object sender, RoutedEventArgs e)
         {
             Route r = (Route)routesDGV.SelectedItem;
-            Truck t = TruckController.GetInstance().GetTruckByLicensePlate(r.Truck.LicencePlate);
-            t.LocationCity = r.EndLocation;
-            t.Location_id = (int)r.EndLocation;
-            t.IsBusy = false;
-            RouteController rc = RouteController.GetInstance();
-            TruckController.GetInstance().ChangeTruckLocation(t, ((int)r.EndLocation).ToString());
-            MessageBox.Show(rc.MarkRouteDelivered(r));
+            MarkRouteDelivered markdeliveredwindow = new MarkRouteDelivered(r);
+            markdeliveredwindow.Show();
+
+            //MessageBox.Show(companyCtrl.RouteCtrl.MarkRouteDelivered(r));
         }
 
 

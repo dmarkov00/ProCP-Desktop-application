@@ -44,8 +44,7 @@ namespace WPFLoadSimulation
             City startcity, endcity;
             Enum.TryParse<City>(start.SelectedValue.ToString(), out startcity);
             Enum.TryParse<City>(end.SelectedValue.ToString(), out endcity);
-
-
+            
 
             Load l = new Load(
               (int)startcity,
@@ -57,6 +56,7 @@ namespace WPFLoadSimulation
               Convert.ToDouble(delayfee.Text),
               Convert.ToInt32(((Client)client.SelectedItem).Id));
             l.Client = (Client)client.SelectedItem;
+
             LoadController.GetInstance().AddNewLoad(l);
             this.Close();
         }

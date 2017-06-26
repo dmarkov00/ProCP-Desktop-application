@@ -59,6 +59,7 @@ namespace Models
             set
             {
                 locationCity = value;
+                location_id = (int)locationCity;
             }
         }
 
@@ -249,6 +250,7 @@ namespace Models
             set
             {
                 location_id = value;
+                locationCity = (City)location_id;
             }
         }
         [JsonProperty("broken")]

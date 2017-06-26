@@ -1,6 +1,7 @@
 ﻿using System;
 using Common;
 using Newtonsoft.Json;
+using System.ComponentModel;
 
 namespace Models
 {
@@ -13,6 +14,7 @@ namespace Models
         private string email;
         private bool isBusy;
         private int companyId;
+        
 
         public Driver(string firstName, string lastName, string phone, string email)
         {
@@ -32,6 +34,13 @@ namespace Models
             this.phone = phone;
             this.email = email;
         }*/
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         [JsonProperty("company_id")]
         public int CompanyId
@@ -116,6 +125,7 @@ namespace Models
             set
             {
                 isBusy = value;
+                OnPropertyChanged("isBusy");
             }
         }
 
