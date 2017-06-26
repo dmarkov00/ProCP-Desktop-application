@@ -1,6 +1,7 @@
 ﻿using System;
 using Common;
 using Newtonsoft.Json;
+using System.ComponentModel;
 
 namespace Models
 {
@@ -13,14 +14,17 @@ namespace Models
         private string email;
         private bool isBusy;
         private int companyId;
+        
 
-        public Driver(string firstName, string lastName, string phone, string email, int compId)
+        public Driver(string firstName, string lastName, string phone, string email)
         {
             this.firstName = firstName;
             this.lastName = lastName;
             this.phone = phone;
             this.email = email;
-            this.companyId = compId;
+            this.companyId = Convert.ToInt32(User.GetInstance().CompanyId);
+
+            
         }
 
         /* it should not have the id!!!
@@ -32,6 +36,13 @@ namespace Models
             this.phone = phone;
             this.email = email;
         }*/
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         [JsonProperty("company_id")]
         public int CompanyId
@@ -116,6 +127,7 @@ namespace Models
             set
             {
                 isBusy = value;
+                OnPropertyChanged("isBusy");
             }
         }
 

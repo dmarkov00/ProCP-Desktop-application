@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Data;
 using System.Net;
 using System.Collections.Specialized;
+using System.Threading.Tasks;
 
 namespace Controllers
 {
@@ -43,9 +44,18 @@ namespace Controllers
             BindingOperations.EnableCollectionSynchronization(routes, _lock);
         }
 
-        public string MarkRouteDelivered(string routeId)
+        public string MarkRouteDelivered(Route r)
         {
-            this.markRouteDelivered(routeId);
+            //api
+            this.markRouteAsDelivered(r.Id, r.ActTimeDrivingMin.ToString(), r.ActDistanceKm.ToString(), r.ActFuelConsumptionLiters.ToString(), r.ActFuelCost.ToString(), r.TotalActualSalary.ToString(), r.FinalRevenue.ToString());
+            this.unsetDriverTaken(r.DriverId);
+            this.unsetTruckTaken(r.TruckId);
+            TruckController.GetInstance().ChangeTruckLocation(r.Truck, ((int)r.EndLocation).ToString());
+
+            //app
+            r.Truck.LocationCity = r.EndLocation;
+            r.Truck.IsBusy = false;
+            r.Truck.CurrentDriver.IsBusy = false;
             return "route marked as delivered";
         }
 
@@ -61,7 +71,78 @@ namespace Controllers
 
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
         }
-       
+
+        private void setDriverTaken(string driverId)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest
+            .Create("http://127.0.0.1:8000/api/drivers/taken/" + driverId);
+            request.Method = "Get";
+            request.Headers.Add("api_token", User.GetInstance().Token);
+            request.KeepAlive = true;
+            request.ContentType = "appication/json";
+            //request.ContentType = "application/x-www-form-urlencoded";
+
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+        }
+
+        private void setTruckTaken(string truckId)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest
+            .Create("http://127.0.0.1:8000/api/trucks/taken/" + truckId);
+            request.Method = "Get";
+            request.Headers.Add("api_token", User.GetInstance().Token);
+            request.KeepAlive = true;
+            request.ContentType = "appication/json";
+            //request.ContentType = "application/x-www-form-urlencoded";
+
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+        }
+
+        private void unsetDriverTaken(string driverId)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest
+            .Create("http://127.0.0.1:8000/api/drivers/untaken/" + driverId);
+            request.Method = "Get";
+            request.Headers.Add("api_token", User.GetInstance().Token);
+            request.KeepAlive = true;
+            request.ContentType = "appication/json";
+            //request.ContentType = "application/x-www-form-urlencoded";
+
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+        }
+
+        private void unsetTruckTaken(string truckId)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest
+            .Create("http://127.0.0.1:8000/api/trucks/untaken/" + truckId);
+            request.Method = "Get";
+            request.Headers.Add("api_token", User.GetInstance().Token);
+            request.KeepAlive = true;
+            request.ContentType = "appication/json";
+            //request.ContentType = "application/x-www-form-urlencoded";
+
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+        }
+
+        private void markRouteAsDelivered(string routeId, string actualTime, string actDistance,
+            string actFuel, string actCost, string actSalaries, string rev)
+        {
+            using (WebClient client = new WebClient())
+            {
+                client.Headers.Add("api_token", User.GetInstance().Token);
+                byte[] response =
+                client.UploadValues("http://127.0.0.1:8000/api/routes/delivered/" + routeId, new NameValueCollection()
+                {
+                    { "act_time_used", actualTime },
+                    { "act_distance", actDistance },
+                    { "act_fuelConsumption", actFuel },
+                    { "act_cost", actCost },
+                    { "sum_actual_salaries", actSalaries },
+                    { "revenue", rev }
+                });
+            };
+        }
+
         public ObservableCollection<Route> GetAllRoutes()
         {
             TruckController tc = TruckController.GetInstance();
@@ -72,7 +153,12 @@ namespace Controllers
             return routes;
         }
 
-        public void AddRouteToList(Route r)
+        public void SetRoutes(ObservableCollection<Route> r)
+        {
+            routes = r;
+        }
+
+        public async Task AddRouteToList(Route r)
         {
             r.StartLocation = r.Truck.LocationCity;
             r.StartLocationId = (int)r.StartLocation;
@@ -85,24 +171,30 @@ namespace Controllers
             r.EstTimeDrivingMin = r.EstTimeDrivingTimeSpan.TotalMinutes;
             
             r.Truck.IsBusy = true;
+            r.Truck.CurrentDriver.IsBusy = true;
             
-            foreach(Load l in r.Loads)
-            {
-                this.SetDriverRouteTruck(l.ID.ToString(), r.DriverId, r.Id, r.TruckId);
-                l.LoadState = Common.Enumerations.LoadState.ONTRANSPORT;
-            }
             
-            this.addRoute(r);
-
-
+            await this.addRoute(r);
+            await CompanyController.GetInstance().UpdateRouteController();
             TruckController.GetInstance().SetAvailableTrucks();
+            LoadController.GetInstance().SetAvailableLoads();
+            
         }
 
-        private async void addRoute(Route r)
+        private async Task addRoute(Route r)
         {
             routes.Add(r);
             IApiCallResult newroute = await ApiHttpClient.Dispatcher.GetInstance().Post("routes", r);
-           // IApiCallResult truck = await ApiHttpClient.Dispatcher.GetInstance().Put("trucks", r.TruckId, r.Truck);
+
+            r.Id = ((Route)newroute).Id;
+
+            this.setDriverTaken(r.DriverId);
+            this.setTruckTaken(r.TruckId);
+            foreach (Load l in r.Loads)
+            {
+                l.LoadState = Common.Enumerations.LoadState.ONTRANSPORT;
+                this.SetDriverRouteTruck(l.ID.ToString(), r.DriverId, r.Id, r.TruckId);
+            }
         }
 
         private void SetDriverRouteTruck(String loadId, String driverId, String routeId, String truckId)
@@ -114,8 +206,8 @@ namespace Controllers
                 client.UploadValues("http://127.0.0.1:8000/api/loads/" + loadId, new NameValueCollection()
                 {
                     { "driver_id", driverId },
-                    { "route_id", truckId },
-                    { "truck_id", routeId },
+                    { "route_id", routeId },
+                    { "truck_id", truckId },
                     { "loadstatus", "2" }
                 });
             }
@@ -154,9 +246,20 @@ namespace Controllers
         {
             foreach(Load l in LoadController.GetInstance().GetAllLoads())
             {
-                if(l.RouteId!=null)
-                GetRoute(l.RouteId).Loads.Add(l);
+                if (l.RouteId != null)
+                {
+                    Route r = this.GetRoute(l.RouteId);
+                    if (r != null)
+                    {
+                        r.Loads.Add(l);
+                    }
+                }
 
+            }
+
+            foreach(Route r in routes)
+            {
+                r.NrOfLoads = r.Loads.Count;
             }
         }
     }

@@ -33,13 +33,13 @@
             <Label Content="Length:" HorizontalAlignment="Left" Grid.Row="7" Grid.Column="1" VerticalAlignment="Center"/>
             <Label Content="Driver:" HorizontalAlignment="Left" Grid.Row="8" Grid.Column="1" VerticalAlignment="Center"/>
             <TextBox x:Name="licencePlate" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" MaxHeight="30" Height="27"  Grid.Row="1"/>
-            <TextBox x:Name="length" Grid.Column="2" HorizontalAlignment="Stretch"  Grid.Row="7" VerticalAlignment="Stretch" MaxHeight="30" />
+            <TextBox x:Name="length" Grid.Column="2" HorizontalAlignment="Stretch" Text="0"  Grid.Row="7" VerticalAlignment="Stretch" MaxHeight="30" />
             <ComboBox x:Name="driver" Grid.Column="2" HorizontalAlignment="Stretch"  Grid.Row="8" VerticalAlignment="Stretch" MaxHeight="30" />
-            <TextBox x:Name="avgFuelCons" Grid.Column="2" HorizontalAlignment="Stretch"  Grid.Row="2" TextAlignment="Left" Text="your content" VerticalAlignment="Stretch" MaxHeight="30" />
-            <TextBox x:Name="weight"  Grid.Row="4" Grid.Column="2" VerticalAlignment="Stretch" MaxHeight="30"  HorizontalAlignment="Stretch"/>
-            <TextBox x:Name="payloadCapacity" Grid.Column="2" HorizontalAlignment="Stretch"  Grid.Row="3" TextAlignment="Left" Text="00000.000" VerticalAlignment="Stretch" MaxHeight="30" />
-            <TextBox x:Name="height" Grid.Column="2" HorizontalAlignment="Stretch"  Grid.Row="5" TextAlignment="Left" Text="0000.00" VerticalAlignment="Stretch" MaxHeight="30" />
-            <TextBox x:Name="width" Grid.Column="2" HorizontalAlignment="Stretch"  Grid.Row="6" TextAlignment="Left" Text="000" VerticalAlignment="Stretch" MaxHeight="30" />
+            <TextBox x:Name="avgFuelCons" Grid.Column="2" HorizontalAlignment="Stretch"  Grid.Row="2" TextAlignment="Left" Text="10" VerticalAlignment="Stretch" MaxHeight="30" />
+            <TextBox x:Name="weight"  Grid.Row="4" Grid.Column="2" VerticalAlignment="Stretch" MaxHeight="30"  HorizontalAlignment="Stretch" Text="0"/>
+            <TextBox x:Name="payloadCapacity" Grid.Column="2" HorizontalAlignment="Stretch"  Grid.Row="3" TextAlignment="Left" Text="0" VerticalAlignment="Stretch" MaxHeight="30" />
+            <TextBox x:Name="height" Grid.Column="2" HorizontalAlignment="Stretch"  Grid.Row="5" TextAlignment="Left" Text="0" VerticalAlignment="Stretch" MaxHeight="30" />
+            <TextBox x:Name="width" Grid.Column="2" HorizontalAlignment="Stretch"  Grid.Row="6" TextAlignment="Left" Text="0" VerticalAlignment="Stretch" MaxHeight="30" />
             <Button Click="AddTruck_Click" Content="Submit truck" Grid.Column="2"  HorizontalAlignment="Stretch"  Grid.Row="10"  VerticalAlignment="Stretch" Width="140" />
 
         </Grid>

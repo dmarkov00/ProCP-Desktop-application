@@ -48,6 +48,7 @@ namespace Controllers
 
         private async void addDriver(Driver t)
         {
+            drivers.Add(t);
             IApiCallResult driver = await ApiHttpClient.Dispatcher.GetInstance().Post("drivers", t);
             //return "Truck added successfully";
         }
@@ -125,9 +126,12 @@ namespace Controllers
 
         public Driver GetDriver(string id)
         {
-            
-
-            return drivers[0];
+            foreach(Driver d in drivers)
+            {
+                if (d.Id == id)
+                    return d;
+            }
+            return null;
         }
     }
 }

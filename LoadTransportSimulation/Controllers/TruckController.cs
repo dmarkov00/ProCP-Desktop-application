@@ -6,6 +6,7 @@ using ApiHttpClient;
 using Common;
 using System.Net;
 using System.Collections.Specialized;
+using System.Threading.Tasks;
 
 namespace Controllers
 {
@@ -47,13 +48,14 @@ namespace Controllers
 
         public string AddTruck(Truck t)
         {
+            trucks.Add(t);
             this.addTruckThroughAPI(t);
             return "Truck added successfully";
         }
 
         private async void addTruckThroughAPI(Truck t)
         {
-            //Truck t = new Truck("td-aa-bb", 1, 234, 23, 5000, 200, 14);
+            trucks.Add(t);
             IApiCallResult truck = await ApiHttpClient.Dispatcher.GetInstance().Post("trucks", t);
             //return "Truck added successfully";
         }
@@ -98,6 +100,25 @@ namespace Controllers
                 }
             }
             return null;
+        }
+
+        public string MakeTruckMaintenance(string truckId,
+            string driverId, string action, string cost, string date)
+        {
+            using (WebClient client = new WebClient())
+            {
+                client.Headers.Add("api_token", "6UhcQUtcEuE2HXdUM1crQtV9RQQDI6t5IvWVkWcTTFxbc7rtjXz5Od77cqba");
+                byte[] response =
+                client.UploadValues("http://127.0.0.1:8000/api/maintenances", new NameValueCollection()
+                {
+                    { "truck_id", truckId },
+                    { "driver_id", driverId },
+                    { "actionPerformed", action },
+                    { "actionDate", date },
+                    { "actionCost", cost }
+                });
+            };
+            return "maintenance added successfully";
         }
 
         public Truck GetTruckByLicensePlate(string license)
@@ -171,7 +192,10 @@ namespace Controllers
 
         public void AddMaintenance(Truck truck, Driver driver, string action, DateTime date, double cost)
         {
-            truck.AddMaintenance(new TruckMaintenance(truck, driver, cost, date, action));
+            TruckMaintenance tm = new TruckMaintenance(truck, driver, cost, date.ToString(), action);
+            truck.AddMaintenance(tm);
+            //IApiCallResult maintenance = await Dispatcher.GetInstance().Post("truckmaintenances", tm);
+            
         }
 
         public ObservableCollection<TruckMaintenance> GetTruckMaintenanceList(Truck t)

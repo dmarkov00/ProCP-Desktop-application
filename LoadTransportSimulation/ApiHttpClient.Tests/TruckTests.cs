@@ -4,7 +4,9 @@ using Models;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace ApiHttpClient.Tests
@@ -14,23 +16,38 @@ namespace ApiHttpClient.Tests
     {
         private Dispatcher dispatcher = Dispatcher.Create(GlobalConstants.testToken2);
 
+        // for each truck created, please change the license plate which is unique
         [Test]
         public async Task Create_Truck()
         {
-            Truck expectedResult = new Truck("td-aa", 1, 234, 23, 5000, 200, 14);
+            Truck expectedResult = new Truck("td-aa1", 1, 234, 23, 5000, 200, 14);
             IApiCallResult truck = await dispatcher.Post("trucks", expectedResult);
             Truck t = (Truck)truck;
             Assert.AreEqual(expectedResult.LicencePlate, t.LicencePlate);
         }
 
         [Test]
-        public async Task Create_Load()
+        public async Task Create_Truck_Maintenance()
         {
-            Load expectedResult = new Load(1, 1, "content" , 234, 23, DateTime.Now, 5000, 200, DateTime.Now,
-                1, 1);
-            IApiCallResult truck = await dispatcher.Post("loads", expectedResult);
-            Load t = (Load)truck;
-            Assert.AreEqual(expectedResult.DelayFeePercHour, t.DelayFeePercHour);
+            string truckId = "1";
+            string driverId = "1";
+            string action = "sometestaction";
+            string cost = "1234";
+            string date = DateTime.Now.ToString();
+            using (WebClient client = new WebClient())
+            {
+                client.Headers.Add("api_token", "6UhcQUtcEuE2HXdUM1crQtV9RQQDI6t5IvWVkWcTTFxbc7rtjXz5Od77cqba");
+                byte[] response =
+                client.UploadValues("http://127.0.0.1:8000/api/maintenances", new NameValueCollection()
+                {
+                    { "truck_id", truckId },
+                    { "driver_id", driverId },
+                    { "actionPerformed", action },
+                    { "actionDate", date },
+                    { "actionCost", cost }
+                });
+            };
+           
         }
 
         [Test]
@@ -40,15 +57,6 @@ namespace ApiHttpClient.Tests
             IApiCallResult client = await dispatcher.Post("clients", expectedResult);
             Client t = (Client)client;
             Assert.AreEqual(expectedResult.Address, t.Address);
-        }
-
-        [Test]
-        public async Task Create_Driver()
-        {
-            Driver expectedResult = new Driver("firstname", "lastname", "123123", "mymail@mail.mail", 3);
-            IApiCallResult driver = await dispatcher.Post("drivers", expectedResult);
-            Driver t = (Driver)driver;
-            Assert.AreEqual(expectedResult.CompanyId, t.CompanyId);
         }
 
         [Test]

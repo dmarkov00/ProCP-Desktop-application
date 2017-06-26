@@ -40,11 +40,11 @@
             <Label Content="Street:" Grid.Row="8" Grid.Column="1"  VerticalAlignment="Center" />
             <Label Content="House nr:" Grid.Row="9" Grid.Column="1"  VerticalAlignment="Center" />
             <Label Content="ZIP code:" Grid.Row="10" Grid.Column="1"  VerticalAlignment="Center" />
-            <TextBox Grid.Row="6" Grid.Column="3" VerticalAlignment="Stretch" MaxHeight="30" VerticalContentAlignment="Center"/>
-        <TextBox Grid.Row="7" Grid.Column="3" VerticalAlignment="Stretch" MaxHeight="30" VerticalContentAlignment="Center" />
-        <TextBox Name="address" Grid.Row="8" Grid.Column="3" VerticalAlignment="Stretch" MaxHeight="30" VerticalContentAlignment="Center"/>
-        <TextBox Grid.Row="9" Grid.Column="3" VerticalAlignment="Stretch" MaxHeight="30" VerticalContentAlignment="Center"/>
-        <TextBox Grid.Row="10" Grid.Column="3" VerticalAlignment="Stretch" MaxHeight="30" VerticalContentAlignment="Center"/>
+            <TextBox Name="country" Grid.Row="6" Grid.Column="3" VerticalAlignment="Stretch" MaxHeight="30" VerticalContentAlignment="Center"/>
+        <TextBox Name="city" Grid.Row="7" Grid.Column="3" VerticalAlignment="Stretch" MaxHeight="30" VerticalContentAlignment="Center" />
+        <TextBox Name="street" Grid.Row="8" Grid.Column="3" VerticalAlignment="Stretch" MaxHeight="30" VerticalContentAlignment="Center"/>
+        <TextBox Name="housenr" Grid.Row="9" Grid.Column="3" VerticalAlignment="Stretch" MaxHeight="30" VerticalContentAlignment="Center"/>
+        <TextBox Name="zip" Grid.Row="10" Grid.Column="3" VerticalAlignment="Stretch" MaxHeight="30" VerticalContentAlignment="Center"/>
 
             <Button Content="Add new client" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="12" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="30" Click="Button_Click" />
 

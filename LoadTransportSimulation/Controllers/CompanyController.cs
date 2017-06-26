@@ -28,6 +28,7 @@ namespace Controllers
         private TruckController truckCtrl;
         private LoadController loadCtrl;
         private RouteController routeCtrl;
+        private MaintenanceController maintenanceCtrl;
 
         public User GetUser { get { return User.GetInstance(); } }
         public Company Company { get { return company; } set { company = value; } }
@@ -36,6 +37,7 @@ namespace Controllers
         public TruckController TruckCtrl { get { return truckCtrl; } set { truckCtrl = value; } }
         public LoadController LoadCtrl { get { return loadCtrl; } set { loadCtrl = value; } }
         public RouteController RouteCtrl { get { return routeCtrl; } set { routeCtrl = value; } }
+        public MaintenanceController MaintenanceCtrl { get { return maintenanceCtrl; } set { maintenanceCtrl = value; } }
 
         public static CompanyController GetInstance()
         {
@@ -72,6 +74,7 @@ namespace Controllers
             await CreateLoadController();
             await CreateClientController();
             await CreateRouteController();
+            await CreateMaintenanceController();
 
 
             routeCtrl.SetLoadsFromDatabase();
@@ -94,6 +97,7 @@ namespace Controllers
             IEnumerable<IApiCallResult> loads = await client.GetMany<Load>("loads");
             List<Load> targetListLoads = new List<Load>(loads.Cast<Load>());
             loadCtrl = LoadController.Create(targetListLoads);
+            loadCtrl.SetAvailableLoads();
             return;
         }
 
@@ -128,19 +132,40 @@ namespace Controllers
             return;
         }
 
+        private async Task CreateMaintenanceController()
+        {
+
+            IEnumerable<IApiCallResult> maintenances = await client.GetMany<TruckMaintenance>("maintenances");
+            ObservableCollection<TruckMaintenance> targetListMaintenances = new ObservableCollection<TruckMaintenance>(maintenances.Cast<TruckMaintenance>());
+            maintenanceCtrl = MaintenanceController.Create(targetListMaintenances);
+            maintenanceCtrl.SetMaintenancesToTrucks();
+            return;
+        }
+
         public void ChangeUser(string name, string phone)
         {
-            //To be modified!
+            User u = User.GetInstance();
+            u.Name = name;
+            u.Phone = phone;
+            //await client.Put<User>("users",u.Id,u);
             using (WebClient client = new WebClient())
             {
                 client.Headers.Add("api_token", User.GetInstance().Token);
                 byte[] response =
-                client.UploadValues("http://127.0.0.1:8000/api/users/" + User.GetInstance().Id, new NameValueCollection()
+                client.UploadValues("http://127.0.0.1:8000/api/users/update/" + u.Id, new NameValueCollection()
                 {
                     { "name", name },
-                    { "phone", phone },
+                    { "phone", phone }
                 });
-            }
+            };
+
+        }
+
+        public async Task UpdateRouteController()
+        {
+            IEnumerable<IApiCallResult> routes = await client.GetMany<Route>("routes");
+            ObservableCollection<Route> targetListRoutes = new ObservableCollection<Route>(routes.Cast<Route>());
+            routeCtrl.SetRoutes(targetListRoutes);
         }
 
     }

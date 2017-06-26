@@ -31,27 +31,6 @@ namespace Singleton.Tests
         }
 
         [Test]
-        public void DriverController()
-        {
-            List<Driver> drivers1 = new List<Driver>();
-            List<Driver> drivers2 = new List<Driver>();
-            /*
-            drivers1.Add(new Driver("1","Bob", "Dylan", "1234455", "email"));
-            drivers2.Add(new Driver("2","Gigi", "Olaa", "1234455", "email"));
-            drivers2.Add(new Driver("3","Eugen", "Dobre", "1234455", "email"));
-
-            DriverController driverCtrl1 = Controllers.DriverController.Create(drivers1);
-            DriverController driverCtrl2 = Controllers.DriverController.Create(drivers2);
-            DriverController driverCtrl3 = Controllers.DriverController.GetInstance();
-
-            Assert.AreEqual(driverCtrl1, driverCtrl2);
-            Assert.AreEqual(driverCtrl1, driverCtrl3);
-            Assert.AreEqual(driverCtrl2, driverCtrl3);
-
-            Assert.AreEqual(1, driverCtrl2.GetAllDrivers().Count);*/
-        }
-
-        [Test]
         public void LoadController()
         {
             List<Load> loads1 = new List<Load>();
@@ -94,7 +73,7 @@ namespace Singleton.Tests
             Assert.AreNotEqual(null, truckCtrl2);
             Assert.AreEqual(2, Controllers.TruckController.GetInstance().GetAllTrucks().Count);
         }
-
+        /*
         [Test]
         public void Dispatcher()
         {
@@ -110,6 +89,6 @@ namespace Singleton.Tests
             thread2.Join();
 
             Assert.AreEqual(disp1, disp2);
-        }
+        }*/
     }
 }

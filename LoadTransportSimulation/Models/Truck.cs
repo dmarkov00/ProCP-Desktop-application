@@ -4,6 +4,9 @@ using Newtonsoft.Json;
 using Common;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using System.Net;
+using System.Collections.Specialized;
 
 namespace Models
 {
@@ -58,6 +61,7 @@ namespace Models
             set
             {
                 locationCity = value;
+                location_id = (int)locationCity;
             }
         }
 
@@ -248,6 +252,7 @@ namespace Models
             set
             {
                 location_id = value;
+                locationCity = (City)location_id;
             }
         }
         [JsonProperty("broken")]
@@ -265,15 +270,23 @@ namespace Models
         }
 
      
-        public string AddMaintenance(TruckMaintenance maintenance)
+        public void AddMaintenance(TruckMaintenance maintenance)
         {
             if (!maintenanceList.Contains(maintenance)) {
                 maintenanceList.Add(maintenance);
-                return "Maintenance has been added!";
-            }
-            else
-            {
-                return "Maintenance already existing!";
+                using (WebClient client = new WebClient())
+                {
+                    client.Headers.Add("api_token", User.GetInstance().Token);
+                    byte[] response =
+                    client.UploadValues("http://127.0.0.1:8000/api/maintenances", new NameValueCollection()
+                    {
+                    { "truck_id", Id },
+                    { "driver_id", maintenance.DriverID.ToString()},
+                    { "actionPerformed", maintenance.ActionPerformed.ToString() },
+                    { "actionDate", maintenance.Date.ToString() },
+                    { "actionCost", maintenance.Cost.ToString() }
+                    });
+                };
             }
         }
 
