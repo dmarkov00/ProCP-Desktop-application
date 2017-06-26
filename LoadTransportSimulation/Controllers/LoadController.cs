@@ -117,6 +117,21 @@ namespace Controllers
 
         }
 
+        public string FinalizeLoad(string loadId, string actTime, string finSal)
+        {
+            using (WebClient client = new WebClient())
+            {
+                client.Headers.Add("api_token", "6UhcQUtcEuE2HXdUM1crQtV9RQQDI6t5IvWVkWcTTFxbc7rtjXz5Od77cqba");
+                byte[] response =
+                client.UploadValues("http://127.0.0.1:8000/api/loads/finalize/" + loadId, new NameValueCollection()
+                {
+                    { "arrivaldate", actTime },
+                    { "finalsalary", finSal }
+                });
+            };
+            return "load successfully finalized";
+        }
+
         public void SetClientsForLoads()
         {
             ClientController clientctrl = ClientController.GetInstance();
