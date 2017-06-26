@@ -21,18 +21,15 @@ namespace WPFLoadSimulation
     /// </summary>
     public partial class NewDriverWindow : Window
     {
-        DriverController dc;
         public NewDriverWindow()
         {
             InitializeComponent();
-            dc = DriverController.GetInstance();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            int compId =  Convert.ToInt32(User.GetInstance().CompanyId);
-            Driver d = new Driver(fname.Text, lname.Text, phone.Text, mail.Text, compId);
-            MessageBox.Show(dc.AddDriver(d));
+            Driver d = new Driver(fname.Text, lname.Text, phone.Text, mail.Text);
+            MessageBox.Show(CompanyController.GetInstance().DriverCtrl.AddDriver(d));
             //this.Close();
         }
     }

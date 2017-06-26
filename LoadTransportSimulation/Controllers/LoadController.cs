@@ -5,13 +5,14 @@ using System;
 using System.Net;
 using System.Collections.Specialized;
 using Common;
+using System.Collections.ObjectModel;
 
 namespace Controllers
 {
     public class LoadController
     {
         private List<Load> loads;
-
+        private ObservableCollection<Load> availableLoads;
         /*Singleton implemented
         * -when you want to use the controller the first time, use DriverController.Create(list);
         * -afterwards, anywhere in the program, to get the instance, use DriverController.GetInstance();
@@ -50,17 +51,20 @@ namespace Controllers
             return loads;
         }
 
-        public List<Load> GetAvailableLoads()
+        public void SetAvailableLoads()
         {
-            List<Load> availableloads = new List<Load>();
+            availableLoads = new ObservableCollection<Load>();
             
             foreach (Load l in loads)
             {
                 if (l.LoadState == LoadState.AVAILABLE)
-                    availableloads.Add(l);
+                    availableLoads.Add(l);
             }
+        }
 
-            return availableloads;
+        public ObservableCollection<Load> GetAvailableLoads()
+        {
+            return availableLoads;
         }
 
         public List<Load> GetDeliveredLoads()
@@ -107,7 +111,10 @@ namespace Controllers
 
         private async void addNewLoad(Load l)
         {
+            loads.Add(l);
+            availableLoads.Add(l);
             IApiCallResult driver = await ApiHttpClient.Dispatcher.GetInstance().Post("loads", l);
+
         }
 
         public void SetClientsForLoads()

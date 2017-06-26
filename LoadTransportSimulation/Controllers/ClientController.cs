@@ -9,6 +9,7 @@ namespace Controllers
     public class ClientController
     {
         private ObservableCollection<Client> clients;
+        
 
         /*Singleton implemented
          * -when you want to use the controller the first time, use ClientController.Create(list);
@@ -47,6 +48,7 @@ namespace Controllers
         public string AddClient(Client c)
         {
             this.addClient(c);
+            clients.Add(c);
             return "Client added successfully";
         }
 

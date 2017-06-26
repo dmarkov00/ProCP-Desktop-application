@@ -41,16 +41,23 @@ namespace WPFLoadSimulation
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            City startcity, endcity;
+            Enum.TryParse<City>(start.SelectedValue.ToString(), out startcity);
+            Enum.TryParse<City>(end.SelectedValue.ToString(), out endcity);
+
+
+
             Load l = new Load(
-              (int)((City)start.SelectedItem),
-              (int)((City)end.SelectedItem),
+              (int)startcity,
+              (int)endcity,
               content.Text,
               Convert.ToDecimal( weight.Text),
               Convert.ToDouble(salary.Text),
               Convert.ToDateTime(deadline.SelectedDate),
-              0, 
-              5,Convert.ToDateTime(deadline.SelectedDate),Convert.ToInt32(((Client)client.SelectedItem).Id), 1
-                );
+              Convert.ToDouble(delayfee.Text),
+              Convert.ToInt32(((Client)client.SelectedItem).Id));
+            l.Client = (Client)client.SelectedItem;
+            LoadController.GetInstance().AddNewLoad(l);
             this.Close();
         }
     }

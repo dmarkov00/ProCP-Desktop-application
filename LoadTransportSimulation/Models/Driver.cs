@@ -14,13 +14,13 @@ namespace Models
         private bool isBusy;
         private int companyId;
 
-        public Driver(string firstName, string lastName, string phone, string email, int compId)
+        public Driver(string firstName, string lastName, string phone, string email)
         {
             this.firstName = firstName;
             this.lastName = lastName;
             this.phone = phone;
             this.email = email;
-            this.companyId = compId;
+            this.companyId =Convert.ToInt32( User.GetInstance().CompanyId);
         }
 
         /* it should not have the id!!!

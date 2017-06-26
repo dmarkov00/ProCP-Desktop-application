@@ -26,7 +26,7 @@ namespace ApiHttpClient.Tests
         [Test]
         public async Task Create_Load()
         {
-            Load expectedResult = new Load(1, 1, "content" , 234, 23, DateTime.Now, 5000, 200, DateTime.Now,
+            Load expectedResult = new Load(1, 1, "content" , 234, 23, DateTime.Now, 
                 1, 1);
             IApiCallResult truck = await dispatcher.Post("loads", expectedResult);
             Load t = (Load)truck;
@@ -45,10 +45,10 @@ namespace ApiHttpClient.Tests
         [Test]
         public async Task Create_Driver()
         {
-            Driver expectedResult = new Driver("firstname", "lastname", "123123", "mymail@mail.mail", 3);
+            Driver expectedResult = new Driver("firstname", "lastname", "123123", "mymail@mail.mail");
             IApiCallResult driver = await dispatcher.Post("drivers", expectedResult);
             Driver t = (Driver)driver;
-            Assert.AreEqual(expectedResult.CompanyId, t.CompanyId);
+            Assert.AreEqual(expectedResult.Email, t.Email);
         }
 
         [Test]

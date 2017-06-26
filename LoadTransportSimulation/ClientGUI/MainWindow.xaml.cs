@@ -412,7 +412,6 @@ namespace WPFLoadSimulation
             if (answer == MessageBoxResult.Yes)
             {
                 companyCtrl.ClientCtrl.RemoveClient(c);
-
             }
         }
 

@@ -17,7 +17,7 @@ namespace ApiHttpClient.Tests
         {
 
             // The expected result is also used as a test model
-            Driver expectedResult = new Driver("Daf", "Diesel", "39933", "diese@gmail.com", 9);
+            Driver expectedResult = new Driver("Daf", "Diesel", "39933", "diese@gmail.com");
             expectedResult.Id = "2";
             // After update the api should return the updated entity
             Driver actualResult = (Driver)await dispatcher.Put("drivers", "2", expectedResult);

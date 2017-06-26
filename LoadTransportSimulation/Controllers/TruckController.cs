@@ -48,13 +48,14 @@ namespace Controllers
 
         public string AddTruck(Truck t)
         {
+            trucks.Add(t);
             this.addTruckThroughAPI(t);
             return "Truck added successfully";
         }
 
         private async void addTruckThroughAPI(Truck t)
         {
-            //Truck t = new Truck("td-aa-bb", 1, 234, 23, 5000, 200, 14);
+            trucks.Add(t);
             IApiCallResult truck = await ApiHttpClient.Dispatcher.GetInstance().Post("trucks", t);
             //return "Truck added successfully";
         }

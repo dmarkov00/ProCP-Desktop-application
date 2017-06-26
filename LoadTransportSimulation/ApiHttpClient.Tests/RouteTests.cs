@@ -46,8 +46,8 @@ namespace ApiHttpClient.Tests
             CompanyController companyCtrl = CompanyController.Create(c);
          
             List<Load> loads = new List<Load>();
-            Load load1 = new Load(1, 2, "Example load", 500, 1200, DateTime.Now, 1200, 0, new DateTime(1994, 5, 5), 2, 3);
-            Load load2 = new Load(2, 3, "Example load", 500, 1200, DateTime.Now, 1200, 0, new DateTime(1994, 5, 5), 2, 3);
+            Load load1 = new Load(1, 2, "Example load", 500, 1200, DateTime.Now, 2, 3);
+            Load load2 = new Load(2, 3, "Example load", 500, 1200, DateTime.Now, 2, 3);
             loads.Add(load1);
             loads.Add(load2);
             Truck truck = new Truck("HZ-12-KFN1", 1, 234, 23, 5000, 200, 14);

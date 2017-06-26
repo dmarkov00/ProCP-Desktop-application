@@ -94,6 +94,7 @@ namespace Controllers
             IEnumerable<IApiCallResult> loads = await client.GetMany<Load>("loads");
             List<Load> targetListLoads = new List<Load>(loads.Cast<Load>());
             loadCtrl = LoadController.Create(targetListLoads);
+            loadCtrl.SetAvailableLoads();
             return;
         }
 
