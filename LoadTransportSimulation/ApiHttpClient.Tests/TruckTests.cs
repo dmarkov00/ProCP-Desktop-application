@@ -4,7 +4,9 @@ using Models;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace ApiHttpClient.Tests
@@ -21,6 +23,30 @@ namespace ApiHttpClient.Tests
             IApiCallResult truck = await dispatcher.Post("trucks", expectedResult);
             Truck t = (Truck)truck;
             Assert.AreEqual(expectedResult.LicencePlate, t.LicencePlate);
+        }
+
+        [Test]
+        public async Task Create_Truck_Maintenance()
+        {
+            string truckId = "1";
+            string driverId = "1";
+            string action = "sometestaction";
+            string cost = "1234";
+            string date = DateTime.Now.ToString();
+            using (WebClient client = new WebClient())
+            {
+                client.Headers.Add("api_token", "6UhcQUtcEuE2HXdUM1crQtV9RQQDI6t5IvWVkWcTTFxbc7rtjXz5Od77cqba");
+                byte[] response =
+                client.UploadValues("http://127.0.0.1:8000/api/maintenances", new NameValueCollection()
+                {
+                    { "truck_id", truckId },
+                    { "driver_id", driverId },
+                    { "actionPerformed", action },
+                    { "actionDate", date },
+                    { "actionCost", cost }
+                });
+            };
+           
         }
 
         [Test]
