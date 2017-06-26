@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ClientGUI"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         Title="MarkRouteDelivered" Height="350" Width="537.037">
     <Grid>
@@ -43,21 +44,22 @@
                 <TextBox Name="tb_timedays" Grid.Column="0"/>
                 <Label Content="D" Grid.Column="1" HorizontalAlignment="Left" ToolTip="Days" Margin="0,0,10,0"/>
                 <TextBox Name="tb_timehours" Grid.Column="2"/>
-                <Label Content="H" Grid.Column="3" HorizontalAlignment="Left" ToolTip="Hours" Margin="0,0,10,0"/>
+                <Label Content="H" Grid.Column="3" HorizontalAlignment="Left" ToolTip="Hours, maximum 23" Margin="0,0,10,0"/>
                 <TextBox Name="tb_timeminutes" Grid.Column="4"/>
-                <Label Content="M" Grid.Column="5" HorizontalAlignment="Left" ToolTip="Minutes" Margin="0,0,10,0"/>
+                <Label Content="M" Grid.Column="5" HorizontalAlignment="Left" ToolTip="Minutes, maximum 59" Margin="0,0,10,0"/>
             </Grid>
             <Label Content="Fuel consumption:" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right"/>
             <TextBox Name="tb_fuelconsump" Grid.Column="1" Grid.Row="2"/>
-            <Label Content="Cost:" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right"/>
-            <TextBox Name="tb_cost" Grid.Column="1" Grid.Row="3"/>
 
             <Label Content="Salary received:" Grid.Column="2" Grid.Row="0" ToolTip="Full salary received, without costs subtracted" HorizontalAlignment="Right"/>
-            <TextBox Name="tb_salary" Grid.Column="3" Grid.Row="0"/>
-            <Label Content="Revenue:" Grid.Column="2" Grid.Row="1" ToolTip="Final revenue, after all costs taken off the earned salary" HorizontalAlignment="Right"/>
-            <TextBox Name="tb_revenue" Grid.Column="3" Grid.Row="1"/>
-            <Label Content="End date:" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Right"/>
-            <TextBox Name="tb_date" Grid.Column="3" Grid.Row="2"/>
+            <TextBox Name="tb_salary" Grid.Column="3" Grid.Row="0" TextChanged="tb_salary_TextChanged"/>
+            <Label Content="Cost:" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Right"/>
+            <TextBox Name="tb_cost" Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="2" Height="24" VerticalAlignment="Bottom" TextChanged="tb_cost_TextChanged"/>
+            
+            <Label Content="Revenue:" Grid.Column="2" Grid.Row="2" ToolTip="Final revenue, after all costs taken off the earned salary" HorizontalAlignment="Right"/>
+            <TextBox Name="tb_revenue" Grid.Column="3" Grid.Row="2"/>
+            <Label Content="End date:" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Right"/>
+            <DatePicker Name="tb_date" Grid.Column="3" Grid.Row="3"/>
         </Grid>
 
         <Label Content="Fill in each of the loads:" Grid.Row="2" VerticalAlignment="Bottom" Margin="0,10,0,0" FontWeight="DemiBold"/>
@@ -76,21 +78,25 @@
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
             <Label Content="Selected load:" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right"/>
-            <ComboBox Name="cb_selectedload" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2"/>
-            
-            <Label Content="Time arrived:" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right"/>
-            <DatePicker Name="tb_load_timearrived" Grid.Column="1" Grid.Row="2"/>
-            <Label Content="Final Salary:" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right"/>
-            <TextBox Name="tb_loadsalary" Grid.Column="1" Grid.Row="3"/>
+            <ComboBox Name="cb_selectedload" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" SelectionChanged="cb_selectedload_SelectionChanged"/>
 
-            <Label Content="Comment:" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Right"/>
-            <TextBox Name="tb_loadcomment" Grid.Column="3" Grid.Row="2" Grid.RowSpan="1"/>
+            <Label Content="Time arrived:" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right"/>
+            <DatePicker Name="tb_load_timearrived" Grid.Column="1" Grid.Row="2" SelectedDateChanged="tb_load_timearrived_SelectedDateChanged"/>
+            <Label Content="Final Salary:" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right"/>
+            <TextBox Name="tb_loadsalary" Grid.Column="1" Grid.Row="3" TextChanged="tb_loadsalary_TextChanged"/>
         </Grid>
 
-        <Button Content="Mark as delivered" Grid.Row="4" HorizontalAlignment="Right" Margin="5" FontSize="12" FontWeight="Normal" Height="auto"/>
+        <Grid Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <materialDesign:Snackbar HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Grid.Column="0" Margin="40,5,20,0" Padding="5,5,5,5"
+            MessageQueue="{materialDesign:MessageQueue}" 
+               x:Name="SnackbarException"  />
+            <Button Name="bt_markdelivered" Grid.Column="1" Content="Mark as delivered" HorizontalAlignment="Stretch" Margin="20,5,5,5" FontSize="12" FontWeight="Normal" Height="auto" Click="bt_markdelivered_Click"/>
 
-
-
-
+        </Grid>
+        
     </Grid>
 </Window>

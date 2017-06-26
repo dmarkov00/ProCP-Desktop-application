@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Data;
 using System.Net;
 using System.Collections.Specialized;
+using System.Threading.Tasks;
 
 namespace Controllers
 {
@@ -46,7 +47,7 @@ namespace Controllers
         public string MarkRouteDelivered(Route r)
         {
             //api
-            this.markRouteDelivered(r.Id);
+            this.markRouteAsDelivered(r.Id, r.ActTimeDrivingMin.ToString(), r.ActDistanceKm.ToString(), r.ActFuelConsumptionLiters.ToString(), r.ActFuelCost.ToString(), r.TotalActualSalary.ToString(), r.FinalRevenue.ToString());
             this.unsetDriverTaken(r.DriverId);
             this.unsetTruckTaken(r.TruckId);
             TruckController.GetInstance().ChangeTruckLocation(r.Truck, ((int)r.EndLocation).ToString());
@@ -152,7 +153,7 @@ namespace Controllers
             return routes;
         }
 
-        public void AddRouteToList(Route r)
+        public async void AddRouteToList(Route r)
         {
             r.StartLocation = r.Truck.LocationCity;
             r.StartLocationId = (int)r.StartLocation;
@@ -167,21 +168,22 @@ namespace Controllers
             r.Truck.IsBusy = true;
             r.Truck.CurrentDriver.IsBusy = true;
             
-            foreach(Load l in r.Loads)
+            
+            await this.addRoute(r);
+            this.setDriverTaken(r.DriverId);
+            this.setTruckTaken(r.TruckId);
+
+            foreach (Load l in r.Loads)
             {
                 this.SetDriverRouteTruck(l.ID.ToString(), r.DriverId, r.Id, r.TruckId);
                 l.LoadState = Common.Enumerations.LoadState.ONTRANSPORT;
             }
-            
-            this.addRoute(r);
-            this.setDriverTaken(r.DriverId);
-            this.setTruckTaken(r.TruckId);
 
             TruckController.GetInstance().SetAvailableTrucks();
             LoadController.GetInstance().SetAvailableLoads();
         }
 
-        private async void addRoute(Route r)
+        private async Task addRoute(Route r)
         {
             routes.Add(r);
             IApiCallResult newroute = await ApiHttpClient.Dispatcher.GetInstance().Post("routes", r);

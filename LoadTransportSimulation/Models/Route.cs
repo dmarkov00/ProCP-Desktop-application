@@ -8,6 +8,7 @@ using Common.Enumerations;
 using System.Collections.ObjectModel;
 using Newtonsoft.Json;
 using Common;
+using System.ComponentModel;
 
 namespace Models
 {
@@ -39,15 +40,15 @@ namespace Models
         //finances
         private double totalEstimatedSalary;
         [JsonProperty("sum_salaries")]
-        public double TotalEstimatedSalary { get { return totalEstimatedSalary; } set { totalEstimatedSalary = value; } }
+        public double TotalEstimatedSalary { get { return totalEstimatedSalary; } set { totalEstimatedSalary = value;  } }
 
         private double totalActualSalary;
         [JsonProperty("sum_actual_salaries")]
-        public double TotalActualSalary { get { return totalActualSalary; } set { totalActualSalary = value; } }
+        public double TotalActualSalary { get { return totalActualSalary; } set { totalActualSalary = value; OnPropertyChanged("TotalActualSalary"); } }
 
         private double finalRevenue;
         [JsonProperty("revenue")]
-        public double FinalRevenue { get { return finalRevenue; } set { finalRevenue = value; } }
+        public double FinalRevenue { get { return finalRevenue; } set { finalRevenue = value; OnPropertyChanged("FinalRevenue"); } }
 
 
         //estimations
@@ -77,26 +78,31 @@ namespace Models
         //actual results after delivery
         private double actTimeDrivingMin;
         [JsonProperty("act_time_used")]
-        public double ActTimeDrivingMin { get { return actTimeDrivingMin; } set { actTimeDrivingMin = value; if (actTimeDrivingMin != 0) actTimeDrivingTimeSpan = TimeSpan.FromMinutes(actTimeDrivingMin);  } }
+        public double ActTimeDrivingMin { get { return actTimeDrivingMin; } set { actTimeDrivingMin = value; if (actTimeDrivingMin != 0) actTimeDrivingTimeSpan = TimeSpan.FromMinutes(actTimeDrivingMin); OnPropertyChanged("ActTimeDrivingMin"); } }
 
         private TimeSpan actTimeDrivingTimeSpan;
         public TimeSpan ActTimeDrivingTimeSpan
         {
             get { return actTimeDrivingTimeSpan; }
-            set { actTimeDrivingTimeSpan = value; if (actTimeDrivingTimeSpan != null) actTimeDrivingMin = actTimeDrivingTimeSpan.TotalMinutes; }
+            set
+            {
+                actTimeDrivingTimeSpan = value;
+                if (actTimeDrivingTimeSpan != null) actTimeDrivingMin = actTimeDrivingTimeSpan.TotalMinutes;
+                OnPropertyChanged("ActTimeDrivingSpanSalary");
+            }
         }
 
         private int actDistanceKm;
         [JsonProperty("act_distance")]
-        public int ActDistanceKm { get { return actDistanceKm; } set { actDistanceKm = value; } }
+        public int ActDistanceKm { get { return actDistanceKm; } set { actDistanceKm = value; OnPropertyChanged("ActDistanceKm"); } }
 
         private int actFuelConsumptionLiters;
         [JsonProperty("act_fuelConsumption")]
-        public int ActFuelConsumptionLiters { get { return actFuelConsumptionLiters; } set { actFuelConsumptionLiters = value; } }
+        public int ActFuelConsumptionLiters { get { return actFuelConsumptionLiters; } set { actFuelConsumptionLiters = value; OnPropertyChanged("ActFuelConsumptionLiters"); } }
 
         private double actFuelCost;
         [JsonProperty("act_cost")]
-        public double ActFuelCost { get { return actFuelCost; } set { actFuelCost = value; } }
+        public double ActFuelCost { get { return actFuelCost; } set { actFuelCost = value; OnPropertyChanged("ActFuelCost"); } }
 
         //time
         [JsonProperty("start_time")]
@@ -126,7 +132,16 @@ namespace Models
 
         public int NrOfLoads { get; set; }
 
-       public Route()
+
+        //Event to notify changes
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public Route()
         {
             Loads = new List<Load>();
         }

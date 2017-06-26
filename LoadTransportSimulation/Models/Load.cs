@@ -48,6 +48,8 @@ namespace Models
         public DateTime? MaxArrivalTime { get; set; }
         [JsonProperty("arrivaldate")]
         public DateTime? ActArrivalTime { get; set; }
+        [JsonProperty("comment")]
+        public string Comment { get; set; }
 
         [JsonProperty("loadstatus")]
         public int LoadStateID {get; set;}
