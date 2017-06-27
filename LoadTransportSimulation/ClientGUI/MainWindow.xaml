@@ -441,7 +441,7 @@
                                 <RadioButton Content="Finished" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="220,10,0,0"/>-->
                                 <Label Content="Route information with estimation" Grid.ColumnSpan="2" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Bottom" FontWeight="SemiBold" Padding="0" Margin="5,10,0,0"/>
 
-                                <DataGrid x:Name="routesDGV" IsSynchronizedWithCurrentItem="True" Margin="5" HorizontalAlignment="Stretch"  Grid.Row="2" ItemsSource="{Binding Path=Route, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" VerticalAlignment="Stretch" AutoGenerateColumns="False" SelectionChanged="routesDGV_SelectionChanged" SelectionMode="Single" CanUserDeleteRows="False" CanUserAddRows="False" >
+                                <DataGrid x:Name="routesDGV" IsSynchronizedWithCurrentItem="True" Margin="5" HorizontalAlignment="Stretch"  Grid.Row="2" ItemsSource="{Binding Path=Route, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Stretch" AutoGenerateColumns="False" SelectionChanged="routesDGV_SelectionChanged" SelectionMode="Single" CanUserDeleteRows="False" CanUserAddRows="False" >
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Binding="{Binding StartLocation}" ClipboardContentBinding="{x:Null}" Header="Started location" IsReadOnly="True" Width="*" />
                                         <DataGridTextColumn Binding="{Binding EndLocation}" ClipboardContentBinding="{x:Null}" Header="End location" IsReadOnly="True" Width="*"/>

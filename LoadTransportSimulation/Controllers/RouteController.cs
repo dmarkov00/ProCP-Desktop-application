@@ -9,18 +9,25 @@ using System.Windows.Data;
 using System.Net;
 using System.Collections.Specialized;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace Controllers
 {
 
-    public class RouteController
+    public class RouteController : INotifyPropertyChanged
     {
         private ObservableCollection<Route> routes;
         private object _lock = new Object();
         
         private static volatile RouteController instance;
         private static object syncRoot = new Object();
-        
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         public static RouteController GetInstance()
         {
@@ -181,6 +188,7 @@ namespace Controllers
         public void SetRoutes(ObservableCollection<Route> r)
         {
             routes = r;
+            OnPropertyChanged("Routes");
         }
 
         public async Task AddRouteToList(Route r)
