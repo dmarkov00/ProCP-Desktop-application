@@ -166,6 +166,7 @@ namespace Controllers
             IEnumerable<IApiCallResult> routes = await client.GetMany<Route>("routes");
             ObservableCollection<Route> targetListRoutes = new ObservableCollection<Route>(routes.Cast<Route>());
             routeCtrl.SetRoutes(targetListRoutes);
+            routeCtrl.SetLoadsFromDatabase();
         }
 
     }

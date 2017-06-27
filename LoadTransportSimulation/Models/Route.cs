@@ -107,9 +107,10 @@ namespace Models
         //time
         [JsonProperty("start_time")]
         public DateTime StartTime { get; set; }
-        
+
+        private DateTime endtime;
         [JsonProperty("end_time")]
-        public DateTime EndTime { get; set; }
+        public DateTime EndTime { get { return endtime; } set { endtime = value; OnPropertyChanged("EndTime"); } }
 
         //locations
         private int startLocationid;
@@ -127,8 +128,8 @@ namespace Models
         public City EndLocation { get { return endLocation; } set { endLocation = value; endLocationid = (int)endLocation; } }
 
         //other properties not in database
-        private List<Load> loads;
-        public List<Load> Loads { get { return loads; } set { loads = value; NrOfLoads = loads.Count; } }
+        private ObservableCollection<Load> loads;
+        public ObservableCollection<Load> Loads { get { return loads; } set { loads = value; NrOfLoads = loads.Count; } }
 
         public int NrOfLoads { get; set; }
 
@@ -143,7 +144,7 @@ namespace Models
 
         public Route()
         {
-            Loads = new List<Load>();
+            Loads = new ObservableCollection<Load>();
         }
 
         public void GetTimeConsumedPerRoute()

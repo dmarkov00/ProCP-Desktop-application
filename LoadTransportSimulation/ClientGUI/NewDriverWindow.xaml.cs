@@ -30,7 +30,7 @@ namespace WPFLoadSimulation
         {
             Driver d = new Driver(fname.Text, lname.Text, phone.Text, mail.Text);
             MessageBox.Show(CompanyController.GetInstance().DriverCtrl.AddDriver(d));
-            //this.Close();
+            this.Close();
         }
     }
 }

@@ -392,11 +392,12 @@
                                         <Button x:Name="bt_calculateEstimation" Content="Calculate estimation" HorizontalAlignment="Stretch" Grid.Row="3" VerticalAlignment="Stretch" Margin="5,5,20,5" Height="30" Click="bt_calculateEstimation_Click" IsEnabled="False" Grid.ColumnSpan="2"/>
 
                                         <materialDesign:Snackbar 
-                                        HorizontalAlignment="Stretch" VerticalAlignment="Bottom" 
+                                        HorizontalAlignment="Center" VerticalAlignment="Center" 
                                         MessageQueue="{materialDesign:MessageQueue}" 
                                         x:Name="SnackbarLoads" 
                                         Grid.Row="2" 
-                                        Grid.ColumnSpan="2" />
+                                        Grid.ColumnSpan="2" 
+                                        Grid.Column="0"/>
 
                                         <Button x:Name="bt_submitRoute" Content="Submit Route" Grid.Column="2" HorizontalAlignment="Stretch"  Grid.Row="3" VerticalAlignment="Stretch" Height="30" Margin="5,5,5,5" FontWeight="Medium" Click="bt_submitRoute_Click" IsEnabled="False" />
 
@@ -464,7 +465,7 @@
                                 </DataGrid>
 
                                 <Label Content="Loads within selected route" HorizontalAlignment="Left" Grid.Row="4" Grid.ColumnSpan="2" VerticalAlignment="Bottom" FontWeight="SemiBold" Padding="0" Margin="5,10,0,0"/>
-                                <DataGrid x:Name="LoadsFromRouteDGV" ItemsSource="{Binding}" Margin="5" AutoGenerateColumns="false" HorizontalAlignment="Stretch"  Grid.Row="5" Grid.ColumnSpan="2" VerticalAlignment="Stretch" SelectionMode="Single" CanUserDeleteRows="False">
+                                <DataGrid x:Name="LoadsFromRouteDGV" ItemsSource="{Binding Path=., Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" Margin="5" AutoGenerateColumns="false" HorizontalAlignment="Stretch"  Grid.Row="5" Grid.ColumnSpan="2" VerticalAlignment="Stretch" SelectionMode="Single" CanUserDeleteRows="False">
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Binding="{Binding StartLocationCity}" ClipboardContentBinding="{x:Null}" Header="Start &#xA;Location" Width="*"/>
                                         <DataGridTextColumn Binding="{Binding EndLocationCity}" ClipboardContentBinding="{x:Null}" Header="End &#xA;Location" Width="*"/>

@@ -14,6 +14,7 @@ using MaterialDesignThemes.Wpf;
 using PdfReportHandling;
 using System.Linq;
 using ClientGUI;
+using System.Collections.ObjectModel;
 
 namespace WPFLoadSimulation
 {
@@ -84,6 +85,13 @@ namespace WPFLoadSimulation
             this.companyAddress.Content = companyCtrl.Company.Address;
             UserName = u.Name;
             UserPhone = u.Phone;
+
+            //snackbars
+            SnackbarMessageQueue mq = new SnackbarMessageQueue(TimeSpan.FromMilliseconds(1600));
+            SnackbarEstimation.MessageQueue = mq;
+            SnackbarLoads.MessageQueue = mq;
+            SnackbarMarkRoute.MessageQueue = mq;
+            SnackbarTruckDrivers.MessageQueue = mq;
         }
 
         private void SetTablePaddings()
@@ -217,19 +225,23 @@ namespace WPFLoadSimulation
         private void cb_assignTruckToRoute_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (cb_assignTruckToRoute.Items.IsEmpty)
+            {
                 SnackbarLoads.MessageQueue.Enqueue("Your trucks are all busy or need a driver");
+            }
+                
         }
 
         private void bt_calculateEstimation_Click(object sender, RoutedEventArgs e)
         {
             BackgroundWorker bw = new BackgroundWorker();
-            List<Load> loads = new List<Load>();
+            ObservableCollection<Load> loads = new ObservableCollection<Load>();
             route = new Route();
             bt_calculateEstimation.IsEnabled = false;
 
-            if (lv_selectedLoadsForRoute.Items.IsEmpty)
+            if (lv_selectedLoadsForRoute.Items.IsEmpty || ((Truck)cb_assignTruckToRoute.SelectedItem)==null)
             {
-                SnackbarLoads.MessageQueue.Enqueue("Can't calculate without some loads!");
+                SnackbarLoads.MessageQueue.Enqueue("We need both loads and truck!");
+                bt_calculateEstimation.IsEnabled = true;
                 return;
             }
 
@@ -282,6 +294,7 @@ namespace WPFLoadSimulation
             lv_selectedLoadsForRoute.Items.Clear();
             cb_assignTruckToRoute.SelectedItem = null;
             LoadsAvailableDGW.ItemsSource = companyCtrl.LoadCtrl.GetAvailableLoads();
+           //routesDGV.ItemsSource = companyCtrl.RouteCtrl.GetAllRoutes();
 
             bt_calculateEstimation.IsEnabled = false;
             bt_submitRoute.IsEnabled = false;
@@ -334,7 +347,14 @@ namespace WPFLoadSimulation
             MessageBoxResult answer = MessageBox.Show("Are you sure you want to delete truck " + t.LicencePlate + " ?", "Truck deletion", MessageBoxButton.YesNo);
             if (answer == MessageBoxResult.Yes)
             {
-                companyCtrl.TruckCtrl.RemoveTruck(t);
+                try
+                {
+                    companyCtrl.TruckCtrl.RemoveTruck(t);
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Something went wrong");
+                }
 
             }
         }
@@ -401,8 +421,15 @@ namespace WPFLoadSimulation
             MessageBoxResult answer = MessageBox.Show("Are you sure you want to delete driver " + driver.FirstName + " " + driver.LastName + " ?", "Driver deletion", MessageBoxButton.YesNo);
             if (answer == MessageBoxResult.Yes)
             {
-
-                companyCtrl.DriverCtrl.RemoveDriver(driver);
+                try
+                {
+                    companyCtrl.DriverCtrl.RemoveDriver(driver);
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Something went wrong");
+                }
+                
             }
         }
 
@@ -421,7 +448,15 @@ namespace WPFLoadSimulation
             MessageBoxResult answer = MessageBox.Show("Are you sure you want to delete client " + c.Name + " ?", "Client deletion", MessageBoxButton.YesNo);
             if (answer == MessageBoxResult.Yes)
             {
-                companyCtrl.ClientCtrl.RemoveClient(c);
+                try
+                {
+                    companyCtrl.ClientCtrl.RemoveClient(c);
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Something went wrong");
+                }
+                
             }
         }
 

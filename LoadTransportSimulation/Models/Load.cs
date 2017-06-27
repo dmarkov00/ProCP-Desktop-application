@@ -2,10 +2,11 @@
 using Common.Enumerations;
 using Common;
 using Newtonsoft.Json;
+using System.ComponentModel;
 
 namespace Models
 {
-    public class Load : IApiCallResult
+    public class Load : IApiCallResult, INotifyPropertyChanged
     {
         public Load(int startLocationID, int endLocationID, string content,
             decimal weight, double fullsalary, DateTime deadline, double delay, int clientID)
@@ -40,21 +41,27 @@ namespace Models
         public decimal WeightKg { get; private set; }
         [JsonProperty("fullsalary")]
         public double FullSalaryEur { get; set; }
+
+        private double? finalsalary;
         [JsonProperty("finalsalary")]
-        public double? FinalSalaryEur { get; set; }
+        public double? FinalSalaryEur { get { return finalsalary; } set { finalsalary = value; OnPropertyChanged("FinalSalaryEur"); } }
         [JsonProperty("delayfeePercHour")]
         public double DelayFeePercHour { get; set; }//delay fee percentage per one hour of delay
         [JsonProperty("deadline")]
         public DateTime? MaxArrivalTime { get; set; }
+
+        private string actarrivaltime;
         [JsonProperty("arrivaldate")]
-        public DateTime? ActArrivalTime { get; set; }
+        public string ActArrivalTime { get { return actarrivaltime; } set { actarrivaltime = value; OnPropertyChanged("ActArrivalTime"); } }
         [JsonProperty("comment")]
         public string Comment { get; set; }
 
+        private int loadstateid;
         [JsonProperty("loadstatus")]
-        public int LoadStateID {get; set;}
+        public int LoadStateID { get { return loadstateid; } set { loadstateid = value; loadstate = (LoadState)loadstateid; OnPropertyChanged("LoadStateID"); } }
 
-        public LoadState LoadState { get; set; }
+        private LoadState loadstate;
+        public LoadState LoadState { get { return loadstate; } set { loadstate = value; loadstateid = (int)loadstate; OnPropertyChanged("LoadState"); } }
         [JsonProperty("id")]
         public int ID { get; private set; }
         public Client Client { get; set; }
@@ -62,21 +69,28 @@ namespace Models
         [JsonProperty("route_id")]
         public string RouteId { get; set; }
 
-        public double CalculateFinalSalary()
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
         {
-            double finalsalary = 0;
-            double delayfee = 0;
-
-            TimeSpan? delaytime = (ActArrivalTime - MaxArrivalTime);      
-            //double delayhours = delaytime.TotalHours;
-            //if (delayhours > 0)
-            //{
-            //    delayfee = delayhours * (FullSalaryEur * (Convert.ToDouble(DelayFeePercHour) / 100));
-            //}
-            finalsalary = FullSalaryEur - delayfee;
-            FinalSalaryEur = finalsalary;
-            return finalsalary;
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        //public double CalculateFinalSalary()
+        //{
+        //    double finalsalary = 0;
+        //    double delayfee = 0;
+
+        //    //TimeSpan? delaytime = (ActArrivalTime - MaxArrivalTime);      
+        //    //double delayhours = delaytime.TotalHours;
+        //    //if (delayhours > 0)
+        //    //{
+        //    //    delayfee = delayhours * (FullSalaryEur * (Convert.ToDouble(DelayFeePercHour) / 100));
+        //    //}
+        //    finalsalary = FullSalaryEur - delayfee;
+        //    FinalSalaryEur = finalsalary;
+        //    return finalsalary;
+        //}
 
         public override string ToString()
         {

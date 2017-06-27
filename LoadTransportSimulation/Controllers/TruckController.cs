@@ -48,7 +48,6 @@ namespace Controllers
 
         public string AddTruck(Truck t)
         {
-            trucks.Add(t);
             this.addTruckThroughAPI(t);
             return "Truck added successfully";
         }

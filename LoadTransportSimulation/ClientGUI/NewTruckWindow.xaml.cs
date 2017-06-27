@@ -41,7 +41,7 @@ namespace WPFLoadSimulation
             }
             catch (Exception)
             {
-                MessageBox.Show("Something went baddd");
+                MessageBox.Show("Something went wrong");
             }
         }
     }

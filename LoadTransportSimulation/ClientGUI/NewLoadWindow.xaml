@@ -1,6 +1,7 @@
 ﻿<Window x:Class="WPFLoadSimulation.NewLoadWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Title="New Load" Height="400" Width="400"
         WindowStartupLocation="CenterScreen">
     <Grid>
@@ -20,7 +21,7 @@
                 <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition Height="30"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Label Content="Add new load to the system" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Top" FontWeight="SemiBold"/>
@@ -35,11 +36,14 @@
             <ComboBox Name="client" Grid.Column="2" HorizontalAlignment="Stretch"  Grid.Row="1" VerticalAlignment="Stretch" MaxHeight="30"/>
             <ComboBox Name="start" Grid.Column="2" HorizontalAlignment="Stretch"  Grid.Row="7" VerticalAlignment="Stretch" MaxHeight="30" />
             <ComboBox Name="end" Grid.Column="2" HorizontalAlignment="Stretch"  Grid.Row="8" VerticalAlignment="Stretch" MaxHeight="30" />
-            <TextBox Name="content" Grid.Column="2" HorizontalAlignment="Stretch"  Grid.Row="2" TextWrapping="Wrap"  TextAlignment="Left" Text="your content" VerticalAlignment="Stretch" MaxHeight="30" />
+            <TextBox Name="content" Grid.Column="2" HorizontalAlignment="Stretch"  Grid.Row="2" TextWrapping="Wrap"  TextAlignment="Left"  VerticalAlignment="Stretch" MaxHeight="30" />
             <DatePicker Name="deadline" HorizontalAlignment="Left"  Grid.Row="4" Grid.Column="2" VerticalAlignment="Stretch" MaxHeight="30"  Width="150"/>
-            <TextBox Name="weight" Grid.Column="2" HorizontalAlignment="Stretch"  Grid.Row="3" TextWrapping="Wrap"  TextAlignment="Left" Text="00000.000" VerticalAlignment="Stretch" MaxHeight="30" />
-            <TextBox Name="salary" Grid.Column="2" HorizontalAlignment="Stretch"  Grid.Row="5" TextWrapping="Wrap"  TextAlignment="Left" Text="0000.00" VerticalAlignment="Stretch" MaxHeight="30" />
-            <TextBox Name="delayfee" Grid.Column="2" HorizontalAlignment="Stretch"  Grid.Row="6" TextWrapping="Wrap" TextAlignment="Left" Text="000" VerticalAlignment="Stretch" MaxHeight="30" />
+            <TextBox Name="weight" Grid.Column="2" HorizontalAlignment="Stretch"  Grid.Row="3" TextWrapping="Wrap"  TextAlignment="Left"  VerticalAlignment="Stretch" MaxHeight="30" />
+            <TextBox Name="salary" Grid.Column="2" HorizontalAlignment="Stretch"  Grid.Row="5" TextWrapping="Wrap"  TextAlignment="Left" VerticalAlignment="Stretch" MaxHeight="30" />
+            <TextBox Name="delayfee" Grid.Column="2" HorizontalAlignment="Stretch"  Grid.Row="6" TextWrapping="Wrap" TextAlignment="Left"  VerticalAlignment="Stretch" MaxHeight="30" />
+
+            <materialDesign:Snackbar Name="snackbar_load" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"  MessageQueue="{materialDesign:MessageQueue}" Grid.Row="8" Grid.Column="2" Height="30" Width="auto"/>
+
             <Button Click="Button_Click" FontWeight="Normal" Content="Submit Load" Grid.Column="2"  HorizontalAlignment="Stretch"  Grid.Row="10"  VerticalAlignment="Stretch" />
 
         </Grid>

@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace Controllers
 {
+
     public class RouteController
     {
         private ObservableCollection<Route> routes;
@@ -19,6 +20,7 @@ namespace Controllers
         
         private static volatile RouteController instance;
         private static object syncRoot = new Object();
+        
 
         public static RouteController GetInstance()
         {
@@ -43,6 +45,8 @@ namespace Controllers
             this.routes = r;
             BindingOperations.EnableCollectionSynchronization(routes, _lock);
         }
+
+        
 
         public string MarkRouteDelivered(Route r)
         {
@@ -194,17 +198,19 @@ namespace Controllers
             r.Truck.IsBusy = true;
             r.Truck.CurrentDriver.IsBusy = true;
             
-            
             await this.addRoute(r);
-            await CompanyController.GetInstance().UpdateRouteController();
+            
             TruckController.GetInstance().SetAvailableTrucks();
             LoadController.GetInstance().SetAvailableLoads();
+
+            routes.Add(r);
+            await CompanyController.GetInstance().UpdateRouteController();
             
         }
 
         private async Task addRoute(Route r)
         {
-            routes.Add(r);
+            
             IApiCallResult newroute = await ApiHttpClient.Dispatcher.GetInstance().Post("routes", r);
 
             r.Id = ((Route)newroute).Id;
@@ -281,6 +287,14 @@ namespace Controllers
             foreach(Route r in routes)
             {
                 r.NrOfLoads = r.Loads.Count;
+                if (r.Loads.Count != 0)
+                {
+                    if(r.Loads[r.Loads.Count - 1].ActArrivalTime!=null)
+                        r.EndTime = DateTime.ParseExact(r.Loads[r.Loads.Count - 1].ActArrivalTime, "dd/MM/yyyy HH:mm:ss",
+                                       System.Globalization.CultureInfo.InvariantCulture);
+
+                }
+                
             }
         }
     }

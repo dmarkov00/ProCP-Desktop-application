@@ -30,13 +30,6 @@ namespace WPFLoadSimulation
             start.ItemsSource = Enum.GetNames(typeof(City));
             end.ItemsSource = Enum.GetNames(typeof(City));
         }
-
-
-        private void LoadsAddClient_Click(object sender, RoutedEventArgs e)
-        {
-            NewClientWindow newclient = new NewClientWindow();
-            newclient.Show();
-        }
         
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -45,20 +38,33 @@ namespace WPFLoadSimulation
             Enum.TryParse<City>(start.SelectedValue.ToString(), out startcity);
             Enum.TryParse<City>(end.SelectedValue.ToString(), out endcity);
             
-
-            Load l = new Load(
+            try
+            {
+                Load l = new Load(
               (int)startcity,
               (int)endcity,
               content.Text,
-              Convert.ToDecimal( weight.Text),
+              Convert.ToDecimal(weight.Text),
               Convert.ToDouble(salary.Text),
               Convert.ToDateTime(deadline.SelectedDate),
               Convert.ToDouble(delayfee.Text),
               Convert.ToInt32(((Client)client.SelectedItem).Id));
-            l.Client = (Client)client.SelectedItem;
+                l.Client = (Client)client.SelectedItem;
 
-            LoadController.GetInstance().AddNewLoad(l);
-            this.Close();
+                LoadController.GetInstance().AddNewLoad(l);
+                this.Close();
+            }
+            catch (FormatException)
+            {
+                snackbar_load.MessageQueue.Enqueue("Input format(s) not valid. Try again.");
+            }
+
+            catch (Exception)
+            {
+                snackbar_load.MessageQueue.Enqueue("Something went wrong.");
+            }
+
+            
         }
     }
 }

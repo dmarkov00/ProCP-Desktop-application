@@ -43,7 +43,8 @@ namespace ClientGUI
                 try
                 {
                     currentload = (Load)cb_selectedload.SelectedItem;
-                    tb_load_timearrived.SelectedDate = currentload.ActArrivalTime;
+                    tb_load_timearrived.SelectedDate = DateTime.ParseExact(currentload.ActArrivalTime, "yyyy-MM-dd HH:mm:ss",
+                                       System.Globalization.CultureInfo.InvariantCulture); 
                     tb_loadsalary.Text = currentload.FinalSalaryEur.ToString();
                 }
                 catch (FormatException)
@@ -67,7 +68,7 @@ namespace ClientGUI
             if (userinteraction)
                 try
                 {
-                    currentload.ActArrivalTime = tb_load_timearrived.SelectedDate;
+                    currentload.ActArrivalTime = tb_load_timearrived.SelectedDate.ToString();
                     userinteraction = false;
                 }
                 catch (FormatException)
@@ -109,7 +110,7 @@ namespace ClientGUI
                 SnackbarException.MessageQueue.Enqueue("Delivery saved!");
                 bt_markdelivered.IsEnabled = false;
                 //Thread.Sleep(1000);
-                //this.Close();
+                this.Close();
             }
             catch (FormatException)
             {
@@ -130,7 +131,9 @@ namespace ClientGUI
             route.ActFuelCost = Convert.ToInt32(tb_cost.Text);
             route.TotalActualSalary = Convert.ToInt32(tb_salary.Text);
             route.FinalRevenue = Convert.ToInt32(tb_revenue.Text);
-            route.EndTime = Convert.ToDateTime(tb_date.SelectedDate);
+            route.EndTime = DateTime.ParseExact(route.Loads[route.Loads.Count - 1].ActArrivalTime, "dd/MM/yyyy HH:mm:ss",
+                                       System.Globalization.CultureInfo.InvariantCulture);
+            
         }
 
         private void tb_cost_TextChanged(object sender, TextChangedEventArgs e)
