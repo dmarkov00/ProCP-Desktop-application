@@ -142,11 +142,14 @@ namespace WPFLoadSimulation
             if (!isUserInteractLoadsDGV)
                 return;
 
+            Load load = (Load)LoadsAvailableDGW.SelectedItem;
+
+            if (load == null)
+                return;
 
             lv_loadClient.Items.Clear();
             lv_loadDetails.Items.Clear();
 
-            Load load = (Load)LoadsAvailableDGW.SelectedItem;
             lv_loadDetails.Items.Add(new { description = "Start Location", value = load.StartLocationCity });
             lv_loadDetails.Items.Add(new { description = "End Location", value = load.EndLocationCity });
             lv_loadDetails.Items.Add(new { description = "Deadline", value = load.MaxArrivalTime });

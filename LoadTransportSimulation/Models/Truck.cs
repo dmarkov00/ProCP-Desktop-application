@@ -88,10 +88,18 @@ namespace Models
 
             set
             {
-                currentDriver = value;
-                Driver_id = currentDriver.Id;
+                if (value != null)
+                {
+                    currentDriver = value;
+                    Driver_id = currentDriver.Id;
+                }
+                else
+                {
+                    Driver_id = null;
+                    currentDriver = null;
+                }
+               
                 OnPropertyChanged("CurrentDriver");
-
             }
         }
 

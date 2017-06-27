@@ -63,7 +63,7 @@ namespace Models
         private LoadState loadstate;
         public LoadState LoadState { get { return loadstate; } set { loadstate = value; loadstateid = (int)loadstate; OnPropertyChanged("LoadState"); } }
         [JsonProperty("id")]
-        public int ID { get; private set; }
+        public int ID { get;  set; }
         public Client Client { get; set; }
 
         [JsonProperty("route_id")]

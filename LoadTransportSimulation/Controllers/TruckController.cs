@@ -54,8 +54,10 @@ namespace Controllers
 
         private async void addTruckThroughAPI(Truck t)
         {
-            trucks.Add(t);
+            
             IApiCallResult truck = await ApiHttpClient.Dispatcher.GetInstance().Post("trucks", t);
+            t.Id = ((Truck)truck).Id;
+            trucks.Add(t);
             //return "Truck added successfully";
         }
 

@@ -6,6 +6,7 @@ using System.Net;
 using System.Collections.Specialized;
 using Common;
 using System.Collections.ObjectModel;
+using System.Windows.Data;
 
 namespace Controllers
 {
@@ -13,6 +14,7 @@ namespace Controllers
     {
         private List<Load> loads;
         private ObservableCollection<Load> availableLoads;
+        private object _lock = new Object();
         /*Singleton implemented
         * -when you want to use the controller the first time, use DriverController.Create(list);
         * -afterwards, anywhere in the program, to get the instance, use DriverController.GetInstance();
@@ -44,6 +46,7 @@ namespace Controllers
         private LoadController(List<Load> loads)
         {
             this.loads = loads;
+            BindingOperations.EnableCollectionSynchronization(loads, _lock);
         }
 
         public List<Load> GetAllLoads()
@@ -103,6 +106,12 @@ namespace Controllers
             return null;
         }
 
+        public void RemoveLoad(Load l)
+        {
+            this.loads.Remove(l);
+            availableLoads.Remove(l);
+        }
+
         public void AddNewLoad(Load l)
         {
             this.addNewLoad(l);
@@ -111,9 +120,11 @@ namespace Controllers
 
         private async void addNewLoad(Load l)
         {
+            
+            IApiCallResult load = await ApiHttpClient.Dispatcher.GetInstance().Post("loads", l);
+            l.ID = ((Load)load).ID;
             loads.Add(l);
             availableLoads.Add(l);
-            IApiCallResult driver = await ApiHttpClient.Dispatcher.GetInstance().Post("loads", l);
 
         }
 

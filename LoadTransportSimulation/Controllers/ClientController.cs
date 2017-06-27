@@ -48,21 +48,29 @@ namespace Controllers
         public string AddClient(Client c)
         {
             this.addClient(c);
-            clients.Add(c);
             return "Client added successfully";
         }
 
         private async void addClient(Client c)
         {
             IApiCallResult result = await ApiHttpClient.Dispatcher.GetInstance().Post("clients", c);
+            c.Id = ((Client)result).Id;
+            clients.Add(c);
         }
 
         public async void RemoveClient(Client c)
         {
             if (clients.Contains(c))
             {
-                clients.Remove(c);
                 IApiCallResult result = await ApiHttpClient.Dispatcher.GetInstance().Delete("clients", c.Id);
+                clients.Remove(c);
+                
+                foreach(Load l in LoadController.GetInstance().GetAllLoads().ToArray())
+                {
+                    if (l.ClientID.ToString() == c.Id)
+                        LoadController.GetInstance().RemoveLoad(l);
+                }
+
             }
                 
         }

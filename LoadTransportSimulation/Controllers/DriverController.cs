@@ -48,15 +48,29 @@ namespace Controllers
 
         private async void addDriver(Driver t)
         {
-            drivers.Add(t);
+            
             IApiCallResult driver = await ApiHttpClient.Dispatcher.GetInstance().Post("drivers", t);
+            t.Id = ((Driver)driver).Id;
+            drivers.Add(t);
             //return "Truck added successfully";
         }
 
         public async void RemoveDriver(Driver d)
         {
-            this.drivers.Remove(d);
-            IApiCallResult result = await ApiHttpClient.Dispatcher.GetInstance().Delete("drivers", d.Id.ToString());
+            if (!d.IsBusy)
+            {
+                IApiCallResult result = await ApiHttpClient.Dispatcher.GetInstance().Delete("drivers", d.Id.ToString());
+                this.drivers.Remove(d);
+
+                foreach (Truck t in TruckController.GetInstance().GetAllTrucks())
+                {
+                    if (t.CurrentDriver == d)
+                    {
+                        t.CurrentDriver = null;
+                    }
+                }
+            }
+            
         }
 
         public ObservableCollection<Driver> GetAllDrivers()
